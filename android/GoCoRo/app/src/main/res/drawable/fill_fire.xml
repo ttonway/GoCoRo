@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/fire_background"
+    android:tileMode="repeat">
+
+    <item>
+        <shape android:shape="rectangle">
+
+            <gradient
+                android:angle="270"
+                android:centerColor="#A0e8383f"
+                android:endColor="#00e8383f"
+                android:startColor="#ffe8383f"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <item>
+        <bitmap
+            android:alpha="0.5"
+            android:gravity="bottom"
+            android:src="@drawable/fire_background" />
+    </item>
+
+</layer-list>

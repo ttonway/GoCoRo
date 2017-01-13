@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="transparent">#00000000</color>
+    <color name="window_background">#2e2934</color>
+    <color name="actionbar_background">#33000000</color>
+    <color name="form_border">#33ffffff</color>
+    <color name="indicator">#b93d30</color>
+
+    <color name="white">#fff</color>
+    <color name="common_orange">#e74c3c</color>
+    <color name="common_gray_light">#e5e5e5</color>
+
+    <color name="text_white">#fff</color>
+    <color name="text_light_gray">#ccc</color>
+    <color name="text_dark">#333</color>
+    <color name="text_cyan">#b598c4</color>
+    <color name="text_orange">@color/common_orange</color>
+
+    <color name="fill_preheat_start">#b2ee9999</color>
+    <color name="fill_preheat_end">#b2f9dede</color>
+    <color name="fill_roast_start">#b2fb4948</color>
+    <color name="fill_roast_end">#b2fdc4c3</color>
+    <color name="fill_cool_start">#b28268a2</color>
+    <color name="fill_cool_end">#b2544c5d</color>
+
+
+</resources>

@@ -1,0 +1,58 @@
+package com.wcare.android.gocoro.ui;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.wcare.android.gocoro.R;
+import com.wcare.android.gocoro.model.CuppingRecord;
+import com.wcare.android.gocoro.model.RoastProfile;
+import com.wcare.android.gocoro.ui.adapter.SelectProfileAdapter;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
+import io.realm.Sort;
+
+/**
+ * Created by ttonway on 2016/12/20.
+ */
+public class ActivityCuppingList extends BaseActivity {
+
+    public static void viewCuppingList(Context context, String profileUuid) {
+        Intent intent = new Intent(context, ActivityCuppingList.class);
+        intent.putExtra(PARAM_PROFILE_UUID, profileUuid);
+        context.startActivity(intent);
+    }
+    private static final String PARAM_PROFILE_UUID = "ActivityCuppingList:profile";
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
+    FragCuppingList mFragment;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cupping_list);
+        ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mFragment = (FragCuppingList) getSupportFragmentManager().findFragmentByTag("cupping-list");
+        if (mFragment == null) {
+            mFragment = FragCuppingList.newFragment(getIntent().getStringExtra(PARAM_PROFILE_UUID), false);
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, mFragment, "cupping-list").commit();
+        }
+    }
+}

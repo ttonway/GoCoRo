@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/increment"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_dark_up_background"
+            android:src="@drawable/arrow_up" />
+
+        <ImageButton
+            android:id="@+id/decrement"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_dark_down_background"
+            android:src="@drawable/arrow_down" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/numberpicker_input"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dark_edittext"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@color/text_white"
+        android:textCursorDrawable="@null"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+</merge>

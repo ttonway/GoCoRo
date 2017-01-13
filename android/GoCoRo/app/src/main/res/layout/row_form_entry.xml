@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/text_time"
+        style="@style/Widget.TableCell" />
+
+    <TextView
+        android:id="@+id/text_temperature"
+        style="@style/Widget.TableCell" />
+</TableRow>

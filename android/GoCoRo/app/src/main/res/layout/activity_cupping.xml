@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/actionbar_background"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        </android.support.v7.widget.Toolbar>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/toolbar"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp"
+                    android:stretchColumns="1">
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_marginLeft="8dp"
+                            android:text="@string/label_cupping_name"
+                            android:textColor="@color/text_dark"
+                            android:textSize="@dimen/default_textsize" />
+
+                        <EditText
+                            android:id="@+id/input_name"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/edittext_background"
+                            android:singleLine="true"
+                            android:textCursorDrawable="@null"
+                            android:textSize="@dimen/default_textsize" />
+                    </TableRow>
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_marginLeft="8dp"
+                            android:text="@string/label_cupping_profile"
+                            android:textColor="@color/text_dark"
+                            android:textSize="@dimen/default_textsize" />
+
+                        <TextView
+                            android:id="@+id/input_profile"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/edittext_background"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:textColor="?android:attr/editTextColor"
+                            android:textSize="@dimen/default_textsize" />
+                    </TableRow>
+
+                </TableLayout>
+
+                <com.wcare.android.gocoro.widget.SquareFrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.github.mikephil.charting.charts.RadarChart
+                        android:id="@+id/radar_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.wcare.android.gocoro.widget.SquareFrameLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/indicator"
+                        android:layout_width="10dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/indicator" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="@string/label_total_score"
+                        android:textAppearance="?android:textAppearanceLarge"
+                        android:textColor="@color/text_white" />
+
+                    <TextView
+                        android:id="@+id/text_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp"
+                        android:textAppearance="?android:textAppearanceLarge"
+                        android:textColor="@color/text_white" />
+                </LinearLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="4dp"
+                    android:stretchColumns="1">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="#a0cccccc" />
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:text="@string/label_cupping_time"
+                            android:textColor="@color/text_light_gray"
+                            android:textSize="@dimen/default_textsize" />
+
+                        <EditText
+                            android:id="@+id/text_time"
+                            android:layout_margin="8dp"
+                            android:background="@null"
+                            android:enabled="false"
+                            android:textColor="@color/text_white"
+                            android:textSize="@dimen/default_textsize" />
+                    </TableRow>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="#a0cccccc" />
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:text="@string/label_cupping_comment"
+                            android:textColor="@color/text_light_gray"
+                            android:textSize="@dimen/default_textsize" />
+
+                        <EditText
+                            android:id="@+id/input_comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:background="@null"
+                            android:hint="@string/hint_comment"
+                            android:textColor="@color/text_white"
+                            android:textCursorDrawable="@null"
+                            android:textSize="@dimen/default_textsize" />
+                    </TableRow>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="#a0cccccc" />
+                </TableLayout>
+
+                <TableLayout
+                    android:id="@+id/seekbar_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="8dp"
+                    android:shrinkColumns="0"
+                    android:stretchColumns="1">
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cupping_item1"
+                            android:textColor="@color/text_light_gray" />
+
+                        <com.wcare.android.gocoro.widget.SeekBar
+                            android:id="@+id/seekbar1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:progressDrawable="@drawable/seekbar_progress"
+                            android:thumb="@drawable/seekbar_thumb"
+                            app:popupLayout="@layout/seekbar_popup_layout"
+                            app:popupStyle="follow" />
+
+                    </TableRow>
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cupping_item2"
+                            android:textColor="@color/text_light_gray" />
+
+                        <com.wcare.android.gocoro.widget.SeekBar
+                            android:id="@+id/seekbar2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:progressDrawable="@drawable/seekbar_progress"
+                            android:thumb="@drawable/seekbar_thumb"
+                            app:popupLayout="@layout/seekbar_popup_layout"
+                            app:popupStyle="follow" />
+
+                    </TableRow>
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cupping_item3"
+                            android:textColor="@color/text_light_gray" />
+
+                        <com.wcare.android.gocoro.widget.SeekBar
+                            android:id="@+id/seekbar3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:progressDrawable="@drawable/seekbar_progress"
+                            android:thumb="@drawable/seekbar_thumb"
+                            app:popupLayout="@layout/seekbar_popup_layout"
+                            app:popupStyle="follow" />
+
+                    </TableRow>
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cupping_item4"
+                            android:textColor="@color/text_light_gray" />
+
+                        <com.wcare.android.gocoro.widget.SeekBar
+                            android:id="@+id/seekbar4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:progressDrawable="@drawable/seekbar_progress"
+                            android:thumb="@drawable/seekbar_thumb"
+                            app:popupLayout="@layout/seekbar_popup_layout"
+                            app:popupStyle="follow" />
+
+                    </TableRow>
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cupping_item5"
+                            android:textColor="@color/text_light_gray" />
+
+                        <com.wcare.android.gocoro.widget.SeekBar
+                            android:id="@+id/seekbar5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:progressDrawable="@drawable/seekbar_progress"
+                            android:thumb="@drawable/seekbar_thumb"
+                            app:popupLayout="@layout/seekbar_popup_layout"
+                            app:popupStyle="follow" />
+
+                    </TableRow>
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cupping_item6"
+                            android:textColor="@color/text_light_gray" />
+
+                        <com.wcare.android.gocoro.widget.SeekBar
+                            android:id="@+id/seekbar6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:progressDrawable="@drawable/seekbar_progress"
+                            android:thumb="@drawable/seekbar_thumb"
+                            app:popupLayout="@layout/seekbar_popup_layout"
+                            app:popupStyle="follow" />
+
+                    </TableRow>
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cupping_item7"
+                            android:textColor="@color/text_light_gray" />
+
+                        <com.wcare.android.gocoro.widget.SeekBar
+                            android:id="@+id/seekbar7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:progressDrawable="@drawable/seekbar_progress"
+                            android:thumb="@drawable/seekbar_thumb"
+                            app:popupLayout="@layout/seekbar_popup_layout"
+                            app:popupStyle="follow" />
+
+                    </TableRow>
+                </TableLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+</FrameLayout>

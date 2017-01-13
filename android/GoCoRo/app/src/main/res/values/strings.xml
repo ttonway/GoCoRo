@@ -1,0 +1,91 @@
+<resources>
+    <string name="app_name">GoGoRo</string>
+    <string name="x_celsius_unit">%1$d℃</string>
+    <string name="x_g_unit">%1$dg</string>
+
+    <string name="activity_start_roast">开始烘焙</string>
+    <string name="activity_form">烘豆记录详情</string>
+    <string name="activity_cupping">杯测</string>
+    <string name="activity_profile_picker">选择烘焙记录</string>
+    <string name="activity_cupping_list">杯测记录</string>
+    <string name="activity_profile_list">烘豆记录</string>
+    <string name="activity_le_scan">设备搜索</string>
+    <string name="tab_home">烘豆</string>
+    <string name="tab_roast_history">记录</string>
+    <string name="tab_cupping_history">杯测</string>
+    <string name="tab_more">更多</string>
+
+    <string name="action_share">分享</string>
+    <string name="action_plot">图表</string>
+    <string name="action_form">数据</string>
+    <string name="action_add">添加</string>
+    <string name="action_done">完成</string>
+    <string name="action_edit">编辑</string>
+    <string name="action_scan">搜索</string>
+    <string name="action_stop">停止</string>
+    <string name="action_setting">设置</string>
+    <string name="btn_ok">确定</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_delete">删除</string>
+    <string name="btn_cupping">杯测</string>
+    <string name="btn_start_roast">开始烘焙</string>
+    <string name="btn_start">开始</string>
+    <string name="btn_set">设置</string>
+    <string name="btn_cool">冷却</string>
+
+    <string name="label_unknown_device">未知设备</string>
+    <string name="label_lasttime">上一次</string>
+    <string name="label_no_profile">您还没有烘焙过</string>
+    <string name="label_fire_x">火力%1$d</string>
+    <string name="label_total_score">总得分</string>
+    <string name="label_score_x">%1$s分</string>
+    <string name="label_cupping_name">杯测名称</string>
+    <string name="label_cupping_profile">烘焙档名</string>
+    <string name="label_cupping_time">杯测时间</string>
+    <string name="label_cupping_comment">杯测评语</string>
+    <string name="hint_comment">（无）</string>
+
+    <string name="toast_cupping_name_empty">请输入杯测名称</string>
+    <string name="toast_device_unconnected">设备未连接</string>
+    <string name="error_connect_x">连接错误%1$d</string>
+    <string name="error_wrong_device">错误的设备</string>
+    <string name="error_timeout">读取数据超时</string>
+    <string name="error_bluetooth_not_supported">蓝牙不可用</string>
+    <string name="ble_not_supported">该设备不支持BLE</string>
+    <string name="notification_service_running">GoCoRo正在烘焙</string>
+    <string name="roast_completed">烘焙完成</string>
+
+    <string name="category_event">事件记录</string>
+    <string name="category_preheat">预热（Preheating）</string>
+    <string name="category_roast">烘焙（Roasting）</string>
+    <string name="category_cool">冷却（Cooling）</string>
+    <string name="event_burst1_start">一爆开始</string>
+    <string name="event_burst2_start">二爆开始</string>
+    <string name="event_burst1">一爆密集</string>
+    <string name="event_burst2">二爆密集</string>
+    <string name="event_change_fire">火力设置</string>
+    <string name="event_unrecorded">未记录</string>
+    <string name="event_recorded">已记录</string>
+
+<!-- 分別為:
+1. Aroma 香氣 (乾香, 濕香)
+2. Flavor  風味
+3. Aftertaste 餘韻
+4. Acidity  酸度
+5. Body 口感
+6. Balance 平衡
+7. Overall  整體性
+Uniformity, Clean Cup, Sweetness
+-->
+    <string name="cupping_item1">香气</string>
+    <string name="cupping_item2">风味</string>
+    <string name="cupping_item3">馀韵</string>
+    <string name="cupping_item4">酸度</string>
+    <string name="cupping_item5">口感</string>
+    <string name="cupping_item6">平衡</string>
+    <string name="cupping_item7">整体性</string>
+    <string name="cupping_item8">一致度</string>
+    <string name="cupping_item9">干净度</string>
+    <string name="cupping_item10">甜度</string>
+
+</resources>
