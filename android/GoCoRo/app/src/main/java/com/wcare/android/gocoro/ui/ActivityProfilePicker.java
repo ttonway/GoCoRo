@@ -1,6 +1,7 @@
 package com.wcare.android.gocoro.ui;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +37,8 @@ public class ActivityProfilePicker extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.text_logo)
+    TextView mLogoTextView;
     @BindView(R.id.list)
     ListView mListView;
     @BindView(R.id.internalEmpty)
@@ -53,6 +56,8 @@ public class ActivityProfilePicker extends BaseActivity {
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mLogoTextView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Bauhaus93.ttf"));
 
         Realm realm = Realm.getDefaultInstance();
         mProfiles = realm.where(RoastProfile.class).greaterThan("startTime", 0).findAll().sort("startTime", Sort.DESCENDING);

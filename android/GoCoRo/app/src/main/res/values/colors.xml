@@ -14,10 +14,11 @@
     <color name="common_gray_light">#e5e5e5</color>
 
     <color name="text_white">#fff</color>
-    <color name="text_light_gray">#ccc</color>
+    <color name="text_light_gray">#c8cad2</color>
     <color name="text_dark">#333</color>
     <color name="text_cyan">#b598c4</color>
     <color name="text_orange">@color/common_orange</color>
+    <color name="text_logo">#7b7b7b</color>
 
     <color name="fill_preheat_start">#b2ee9999</color>
     <color name="fill_preheat_end">#b2f9dede</color>

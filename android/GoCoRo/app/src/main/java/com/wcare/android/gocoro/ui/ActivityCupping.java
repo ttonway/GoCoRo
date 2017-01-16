@@ -3,6 +3,7 @@ package com.wcare.android.gocoro.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -80,6 +81,8 @@ public class ActivityCupping extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.text_logo)
+    TextView mLogoTextView;
     @BindView(R.id.radar_chart)
     RadarChart mChart;
     @BindView(R.id.input_name)
@@ -113,6 +116,8 @@ public class ActivityCupping extends BaseActivity {
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mLogoTextView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Bauhaus93.ttf"));
 
         mRealm = Realm.getDefaultInstance();
         if (getIntent().hasExtra(PARAM_CUPPING_UUID)) {

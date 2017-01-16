@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GoGoRo</string>
+    <string name="app_name">GoCoRo</string>
     <string name="x_celsius_unit">%1$d℃</string>
     <string name="x_g_unit">%1$dg</string>
 

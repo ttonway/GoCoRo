@@ -106,6 +106,7 @@ public class FragCuppingList extends BaseFragment {
             mTitleTextView.setText(R.string.activity_cupping_list);
         } else {
             mToolbar.setVisibility(View.GONE);
+            mBackgroundImage.setVisibility(View.GONE);
         }
 
 
