@@ -32,7 +32,7 @@ public class GoCoRoApplicatoin extends Application {
         Log.i(TAG, "onCreate at " + System.currentTimeMillis());
 
         PgyCrashManager.register(this);
-//        saveLogcatToFile(this);
+        saveLogcatToFile(this);
 
         Log.i(TAG, "App Version: " + Utils.getAppVersion(this) + "(" + Utils.getAppVersionCode(this) + ")");
         Log.i(TAG, "BuildConfig: {applicationId=" + BuildConfig.APPLICATION_ID + ", buildType=" + BuildConfig.BUILD_TYPE + ", flavor=" + BuildConfig.FLAVOR
@@ -47,7 +47,7 @@ public class GoCoRoApplicatoin extends Application {
                 .build();
         Realm.setDefaultConfiguration(config);
 
-        initMockData();
+//        initMockData();
     }
 
     public static void saveLogcatToFile(Context context) {

@@ -35,7 +35,7 @@
             android:value="ef46b2841365c413fe15b7a68b67f514" >
         </meta-data>
 
-        <service android:name=".bluetooth.BackgroundService"/>
+        <service android:name=".core.BackgroundService"/>
 
         <activity
             android:name=".ui.ActivityMain"
@@ -97,9 +97,12 @@
         <activity
             android:name=".ui.ActivityLeScan"
             android:label="@string/activity_le_scan"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.ActivityClassicScan"
+            android:label="@string/activity_le_scan"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
-        </activity>
     </application>
 
 </manifest>

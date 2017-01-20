@@ -72,7 +72,7 @@ public class FragHome extends BaseFragment {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ActivityLeScan.class));
+                startActivity(new Intent(getActivity(), ActivityClassicScan.class));
             }
         });
 

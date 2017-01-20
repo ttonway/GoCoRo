@@ -1,4 +1,4 @@
-package com.wcare.android.gocoro.bluetooth;
+package com.wcare.android.gocoro.core;
 
 import android.app.ActivityManager;
 import android.app.Notification;
@@ -13,7 +13,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.common.eventbus.Subscribe;
 import com.wcare.android.gocoro.R;
 import com.wcare.android.gocoro.ui.ActivityMain;
 
@@ -70,13 +69,12 @@ public class BackgroundService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand " + intent);
 
-        startForeground(R.id.service_notification, getNotification());
 
         if (intent == null) {
         } else if (intent.getAction().equals(ACTION_STOP)) {
             stopSelf();
         } else if (intent.getAction().equals(ACTION_START)) {
-
+            startForeground(R.id.service_notification, getNotification());
         }
 
         return START_STICKY;

@@ -17,10 +17,10 @@ android {
 
     defaultConfig {
         applicationId "com.wcare.android.gocoro"
-        minSdkVersion 18
+        minSdkVersion 15
         targetSdkVersion 23
-        versionCode 4
-        versionName "0.4"
+        versionCode 7
+        versionName "0.7"
     }
 
     signingConfigs {

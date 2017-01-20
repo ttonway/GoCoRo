@@ -1,5 +1,6 @@
 package com.wcare.android.gocoro.bluetooth;
 
+import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -11,13 +12,15 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
 
 import com.wcare.android.gocoro.Constants;
 import com.wcare.android.gocoro.R;
+import com.wcare.android.gocoro.core.DriverCallback;
+import com.wcare.android.gocoro.core.GoCoRoDevice;
+import com.wcare.android.gocoro.core.GoCoRoDriver;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,21 +30,9 @@ import java.util.UUID;
  * Service for managing connection and data communication with a GATT server hosted on a
  * given Bluetooth LE device.
  */
-public class BluetoothLeDriver {
+@TargetApi(18)
+public class BluetoothLeDriver extends GoCoRoDriver {
     private final static String TAG = BluetoothLeDriver.class.getSimpleName();
-
-    public static final int STATE_CLOSE = 0;
-    public static final int STATE_OPENING = 1;
-    public static final int STATE_OPEN = 2;
-    public static final int STATE_CLOSING = 3;
-
-    public static final int ERROR_WRONG_DEVICE = 1;
-    public static final int ERROR_TIMEOUT = 2;
-    public static final int ERROR_CONNECTION_FAIL = 3;
-
-    protected Context mContext;
-    protected int mState;
-    protected DriverCallback mCallback;
 
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
@@ -52,7 +43,6 @@ public class BluetoothLeDriver {
     private BluetoothGattCharacteristic mNotifyCharac;
     private boolean mNotifyEnabled;
 
-    private Handler mHandler;
 
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
@@ -151,9 +141,7 @@ public class BluetoothLeDriver {
     };
 
     public BluetoothLeDriver(Context context, DriverCallback callback) {
-        this.mContext = context;
-        this.mCallback = callback;
-        this.mHandler = new Handler();
+        super(context, callback);
 
         // For API level 18 and above, get a reference to BluetoothAdapter through
         // BluetoothManager.
@@ -183,6 +171,7 @@ public class BluetoothLeDriver {
         return mBluetoothDeviceAddress;
     }
 
+    @Override
     public String isDriverSupported() {
         // Use this check to determine whether BLE is supported on the device.  Then you can
         // selectively disable BLE-related features.
@@ -198,6 +187,7 @@ public class BluetoothLeDriver {
         return null;
     }
 
+    @Override
     public boolean openDevice(String address) {
         Log.d(TAG, "openDevice " + address);
         if (!TextUtils.equals(address, mBluetoothDeviceAddress)) {
@@ -243,6 +233,7 @@ public class BluetoothLeDriver {
         return true;
     }
 
+    @Override
     public boolean closeDevice() {
         if (mNotifyEnabled) {
             setCharacteristicNotification(mNotifyCharac, false);
@@ -255,11 +246,14 @@ public class BluetoothLeDriver {
         mWriteCharac = null;
         mNotifyCharac = null;
 
+        mBluetoothDeviceAddress = null;
+
         setState(STATE_CLOSE);
 
         return true;
     }
 
+    @Override
     public int WriteData(byte[] bytes, int length) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             Log.w(TAG, "BluetoothAdapter not initialized");

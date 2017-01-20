@@ -1,4 +1,4 @@
-package com.wcare.android.gocoro.bluetooth;
+package com.wcare.android.gocoro.core;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -8,6 +8,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.common.eventbus.EventBus;
+import com.wcare.android.gocoro.bluetooth.BluetoothDriver;
+import com.wcare.android.gocoro.bluetooth.ErrorEvent;
+import com.wcare.android.gocoro.bluetooth.ProfileStatusEvent;
+import com.wcare.android.gocoro.bluetooth.StateChangeEvent;
 import com.wcare.android.gocoro.model.RoastData;
 import com.wcare.android.gocoro.model.RoastProfile;
 
@@ -22,6 +26,8 @@ import io.realm.Realm;
 public class GoCoRoDevice implements DriverCallback {
     private static final String TAG = GoCoRoDevice.class.getSimpleName();
 
+    private static final long TIMEOUT_MILLSECONDS = 10 * 1000;
+
     public static final byte CMD_ROAST = (byte) 0x01;
     public static final byte CMD_SET = (byte) 0x02;
     public static final byte CMD_STOP = (byte) 0x03;
@@ -30,7 +36,7 @@ public class GoCoRoDevice implements DriverCallback {
     private static GoCoRoDevice instance = null;
 
     Context mContext;
-    BluetoothLeDriver mDriver;
+    GoCoRoDriver mDriver;
     Handler mHandler;
     EventBus mEventBus;
 
@@ -45,7 +51,7 @@ public class GoCoRoDevice implements DriverCallback {
     final Runnable mTimeoutCheckRunnable = new Runnable() {
         @Override
         public void run() {
-            mEventBus.post(new ErrorEvent(BluetoothLeDriver.ERROR_TIMEOUT));
+            mEventBus.post(new ErrorEvent(GoCoRoDriver.ERROR_TIMEOUT));
             resetProfile();
         }
     };
@@ -59,7 +65,7 @@ public class GoCoRoDevice implements DriverCallback {
 
     private GoCoRoDevice(Context context) {
         this.mContext = context;
-        this.mDriver = new BluetoothLeDriver(mContext, this);
+        this.mDriver = new BluetoothDriver(mContext, this);
         this.mHandler = new Handler();
         this.mEventBus = new EventBus();
 
@@ -69,7 +75,7 @@ public class GoCoRoDevice implements DriverCallback {
         this.mRealm = Realm.getDefaultInstance();
     }
 
-    public BluetoothLeDriver getDriver() {
+    public GoCoRoDriver getDriver() {
         return mDriver;
     }
 
@@ -80,6 +86,10 @@ public class GoCoRoDevice implements DriverCallback {
 
     public boolean isRoasting() {
         return mProfile != null && !mProfile.isComplete();
+    }
+
+    public boolean isDeviceBusy() {
+        return mDeviceStatus != RoastData.STATUS_UNKNOWN && mLastUpdateTime > System.currentTimeMillis() - 3 * 1000;
     }
 
     public void setDeviceAddress(String address) {
@@ -115,7 +125,7 @@ public class GoCoRoDevice implements DriverCallback {
     }
 
     public boolean isOpen() {
-        return mDriver.getState() == BluetoothLeDriver.STATE_OPEN;
+        return mDriver.getState() == GoCoRoDriver.STATE_OPEN;
     }
 
     private byte makeParity(byte[] buf, int length) {
@@ -149,7 +159,7 @@ public class GoCoRoDevice implements DriverCallback {
 
         BackgroundService.startService(mContext);
         mHandler.removeCallbacks(mTimeoutCheckRunnable);
-        mHandler.postDelayed(mTimeoutCheckRunnable, 60 * 1000);//timeout for 1min
+        mHandler.postDelayed(mTimeoutCheckRunnable, TIMEOUT_MILLSECONDS);//timeout for 1min
     }
 
     public void resetProfile() {
@@ -188,16 +198,16 @@ public class GoCoRoDevice implements DriverCallback {
     public void onStateChanged(int state) {
         String s = null;
         switch (state) {
-            case BluetoothLeDriver.STATE_OPEN:
+            case GoCoRoDriver.STATE_OPEN:
                 s = "OPEN";
                 break;
-            case BluetoothLeDriver.STATE_OPENING:
+            case GoCoRoDriver.STATE_OPENING:
                 s = "OPENING";
                 break;
-            case BluetoothLeDriver.STATE_CLOSE:
+            case GoCoRoDriver.STATE_CLOSE:
                 s = "CLOSE";
                 break;
-            case BluetoothLeDriver.STATE_CLOSING:
+            case GoCoRoDriver.STATE_CLOSING:
                 s = "CLOSING";
                 break;
         }
@@ -249,7 +259,7 @@ public class GoCoRoDevice implements DriverCallback {
             // 数据帧
             case CMD_STATUS: {
                 final byte status = data[0];
-                final int time = (data[1] & 0xFF) << 8 + data[2];
+                final int time = data[2] & 0xFF | (data[1] & 0xFF) << 8;
                 final byte fire = data[3];
                 final byte temp = data[4];
 
@@ -263,16 +273,18 @@ public class GoCoRoDevice implements DriverCallback {
                             @Override
                             public void execute(Realm realm) {
                                 if (mProfile == null) {
-                                 Log.w(TAG, "Add roast data to a null profile.");
+                                    Log.w(TAG, "Add roast data to a null profile.");
                                 } else {
                                     if (!mProfile.isComplete() && status == RoastData.STATUS_IDLE) {
+                                        Log.i(TAG, "current profile compelted.");
                                         mProfile.setComplete(true);
                                         resetProfile();
                                         return;
                                     }
 
+                                    Log.d(TAG, "Add roast data at time " + time);
                                     final RoastData data = realm.createObject(RoastData.class);
-                                    data.setStatus(RoastData.STATUS_PREHEATING);
+                                    data.setStatus(status);
                                     data.setTime(time);
                                     data.setFire(fire);
                                     data.setTemperature(temp);

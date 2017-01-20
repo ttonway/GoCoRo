@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -43,7 +44,7 @@ import com.google.common.eventbus.Subscribe;
 import com.wcare.android.gocoro.R;
 import com.wcare.android.gocoro.bluetooth.BluetoothLeDriver;
 import com.wcare.android.gocoro.bluetooth.ErrorEvent;
-import com.wcare.android.gocoro.bluetooth.GoCoRoDevice;
+import com.wcare.android.gocoro.core.GoCoRoDevice;
 import com.wcare.android.gocoro.bluetooth.ProfileStatusEvent;
 import com.wcare.android.gocoro.bluetooth.StateChangeEvent;
 import com.wcare.android.gocoro.model.RoastData;
@@ -178,6 +179,7 @@ public class ActivityPlot extends BaseActivity
     EventButton mEventButton4;
 
     RoastProfile mProfile;
+    RoastProfile mReferenceProfile;
     boolean mRoast;
     boolean mRoastStarted;
     boolean mCompleteDialogShowed;
@@ -189,6 +191,9 @@ public class ActivityPlot extends BaseActivity
     LineDataSet mCoolDataSet;
     ScatterDataSet mEventDataSet;
     LineDataSet mFireDataSet;
+
+    LineDataSet mReferenceTempDataSet;
+    LineDataSet mReferenceFireDataSet;
 
     Handler mHandler;
     GoCoRoDevice mDevice;
@@ -210,8 +215,6 @@ public class ActivityPlot extends BaseActivity
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                supportInvalidateOptionsMenu();
-
                 if (mProfile.isComplete() && !mCompleteDialogShowed) {
                     mCompleteDialogShowed = true;
                     AlertDialog dialog = AlertDialog.newInstance(getString(R.string.roast_completed));
@@ -231,6 +234,8 @@ public class ActivityPlot extends BaseActivity
                     message = getString(R.string.error_wrong_device);
                 } else if (e.cause == BluetoothLeDriver.ERROR_TIMEOUT) {
                     message = getString(R.string.error_timeout);
+                } else if (e.cause == BluetoothLeDriver.ERROR_CONNECTION_FAIL) {
+                    message = getString(R.string.error_connection_error);
                 }
                 AlertDialog dialog = AlertDialog.newInstance(message);
                 dialog.show(getSupportFragmentManager(), "alert");
@@ -248,21 +253,12 @@ public class ActivityPlot extends BaseActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setupChart();
-        CombinedData data = new CombinedData();
-        data.setData(createLineData());
-        data.setData(createScatterData());
-//        data.setData(createBarData());
-        mChart.setData(data);
-
         mMinutePicker.setFormatter(CustomNumberPicker.getTwoDigitFormatter());
         mMinutePicker.setMaxValue(59);
         mMinutePicker.setMinValue(0);
-        mMinutePicker.setValue(0);
         mSecondPicker.setFormatter(CustomNumberPicker.getTwoDigitFormatter());
         mSecondPicker.setMaxValue(59);
         mSecondPicker.setMinValue(0);
-        mSecondPicker.setValue(30);
-        setSelectedFire(4);
         mEventButton1.setEventName(getString(R.string.event_burst1_start));
         mEventButton2.setEventName(getString(R.string.event_burst1));
         mEventButton3.setEventName(getString(R.string.event_burst2_start));
@@ -273,28 +269,57 @@ public class ActivityPlot extends BaseActivity
         mEventButton4.setEventStatus(getString(R.string.event_unrecorded));
 
         String uuid = getIntent().getStringExtra(PARAM_UUID);
+        String referenceUuid = getIntent().getStringExtra(PARAM_REFERENCE_UUID);
         mRoast = getIntent().getBooleanExtra(PARAM_ROAST, false);
+        Log.d(TAG, "uuid " + uuid + ", reference-uuid " +referenceUuid);
 
         mHandler = new Handler();
         mDevice = GoCoRoDevice.getInstance(this);
         mDevice.registerReceiver(this);
         mRealm = Realm.getDefaultInstance();
         mProfile = mRealm.where(RoastProfile.class).equalTo("uuid", uuid).findFirst();
+        mReferenceProfile = mRealm.where(RoastProfile.class).equalTo("uuid", referenceUuid).findFirst();
+        Log.d(TAG, "profile " + mProfile);
+        Log.d(TAG, "reference " + mReferenceProfile);
 
 
-        RealmChangeListener<RoastProfile> listener = new RealmChangeListener<RoastProfile>() {
+        int minute = 0;
+        int second = 30;
+        int fire = 3;
+        if (mReferenceProfile != null) {
+            minute = mReferenceProfile.getStartDruation() / 60;
+            second = mReferenceProfile.getStartDruation() % 60;
+            fire = mReferenceProfile.getStartFire();
+        }
+        mMinutePicker.setValue(minute);
+        mSecondPicker.setValue(second);
+        setSelectedFire(fire);
+
+        CombinedData data = new CombinedData();
+        data.setData(createLineData());
+        data.setData(createScatterData());
+//        data.setData(createBarData());
+        mChart.setData(data);
+
+        final RealmChangeListener<RoastProfile> listener = new RealmChangeListener<RoastProfile>() {
             @Override
             public void onChange(RoastProfile result) {
                 mCountryTextView.setText(result.getBeanCountry());
                 mBeanTextView.setText(result.getBeanName());
-                mWeightTextView.setText(result.getStartWeight() + "g");
+                mWeightTextView.setText(getString(R.string.x_g_unit, result.getStartWeight()));
                 int count = mTempDataSet.getEntryCount();
                 for (; count < result.plotDatas.size(); count++) {
                     addPlotData(result.plotDatas.get(count), mRoast);
                 }
             }
         };
-        listener.onChange(mProfile);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                listener.onChange(mProfile);
+            }
+        });
+
         mProfile.addChangeListener(listener);
         if (mRoast) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);// 保持常亮的屏幕的状态
@@ -303,7 +328,12 @@ public class ActivityPlot extends BaseActivity
             mDevice.openDevice();
         } else {
             XAxis xAxis = mChart.getXAxis();
-            xAxis.setAxisMaximum(3 * 60 + mProfile.plotDatas.max("time").intValue());
+            Number maxTime = mProfile.plotDatas.max("time");
+            float max = 3 * 60;
+            if (maxTime != null) {
+                max += maxTime.intValue();
+            }
+            xAxis.setAxisMaximum(max);
 
             mTopContainer.setVisibility(View.GONE);
             mBottomContainer.setVisibility(View.GONE);
@@ -427,7 +457,46 @@ public class ActivityPlot extends BaseActivity
 
 
     LineData createLineData() {
-        LineDataSet dataSet = new LineDataSet(null, "temperature");
+        mTempDataSet = createTemperatureDataSet("temperature");
+        mPreHeatDataSet = createStatusLineDataSet("preheat", getResources().getDrawable(R.drawable.fill_pre_heat), getResources().getColor(R.color.fill_preheat_start));
+        mRoastDataSet = createStatusLineDataSet("roast", getResources().getDrawable(R.drawable.fill_roast), getResources().getColor(R.color.fill_roast_start));
+        mCoolDataSet = createStatusLineDataSet("cool", getResources().getDrawable(R.drawable.fill_cool), getResources().getColor(R.color.fill_cool_start));
+        mFireDataSet = createFireLineDataSet("fire");
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+        if (mReferenceProfile != null) {
+            mReferenceTempDataSet = createTemperatureDataSet("reference-temperature");
+            mReferenceTempDataSet.setColor(COLOR_LINE, 50);
+            mReferenceTempDataSet.setHighlightEnabled(false);
+
+            mReferenceFireDataSet = createFireLineDataSet("reference-fire");
+            mReferenceFireDataSet.setColor(COLOR_FIRE, 50);
+
+            for (RoastData data : mReferenceProfile.plotDatas) {
+                mReferenceTempDataSet.addEntry(new Entry(data.getTime(), data.getTemperature()));
+                mReferenceFireDataSet.addEntry(new Entry(data.getTime(), data.getFire()));
+            }
+
+            dataSets.add(mReferenceFireDataSet);
+            dataSets.add(mReferenceTempDataSet);
+
+            Number maxTime = mReferenceProfile.plotDatas.max("time");
+            if (maxTime != null) {
+                XAxis xAxis = mChart.getXAxis();
+                xAxis.setAxisMaximum(maxTime.intValue());
+            }
+        }
+        dataSets.add(mPreHeatDataSet);
+        dataSets.add(mRoastDataSet);
+        dataSets.add(mCoolDataSet);
+        dataSets.add(mFireDataSet);
+        dataSets.add(mTempDataSet);
+
+        return new LineData(dataSets);
+    }
+
+    LineDataSet createTemperatureDataSet(String label) {
+        LineDataSet dataSet = new LineDataSet(null, label);
         dataSet.setColor(COLOR_LINE);
         dataSet.setLineWidth(2f);
         dataSet.setDrawCircles(false);
@@ -436,21 +505,7 @@ public class ActivityPlot extends BaseActivity
         dataSet.setHighlightEnabled(true);
         dataSet.setDrawHorizontalHighlightIndicator(false);
         dataSet.setDrawVerticalHighlightIndicator(true);
-        mTempDataSet = dataSet;
-
-        mPreHeatDataSet = createStatusLineDataSet("preheat", getResources().getDrawable(R.drawable.fill_pre_heat), getResources().getColor(R.color.fill_preheat_start));
-        mRoastDataSet = createStatusLineDataSet("roast", getResources().getDrawable(R.drawable.fill_roast), getResources().getColor(R.color.fill_roast_start));
-        mCoolDataSet = createStatusLineDataSet("cool", getResources().getDrawable(R.drawable.fill_cool), getResources().getColor(R.color.fill_cool_start));
-        mFireDataSet = createFireLineDataSet();
-
-        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-        dataSets.add(mPreHeatDataSet);
-        dataSets.add(mRoastDataSet);
-        dataSets.add(mCoolDataSet);
-        dataSets.add(mFireDataSet);
-        dataSets.add(dataSet);
-
-        return new LineData(dataSets);
+        return dataSet;
     }
 
     LineDataSet createStatusLineDataSet(String label, Drawable fillDrawable, int fillColor) {
@@ -480,8 +535,8 @@ public class ActivityPlot extends BaseActivity
         return set;
     }
 
-    LineDataSet createFireLineDataSet() {
-        LineDataSet set = new LineDataSet(null, "fire");
+    LineDataSet createFireLineDataSet(String label) {
+        LineDataSet set = new LineDataSet(null, label);
         set.setAxisDependency(YAxis.AxisDependency.RIGHT);
         set.setLineWidth(1f);
         set.setColor(COLOR_FIRE);
@@ -593,12 +648,17 @@ public class ActivityPlot extends BaseActivity
             final int fire = getSelectedFire();
 
             if (mRoastStarted) {
+                if (mProfile.isComplete()) {
+                    Toast.makeText(this, R.string.toast_already_completed, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 RoastData data = mProfile.plotDatas.isEmpty() ? null : mProfile.plotDatas.last();
                 if (data == null) {
                     return;
                 }
 
-                mDevice.startRoast(seconds, fire);
+                mDevice.setRoast(seconds, fire);
 
                 mRealm.beginTransaction();
                 data.setChangeFire(fire);
@@ -606,6 +666,11 @@ public class ActivityPlot extends BaseActivity
                 mRealm.commitTransaction();
 
             } else {
+                if (mDevice.isRoasting() || mDevice.isDeviceBusy()) {
+                    Toast.makeText(this, R.string.toast_now_roasting, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 mDevice.readyProfile(mProfile);
                 mDevice.startRoast(seconds, fire);
 
@@ -618,6 +683,7 @@ public class ActivityPlot extends BaseActivity
                     }
                 });
                 mRoastStarted = true;
+                button.setText(R.string.btn_set);
             }
         }
     }
@@ -683,18 +749,15 @@ public class ActivityPlot extends BaseActivity
 //                MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
         menu.findItem(R.id.action_plot).setVisible(false);
         if (mRoast) {
-            if (!mProfile.isComplete()) {
-                menu.findItem(R.id.action_share).setVisible(false);
-                menu.findItem(R.id.action_form).setVisible(false);
-            }
+            menu.findItem(R.id.action_share).setVisible(false);
+            menu.findItem(R.id.action_form).setVisible(false);
 
             if (mDevice.getState() == BluetoothLeDriver.STATE_OPEN) {
                 menu.findItem(R.id.action_setting).setIcon(R.drawable.ic_menu_connected);
             } else if (mDevice.getState() == BluetoothLeDriver.STATE_CLOSE) {
                 menu.findItem(R.id.action_setting).setIcon(R.drawable.ic_menu_unconnected);
             } else {
-                menu.findItem(R.id.action_setting).setActionView(
-                        R.layout.actionbar_indeterminate_progress);
+                MenuItemCompat.setActionView(menu.findItem(R.id.action_setting), R.layout.actionbar_indeterminate_progress);
             }
         } else {
             menu.findItem(R.id.action_setting).setVisible(false);
@@ -706,7 +769,7 @@ public class ActivityPlot extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_setting:
-                startActivity(new Intent(this, ActivityLeScan.class));
+                startActivity(new Intent(this, ActivityClassicScan.class));
                 return true;
             case R.id.action_form:
                 Intent intent = new Intent(this, ActivityForm.class);

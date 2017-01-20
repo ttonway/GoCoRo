@@ -9,48 +9,48 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.wcare.android.gocoro.R;
-import com.wcare.android.gocoro.bluetooth.GoCoRoDevice;
+import com.wcare.android.gocoro.core.GoCoRoDevice;
+import com.wcare.android.gocoro.core.GoCoRoDriver;
 
 import java.util.ArrayList;
 
 // Adapter for holding devices found through scanning.
-public class LeDeviceListAdapter extends BaseAdapter {
+public class BluetoothDeviceAdapter extends BaseAdapter {
 
-    private ArrayList<BluetoothDevice> mLeDevices;
+    private ArrayList<BluetoothDevice> mDevices;
     private Context mContext;
     private LayoutInflater mInflator;
 
 
-    public LeDeviceListAdapter(Context context) {
+    public BluetoothDeviceAdapter(Context context) {
         super();
         mContext = context;
-        mLeDevices = new ArrayList<>();
+        mDevices = new ArrayList<>();
         mInflator = LayoutInflater.from(context);
-
     }
 
     public void addDevice(BluetoothDevice device) {
-        if (!mLeDevices.contains(device)) {
-            mLeDevices.add(device);
+        if (!mDevices.contains(device)) {
+            mDevices.add(device);
         }
     }
 
     public BluetoothDevice getDevice(int position) {
-        return mLeDevices.get(position);
+        return mDevices.get(position);
     }
 
     public void clear() {
-        mLeDevices.clear();
+        mDevices.clear();
     }
 
     @Override
     public int getCount() {
-        return mLeDevices.size();
+        return mDevices.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return mLeDevices.get(i);
+        return mDevices.get(i);
     }
 
     @Override
@@ -68,16 +68,36 @@ public class LeDeviceListAdapter extends BaseAdapter {
             viewHolder.indicator = view.findViewById(R.id.indicator);
             viewHolder.deviceAddress = (TextView) view.findViewById(R.id.device_address);
             viewHolder.deviceName = (TextView) view.findViewById(R.id.device_name);
+            viewHolder.deviceStatus = (TextView) view.findViewById(R.id.device_status);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        BluetoothDevice device = mLeDevices.get(i);
+        BluetoothDevice device = mDevices.get(i);
         if (GoCoRoDevice.getInstance(mContext).isCurrentDevice(device)) {
             viewHolder.indicator.setVisibility(View.VISIBLE);
+            int state = GoCoRoDevice.getInstance(mContext).getState();
+            switch (state) {
+                case GoCoRoDriver.STATE_OPEN:
+                    viewHolder.deviceStatus.setText(R.string.state_open);
+                    break;
+                case GoCoRoDriver.STATE_OPENING:
+                    viewHolder.deviceStatus.setText(R.string.state_opening);
+                    break;
+                case GoCoRoDriver.STATE_CLOSE:
+                    viewHolder.deviceStatus.setText(R.string.state_close);
+                    break;
+                case GoCoRoDriver.STATE_CLOSING:
+                    viewHolder.deviceStatus.setText(R.string.state_closing);
+                    break;
+                default:
+                    viewHolder.deviceStatus.setText("Error State");
+                    break;
+            }
         } else {
             viewHolder.indicator.setVisibility(View.INVISIBLE);
+            viewHolder.deviceStatus.setText(null);
         }
         final String deviceName = device.getName();
         if (deviceName != null && deviceName.length() > 0)
@@ -93,5 +113,6 @@ public class LeDeviceListAdapter extends BaseAdapter {
         View indicator;
         TextView deviceName;
         TextView deviceAddress;
+        TextView deviceStatus;
     }
 }
