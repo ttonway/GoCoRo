@@ -63,14 +63,15 @@ public class ActivityForm extends BaseActivity {
 
         DateFormat dateFormat = DateFormat.getDateInstance();
         DateFormat timeFormat = DateFormat.getTimeInstance();
+        mHeaderBinder.mTextPeople.setText(mProfile.getPeople());
         mHeaderBinder.mTextCountry.setText(mProfile.getBeanCountry());
         mHeaderBinder.mTextDate.setText(dateFormat.format(new Date(mProfile.getStartTime())));
         mHeaderBinder.mTextBean.setText(mProfile.getBeanName());
         mHeaderBinder.mTextBeginTime.setText(timeFormat.format(new Date(mProfile.getStartTime())));
-        mHeaderBinder.mTextEndTime.setText(timeFormat.format(new Date(mProfile.getEndTime())));
+        mHeaderBinder.mTextEndTime.setText(mProfile.getEndTime() == 0 ? "-" : timeFormat.format(new Date(mProfile.getEndTime())));
         mHeaderBinder.mTextBeginWeight.setText(String.valueOf(mProfile.getStartWeight()));
         mHeaderBinder.mTextEndWeight.setText(String.valueOf(mProfile.getEndWeight()));
-        mHeaderBinder.mTextEnvTemperature.setText(getString(R.string.x_celsius_unit, mProfile.getEnvTemperature()));
+        mHeaderBinder.mTextEnvTemperature.setText(String.valueOf(mProfile.getEnvTemperature()));
         mHeaderBinder.mTextStartFire.setText(String.valueOf(mProfile.getStartFire()));
         mHeaderBinder.mTextWeightRatio.setText(mProfile.formatWeightRatio(mProfile.getStartWeight(), mProfile.getEndWeight()));
 

@@ -71,6 +71,8 @@
     <string name="event_burst1">一爆密集</string>
     <string name="event_burst2">二爆密集</string>
     <string name="event_change_fire">火力设置</string>
+    <string name="event_cool_set">冷却设置</string>
+    <string name="event_cool_end">冷却停止</string>
     <string name="event_unrecorded">未记录</string>
     <string name="event_recorded">已记录</string>
 

@@ -277,6 +277,7 @@ public class GoCoRoDevice implements DriverCallback {
                                 } else {
                                     if (!mProfile.isComplete() && status == RoastData.STATUS_IDLE) {
                                         Log.i(TAG, "current profile compelted.");
+                                        mProfile.setEndTime(System.currentTimeMillis());
                                         mProfile.setComplete(true);
                                         resetProfile();
                                         return;
@@ -287,7 +288,7 @@ public class GoCoRoDevice implements DriverCallback {
                                     data.setStatus(status);
                                     data.setTime(time);
                                     data.setFire(fire);
-                                    data.setTemperature(temp);
+                                    data.setTemperature(temp & 0xff);
                                     mProfile.plotDatas.add(data);
                                 }
                             }

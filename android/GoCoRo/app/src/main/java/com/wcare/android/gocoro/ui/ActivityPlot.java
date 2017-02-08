@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -124,43 +125,8 @@ public class ActivityPlot extends BaseActivity
     CustomNumberPicker mMinutePicker;
     @BindView(R.id.picker_second)
     CustomNumberPicker mSecondPicker;
-
-    @BindViews({R.id.btn_fire1, R.id.btn_fire2, R.id.btn_fire3, R.id.btn_fire4, R.id.btn_fire5})
-    List<ImageButton> mFireButtons;
-
-    @OnClick({R.id.btn_fire1, R.id.btn_fire2, R.id.btn_fire3, R.id.btn_fire4, R.id.btn_fire5})
-    void changeFire(View view) {
-        boolean selected = true;
-        for (ImageButton btn : mFireButtons) {
-            btn.setSelected(selected);
-            if (btn.getId() == view.getId()) {
-                selected = false;
-            }
-        }
-    }
-
-    int getSelectedFire() {
-        int level = 0;
-        for (ImageButton btn : mFireButtons) {
-            if (btn.isSelected()) {
-                level++;
-            } else {
-                break;
-            }
-        }
-        return level;
-    }
-
-    void setSelectedFire(int level) {
-        for (ImageButton btn : mFireButtons) {
-            if (level > 0) {
-                btn.setSelected(true);
-            } else {
-                btn.setSelected(false);
-            }
-            level--;
-        }
-    }
+    @BindView(R.id.ratingbar)
+    RatingBar mRatingBar;
 
     @BindView(R.id.text_country)
     TextView mCountryTextView;
@@ -271,7 +237,7 @@ public class ActivityPlot extends BaseActivity
         String uuid = getIntent().getStringExtra(PARAM_UUID);
         String referenceUuid = getIntent().getStringExtra(PARAM_REFERENCE_UUID);
         mRoast = getIntent().getBooleanExtra(PARAM_ROAST, false);
-        Log.d(TAG, "uuid " + uuid + ", reference-uuid " +referenceUuid);
+        Log.d(TAG, "uuid " + uuid + ", reference-uuid " + referenceUuid);
 
         mHandler = new Handler();
         mDevice = GoCoRoDevice.getInstance(this);
@@ -284,7 +250,7 @@ public class ActivityPlot extends BaseActivity
 
 
         int minute = 0;
-        int second = 30;
+        int second = 0;
         int fire = 3;
         if (mReferenceProfile != null) {
             minute = mReferenceProfile.getStartDruation() / 60;
@@ -293,7 +259,7 @@ public class ActivityPlot extends BaseActivity
         }
         mMinutePicker.setValue(minute);
         mSecondPicker.setValue(second);
-        setSelectedFire(fire);
+        mRatingBar.setRating(fire);
 
         CombinedData data = new CombinedData();
         data.setData(createLineData());
@@ -304,15 +270,26 @@ public class ActivityPlot extends BaseActivity
         final RealmChangeListener<RoastProfile> listener = new RealmChangeListener<RoastProfile>() {
             @Override
             public void onChange(RoastProfile result) {
-                mCountryTextView.setText(result.getBeanCountry());
-                mBeanTextView.setText(result.getBeanName());
-                mWeightTextView.setText(getString(R.string.x_g_unit, result.getStartWeight()));
+                if (!TextUtils.equals(mCountryTextView.getText(), result.getBeanCountry())) {
+                    mCountryTextView.setText(result.getBeanCountry());
+                }
+                if (!TextUtils.equals(mBeanTextView.getText(), result.getBeanName())) {
+                    mBeanTextView.setText(result.getBeanName());
+                }
+                String weight = getString(R.string.x_g_unit, result.getStartWeight());
+                if (!TextUtils.equals(mWeightTextView.getText(), weight)) {
+                    mWeightTextView.setText(weight);
+                }
                 int count = mTempDataSet.getEntryCount();
                 for (; count < result.plotDatas.size(); count++) {
                     addPlotData(result.plotDatas.get(count), mRoast);
                 }
+                mChart.notifyDataSetChanged();
+                mChart.invalidate();
             }
         };
+        mProfile.addChangeListener(listener);
+
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -320,7 +297,6 @@ public class ActivityPlot extends BaseActivity
             }
         });
 
-        mProfile.addChangeListener(listener);
         if (mRoast) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);// 保持常亮的屏幕的状态
             setTitle("");
@@ -368,6 +344,8 @@ public class ActivityPlot extends BaseActivity
     }
 
     void setupChart() {
+        mChart.setLogEnabled(true);
+
         mChart.setOnChartValueSelectedListener(this);
 
         mChart.getDescription().setEnabled(false);
@@ -623,8 +601,6 @@ public class ActivityPlot extends BaseActivity
 
 //            mChart.moveViewToX(data.getTime());
         }
-        mChart.notifyDataSetChanged();
-        mChart.invalidate();
     }
 
     @Override
@@ -645,7 +621,7 @@ public class ActivityPlot extends BaseActivity
             Toast.makeText(this, R.string.toast_device_unconnected, Toast.LENGTH_SHORT).show();
         } else {
             final int seconds = mMinutePicker.getValue() * 60 + mSecondPicker.getValue();
-            final int fire = getSelectedFire();
+            final int fire = (int) mRatingBar.getRating();
 
             if (mRoastStarted) {
                 if (mProfile.isComplete()) {
@@ -678,13 +654,16 @@ public class ActivityPlot extends BaseActivity
                     @Override
                     public void execute(Realm realm) {
                         mProfile.setStartTime(System.currentTimeMillis());
-                        mProfile.setStartFire(getSelectedFire());
+                        mProfile.setStartFire(fire);
                         mProfile.setStartDruation(seconds);
                     }
                 });
                 mRoastStarted = true;
                 button.setText(R.string.btn_set);
             }
+
+            mMinutePicker.setValue(0);
+            mSecondPicker.setValue(0);
         }
     }
 

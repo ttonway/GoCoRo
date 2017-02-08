@@ -47,7 +47,7 @@ public class GoCoRoApplicatoin extends Application {
                 .build();
         Realm.setDefaultConfiguration(config);
 
-//        initMockData();
+        initMockData();
     }
 
     public static void saveLogcatToFile(Context context) {
@@ -71,6 +71,7 @@ public class GoCoRoApplicatoin extends Application {
                 @Override
                 public void execute(Realm realm) {
                     RoastProfile profile = realm.createObject(RoastProfile.class, "test");
+                    profile.setPeople("ppp");
                     profile.setBeanCountry("巴拿马");
                     profile.setBeanName("蓝山");
                     profile.setStartTime(System.currentTimeMillis());

@@ -134,6 +134,6 @@ public class RoastProfile extends RealmObject {
     }
 
     public static String formatWeightRatio(int startWeight, int endWeight) {
-        return startWeight <= 0 ? "-" : (int) ((1.f - endWeight / (float) startWeight) * 100) + "%";
+        return startWeight <= 0 ? "-" : String.format("%.2f%%", (1.f - endWeight / (float) startWeight) * 100);
     }
 }
