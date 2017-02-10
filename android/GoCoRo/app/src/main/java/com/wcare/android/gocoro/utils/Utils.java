@@ -233,4 +233,26 @@ public class Utils {
 //        }
         return String.format("%d:%02d", min, sec);
     }
+
+    public static String formatTime2(int seconds) {
+        if (seconds == 0) {
+            return "0sec";
+        }
+
+        int hour = seconds / 3600;
+        int min = seconds / 60 - hour * 60;
+        int sec = seconds - min * 60 - hour * 3600;
+
+        String str = "";
+        if (hour > 0) {
+            str += hour + "h";
+        }
+        if (min > 0) {
+            str += min + "min";
+        }
+        if (sec > 0) {
+            str += sec + "sec";
+        }
+        return str;
+    }
 }

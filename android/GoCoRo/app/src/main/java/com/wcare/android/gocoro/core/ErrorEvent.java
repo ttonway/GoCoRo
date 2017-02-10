@@ -1,4 +1,4 @@
-package com.wcare.android.gocoro.bluetooth;
+package com.wcare.android.gocoro.core;
 
 /**
  * Created by ttonway on 2016/11/11.

@@ -8,6 +8,7 @@ import android.widget.RadioGroup;
 import android.widget.TabHost;
 
 import com.wcare.android.gocoro.R;
+import com.wcare.android.gocoro.core.GoCoRoDevice;
 import com.wcare.android.gocoro.widget.TabManager;
 
 import butterknife.BindView;
@@ -38,6 +39,8 @@ public class ActivityMain extends BaseActivity
         ButterKnife.bind(this);
 
         initTabHost();
+
+        GoCoRoDevice.getInstance(this).openDevice();
     }
 
     private void initTabHost() {

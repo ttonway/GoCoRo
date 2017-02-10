@@ -1,6 +1,7 @@
 package com.wcare.android.gocoro.ui.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.wcare.android.gocoro.R;
 import com.wcare.android.gocoro.model.RoastData;
+import com.wcare.android.gocoro.model.RoastProfile;
+import com.wcare.android.gocoro.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,51 +22,60 @@ import java.util.List;
  */
 public class FormAdapter extends BaseExpandableListAdapter {
 
-    List<RoastData> mEventData = new ArrayList<>();
     List<RoastData> mPreheatData = new ArrayList<>();
     List<RoastData> mRoastData = new ArrayList<>();
     List<RoastData> mCoolData = new ArrayList<>();
-    int mRoastStartMinute = -1;
-    int mCoolStartMinute = -1;
+    int mRoastStartTime = -1;
+    int mCoolStartTime = -1;
+    List<RoastData> mFireChangedData = new ArrayList<>();
 
     Context mContext;
     LayoutInflater mInflater;
 
-    public FormAdapter(Context context, List<RoastData> objects) {
+    public FormAdapter(Context context, RoastProfile profile) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
 
-        int minutes = 0;
-        for (RoastData entry : objects) {
-            if (entry.getEvent() != null) {
-                mEventData.add(entry);
-            }
-            if (entry.getChangeFire() != -1) {
-                RoastData data = new RoastData();
-                data.setTime(entry.getTime());
-                data.setChangeTime(entry.getChangeTime());
-                data.setChangeFire(entry.getChangeFire());
-                mEventData.add(data);
+        mRoastStartTime = profile.getRoastTime();
+        mCoolStartTime = profile.getCoolTime();
+
+        boolean hasEvents;
+        int lastFire = -1;
+        for (RoastData entry : profile.plotDatas) {
+            boolean fireChanged = false;
+            if (entry.getStatus() == RoastData.STATUS_ROASTING) {
+                if (lastFire != -1 && lastFire != entry.getFire()) {
+                    fireChanged = true;
+                    mFireChangedData.add(entry);
+                }
+                lastFire = entry.getFire();
             }
 
-            int m = entry.getTime() / 60;
-            if (minutes == m) {
-                continue;
+            hasEvents = entry.getEvent() != null ||
+                    fireChanged ||
+                    entry.isManualCool() ||
+                    entry.isCoolStatusComplete();
+
+            int time = entry.getTime();
+            if (entry.getStatus() == RoastData.STATUS_PREHEATING) {
+                hasEvents = false;
+            } else if (entry.getStatus() == RoastData.STATUS_ROASTING) {
+                time = time - mRoastStartTime;
+            } else if (entry.getStatus() == RoastData.STATUS_COOLING) {
+                time = time - mCoolStartTime;
+            }
+
+            if (hasEvents || (time > 0 && time % 60 == 0)) {
+                // add this entry
             } else {
-                minutes = m;
+                continue;
             }
 
             if (entry.getStatus() == RoastData.STATUS_PREHEATING) {
                 mPreheatData.add(entry);
             } else if (entry.getStatus() == RoastData.STATUS_ROASTING) {
-                if (mRoastStartMinute == -1) {
-                    mRoastStartMinute = m;
-                }
                 mRoastData.add(entry);
             } else if (entry.getStatus() == RoastData.STATUS_COOLING) {
-                if (mCoolStartMinute == -1) {
-                    mCoolStartMinute = m;
-                }
                 mCoolData.add(entry);
             }
         }
@@ -71,7 +83,7 @@ public class FormAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -84,12 +96,10 @@ public class FormAdapter extends BaseExpandableListAdapter {
     public List<RoastData> getGroup(int groupPosition) {
         switch (groupPosition) {
             case 0:
-                return mEventData;
-            case 1:
                 return mPreheatData;
-            case 2:
+            case 1:
                 return mRoastData;
-            case 3:
+            case 2:
                 return mCoolData;
         }
         return null;
@@ -127,15 +137,12 @@ public class FormAdapter extends BaseExpandableListAdapter {
 
         switch (groupPosition) {
             case 0:
-                textView.setText(R.string.category_event);
-                break;
-            case 1:
                 textView.setText(R.string.category_preheat);
                 break;
-            case 2:
+            case 1:
                 textView.setText(R.string.category_roast);
                 break;
-            case 3:
+            case 2:
                 textView.setText(R.string.category_cool);
                 break;
         }
@@ -154,33 +161,43 @@ public class FormAdapter extends BaseExpandableListAdapter {
         TextView text1 = (TextView) convertView.findViewById(R.id.text1);
         TextView text2 = (TextView) convertView.findViewById(R.id.text2);
         TextView text3 = (TextView) convertView.findViewById(R.id.text3);
+        TextView text4 = (TextView) convertView.findViewById(R.id.text4);
 
         RoastData data = getChild(groupPosition, childPosition);
+        List<String> events = new ArrayList<>();
+        if (data.getEvent() != null) {
+            events.add(mContext.getString(data.getEventNameResId()));
+        }
+        if (mFireChangedData.contains(data)) {
+            events.add(mContext.getString(R.string.event_change_fire));
+        }
+        if (data.isManualCool()) {
+            events.add(mContext.getString(R.string.event_cool_set));
+        }
+        if (data.isCoolStatusComplete()) {
+            events.add(mContext.getString(R.string.event_cool_end));
+        }
         if (groupPosition == 0) {
-            text3.setVisibility(View.VISIBLE);
-            if (data.isManaged()) {
-                text1.setText(data.getEventNameResId());
-                text2.setText(data.getTime() / 60 + "min");
-                text3.setText(mContext.getString(R.string.x_celsius_unit, data.getTemperature()));
-            } else {
-                // change event
-                text1.setText(R.string.event_change_fire);
-                text2.setText(data.getTime() / 60 + "min");
-                text3.setText(mContext.getString(R.string.label_fire_x, data.getChangeFire()));
-            }
-        } else if (groupPosition == 1) {
             text3.setVisibility(View.GONE);
-            text1.setText(data.getTime() / 60 + "min");
+            text4.setVisibility(View.GONE);
+
+            text1.setText(Utils.formatTime2(data.getTime()));
             text2.setText(mContext.getString(R.string.x_celsius_unit, data.getTemperature()));
-        } else if (groupPosition == 2) {
+        } else if (groupPosition == 1) {
             text3.setVisibility(View.VISIBLE);
-            text1.setText((data.getTime() / 60 - mRoastStartMinute + 1) + "min");
+            text4.setVisibility(View.VISIBLE);
+
+            text1.setText(Utils.formatTime2(data.getTime() - mRoastStartTime));
             text2.setText(mContext.getString(R.string.x_celsius_unit, data.getTemperature()));
             text3.setText(mContext.getString(R.string.label_fire_x, data.getFire()));
-        } else if (groupPosition == 3) {
-            text3.setVisibility(View.GONE);
-            text1.setText((data.getTime() / 60 - mCoolStartMinute + 1) + "min");
+            text4.setText(TextUtils.join(" ", events));
+        } else if (groupPosition == 2) {
+            text3.setVisibility(View.VISIBLE);
+            text4.setVisibility(View.GONE);
+
+            text1.setText(Utils.formatTime2(data.getTime() - mCoolStartTime));
             text2.setText(mContext.getString(R.string.x_celsius_unit, data.getTemperature()));
+            text3.setText(TextUtils.join(" ", events));
         }
 
         return convertView;

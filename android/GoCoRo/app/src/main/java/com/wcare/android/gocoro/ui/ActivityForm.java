@@ -97,7 +97,7 @@ public class ActivityForm extends BaseActivity {
         mHeaderBinder.mTextBeginWeight.addTextChangedListener(textWatcher);
         mHeaderBinder.mTextEndWeight.addTextChangedListener(textWatcher);
 
-        mAdapter = new FormAdapter(this, mProfile.plotDatas);
+        mAdapter = new FormAdapter(this, mProfile);
         mListView.setAdapter(mAdapter);
     }
 

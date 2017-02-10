@@ -31,7 +31,7 @@ public class GoCoRoApplicatoin extends Application {
 
         Log.i(TAG, "onCreate at " + System.currentTimeMillis());
 
-        PgyCrashManager.register(this);
+//        PgyCrashManager.register(this);
         saveLogcatToFile(this);
 
         Log.i(TAG, "App Version: " + Utils.getAppVersion(this) + "(" + Utils.getAppVersionCode(this) + ")");
@@ -47,7 +47,7 @@ public class GoCoRoApplicatoin extends Application {
                 .build();
         Realm.setDefaultConfiguration(config);
 
-        initMockData();
+//        initMockData();
     }
 
     public static void saveLogcatToFile(Context context) {
@@ -83,6 +83,9 @@ public class GoCoRoApplicatoin extends Application {
                     profile.setStartFire(3);
                     profile.setStartDruation(30 * 60);
 
+                    profile.setPreHeatTime(0);
+                    profile.setRoastTime(3 * 60);
+                    profile.setCoolTime(15 * 60);
                     for (int i = 0; i < 30 * 60; i++) {
                         RoastData data = realm.createObject(RoastData.class);
                         data.setTime(i);
@@ -99,13 +102,12 @@ public class GoCoRoApplicatoin extends Application {
                             data.setEvent(RoastData.EVENT_BURST1_START);
                         } else if (i == 10 * 60) {
                             data.setEvent(RoastData.EVENT_BURST1);
-                            data.setChangeFire(5);
-                            data.setChangeTime(6);
                         } else if (i == 15 * 60) {
                             data.setEvent(RoastData.EVENT_BURST2_START);
                         } else if (i == 20 * 60) {
                             data.setEvent(RoastData.EVENT_BURST2);
                         }
+                        data.setCoolStatusComplete(i == 30 * 60 - 1);
 
                         data.setTemperature((int) (-230.f / 900 / 900 * i * i + 230.f * 2 / 900 * i + 0.5f));
 

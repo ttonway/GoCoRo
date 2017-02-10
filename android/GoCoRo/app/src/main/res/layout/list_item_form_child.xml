@@ -8,20 +8,28 @@
         android:id="@+id/text1"
         style="@style/Widget.TableCell"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <TextView
         android:id="@+id/text2"
         style="@style/Widget.TableCell"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <TextView
         android:id="@+id/text3"
         style="@style/Widget.TableCell"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/text4"
+        style="@style/Widget.TableCell"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:singleLine="false" />
 </LinearLayout>

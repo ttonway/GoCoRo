@@ -25,8 +25,8 @@ public class RoastData extends RealmObject {
     int status;
     String event;
 
-    int changeTime = -1;
-    int changeFire = -1;
+    boolean manualCool;//冷却设置
+    boolean coolStatusComplete;//冷却停止
 
     public int getTime() {
         return time;
@@ -68,20 +68,20 @@ public class RoastData extends RealmObject {
         this.event = event;
     }
 
-    public int getChangeTime() {
-        return changeTime;
+    public boolean isManualCool() {
+        return manualCool;
     }
 
-    public void setChangeTime(int changeTime) {
-        this.changeTime = changeTime;
+    public void setManualCool(boolean manualCool) {
+        this.manualCool = manualCool;
     }
 
-    public int getChangeFire() {
-        return changeFire;
+    public boolean isCoolStatusComplete() {
+        return coolStatusComplete;
     }
 
-    public void setChangeFire(int changeFire) {
-        this.changeFire = changeFire;
+    public void setCoolStatusComplete(boolean coolStatusComplete) {
+        this.coolStatusComplete = coolStatusComplete;
     }
 
     public int getEventNameResId() {

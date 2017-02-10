@@ -9,15 +9,14 @@ import android.util.Log;
 
 import com.google.common.eventbus.EventBus;
 import com.wcare.android.gocoro.bluetooth.BluetoothDriver;
-import com.wcare.android.gocoro.bluetooth.ErrorEvent;
-import com.wcare.android.gocoro.bluetooth.ProfileStatusEvent;
-import com.wcare.android.gocoro.bluetooth.StateChangeEvent;
 import com.wcare.android.gocoro.model.RoastData;
 import com.wcare.android.gocoro.model.RoastProfile;
 
 import java.util.Arrays;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 
 /**
@@ -44,6 +43,8 @@ public class GoCoRoDevice implements DriverCallback {
     String mDeviceAddress;
     int mDeviceStatus = RoastData.STATUS_UNKNOWN;
     long mLastUpdateTime;
+
+    boolean mDataNotified;
 
     Realm mRealm;
     RoastProfile mProfile;
@@ -83,9 +84,8 @@ public class GoCoRoDevice implements DriverCallback {
         return mDriver.getState();
     }
 
-
-    public boolean isRoasting() {
-        return mProfile != null && !mProfile.isComplete();
+    public RoastProfile getProfile() {
+        return mProfile;
     }
 
     public boolean isDeviceBusy() {
@@ -95,6 +95,10 @@ public class GoCoRoDevice implements DriverCallback {
     public void setDeviceAddress(String address) {
         mDeviceAddress = address;
         mPreferences.edit().putString("address", address).apply();
+    }
+
+    public String getDeviceAddress() {
+        return mDeviceAddress;
     }
 
     public boolean isCurrentDevice(BluetoothDevice device) {
@@ -120,6 +124,8 @@ public class GoCoRoDevice implements DriverCallback {
 
         mLastUpdateTime = 0;
         mDeviceStatus = RoastData.STATUS_UNKNOWN;
+
+        mDataNotified = false;
 
         resetProfile();
     }
@@ -155,7 +161,10 @@ public class GoCoRoDevice implements DriverCallback {
 
     public void readyProfile(RoastProfile profile) {
         Log.d(TAG, "readyProfile");
-        this.mProfile = profile;
+        if (mProfile != null) {
+            throw new IllegalStateException("ready profile when roasting");
+        }
+        mProfile = profile;
 
         BackgroundService.startService(mContext);
         mHandler.removeCallbacks(mTimeoutCheckRunnable);
@@ -164,11 +173,13 @@ public class GoCoRoDevice implements DriverCallback {
 
     public void resetProfile() {
         Log.d(TAG, "resetProfile");
-        mProfile = null;
-        mEventBus.post(new ProfileStatusEvent());
+        if (mProfile != null) {
+            mProfile = null;
+            mEventBus.post(new ProfileEvent(ProfileEvent.TYPE_PROFILE_RESET, null));
 
-        BackgroundService.stopService(mContext);
-        mHandler.removeCallbacks(mTimeoutCheckRunnable);
+            BackgroundService.stopService(mContext);
+            mHandler.removeCallbacks(mTimeoutCheckRunnable);
+        }
     }
 
     public void startRoast(int seconds, int fire) {
@@ -227,29 +238,47 @@ public class GoCoRoDevice implements DriverCallback {
     public void onReadData(byte[] buf, int length) {
         String recv = toHexString(buf, length);
         Log.d(TAG, "[ReadData] " + recv);
-        try {
-            onReadCommand(buf, length);
-        } catch (Exception e) {
-            Log.e(TAG, "onReadCommand fail.", e);
+
+        int begin;
+        int end;
+        for (begin = 0; begin < length; begin++) {
+            if (buf[begin] == '@') {
+                for (end = begin; end < length; end++) {
+                    if (buf[end] == '$' && (end + 1 == length || buf[end + 1] == '@')) {
+                        break;
+                    }
+                }
+
+                if (end < length) { // found one frame
+                    byte[] frame = Arrays.copyOfRange(buf, begin, end + 1);
+                    begin = end;
+                    try {
+                        onReadCommand(frame, frame.length);
+                    } catch (Exception e) {
+                        Log.e(TAG, "onReadCommand fail.", e);
+                    }
+                }
+            }
         }
     }
 
     public void onReadCommand(byte[] buf, int length) {
+        Log.d(TAG, "[ReadFrame] " + toHexString(buf, length));
         if (length < 5) {
-            Log.e(TAG, "[onReadData] length too short.");
+            Log.e(TAG, "[ReadFrame] length too short.");
             return;
         }
         if (buf[0] != '@' || buf[length - 1] != '$') {
-            Log.e(TAG, "[onReadData] wrong tags.");
+            Log.e(TAG, "[ReadFrame] wrong tags.");
             return;
         }
         if (buf[1] != length - 3) {
-            Log.e(TAG, "[onReadData] wrong frame length.");
+            Log.e(TAG, "[ReadFrame] wrong frame length.");
             return;
         }
         byte parity = makeParity(buf, length - 2);
         if (buf[length - 2] != parity) {
-            Log.e(TAG, "[onReadData] wrong parity.");
+            Log.e(TAG, "[ReadFrame] wrong parity.");
             return;
         }
 
@@ -274,16 +303,50 @@ public class GoCoRoDevice implements DriverCallback {
                             public void execute(Realm realm) {
                                 if (mProfile == null) {
                                     Log.w(TAG, "Add roast data to a null profile.");
+
+                                    if (status != RoastData.STATUS_IDLE && !mDataNotified) {
+                                        Log.i(TAG, "Notify to restore profile.");
+                                        mDataNotified = true;
+                                        RealmResults<RoastProfile> results = mRealm.where(RoastProfile.class).greaterThan("startTime", 0).findAll().sort("startTime", Sort.DESCENDING);
+                                        if (results.size() > 0) {
+                                            RoastProfile profile = results.first();
+                                            if (TextUtils.equals(profile.getDeviceId(), mDeviceAddress) && System.currentTimeMillis() - profile.getStartTime() </* 30min */ 30 * 60000) {
+                                                mEventBus.post(new ProfileEvent(ProfileEvent.TYPE_PROFILE_CONTINUE, profile.getUuid()));
+                                            }
+                                        }
+                                    }
                                 } else {
-                                    if (!mProfile.isComplete() && status == RoastData.STATUS_IDLE) {
+                                    RoastData lastData = mProfile.plotDatas.isEmpty() ? null : mProfile.plotDatas.last();
+                                    if (status == RoastData.STATUS_IDLE) {
                                         Log.i(TAG, "current profile compelted.");
-                                        mProfile.setEndTime(System.currentTimeMillis());
-                                        mProfile.setComplete(true);
+                                        if (!mProfile.isComplete()) {
+                                            mProfile.setEndTime(System.currentTimeMillis());
+                                            mProfile.setComplete(true);
+                                            if (lastData != null && lastData.getStatus() == RoastData.STATUS_COOLING) {
+                                                lastData.setCoolStatusComplete(true);
+                                            }
+                                        }
+
                                         resetProfile();
                                         return;
                                     }
 
-                                    Log.d(TAG, "Add roast data at time " + time);
+
+                                    if (lastData != null && time <= lastData.getTime()) {
+                                        Log.w(TAG, "Bad data found for duplicate or out-of-order.");
+                                        return;
+                                    }
+                                    Log.d(TAG, "Add roast data at time " + time + " status " + status);
+                                    if (status == RoastData.STATUS_ROASTING && mProfile.getRoastTime() == 0) {
+                                        Log.d(TAG, "Roast process start!");
+                                        mProfile.setRoastTime(time - 1);
+                                    } else if (status == RoastData.STATUS_COOLING && mProfile.getCoolTime() == 0) {
+                                        Log.d(TAG, "Cool process start!");
+                                        mProfile.setCoolTime(time - 1);
+                                        if (mProfile.getRoastTime() != 0) {
+                                            mProfile.setStartDruation(time - 1 - mProfile.getRoastTime());
+                                        }
+                                    }
                                     final RoastData data = realm.createObject(RoastData.class);
                                     data.setStatus(status);
                                     data.setTime(time);

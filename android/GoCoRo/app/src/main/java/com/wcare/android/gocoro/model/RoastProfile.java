@@ -14,6 +14,8 @@ public class RoastProfile extends RealmObject {
     @PrimaryKey
     String uuid;
 
+    String deviceId;
+
     String people;
     String beanCountry;
     String beanName;
@@ -25,12 +27,23 @@ public class RoastProfile extends RealmObject {
 
     int startFire;
     int startDruation;// in seconds
+    int preHeatTime;
+    int roastTime;
+    int coolTime;
     boolean complete;// if roast process completed
 
     public RealmList<RoastData> plotDatas;
 
     public String getUuid() {
         return uuid;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getPeople() {
@@ -111,6 +124,30 @@ public class RoastProfile extends RealmObject {
 
     public void setStartDruation(int startDruation) {
         this.startDruation = startDruation;
+    }
+
+    public int getPreHeatTime() {
+        return preHeatTime;
+    }
+
+    public void setPreHeatTime(int preHeatTime) {
+        this.preHeatTime = preHeatTime;
+    }
+
+    public int getRoastTime() {
+        return roastTime;
+    }
+
+    public void setRoastTime(int roastTime) {
+        this.roastTime = roastTime;
+    }
+
+    public int getCoolTime() {
+        return coolTime;
+    }
+
+    public void setCoolTime(int coolTime) {
+        this.coolTime = coolTime;
     }
 
     public boolean isComplete() {

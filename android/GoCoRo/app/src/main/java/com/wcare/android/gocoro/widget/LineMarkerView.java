@@ -33,23 +33,15 @@ public class LineMarkerView extends MarkerView {
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
 
-        RoastData data = (RoastData) e.getData();
+        CharSequence data = (CharSequence) e.getData();
         if (e instanceof CandleEntry) {
 
             CandleEntry ce = (CandleEntry) e;
 
             tvContent.setText("Error");
         } else {
-            StringBuilder sb = new StringBuilder(Utils.formatTime(data.getTime()));
-            sb.append("  ").append(getContext().getString(R.string.x_celsius_unit, data.getTemperature()));
-            if (data.getFire() != 0) {
-                sb.append("-").append(getContext().getString(R.string.label_fire_x, data.getFire()));
-            }
-            if (data.getEvent() != null) {
-                sb.append("-").append(getContext().getString(data.getEventNameResId()));
-            }
 
-            tvContent.setText(sb);
+            tvContent.setText(data);
         }
 
         super.refreshContent(e, highlight);

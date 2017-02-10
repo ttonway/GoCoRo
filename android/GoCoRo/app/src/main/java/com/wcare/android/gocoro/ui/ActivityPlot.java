@@ -3,10 +3,10 @@ package com.wcare.android.gocoro.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,10 +43,10 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.common.eventbus.Subscribe;
 import com.wcare.android.gocoro.R;
 import com.wcare.android.gocoro.bluetooth.BluetoothLeDriver;
-import com.wcare.android.gocoro.bluetooth.ErrorEvent;
+import com.wcare.android.gocoro.core.ErrorEvent;
 import com.wcare.android.gocoro.core.GoCoRoDevice;
-import com.wcare.android.gocoro.bluetooth.ProfileStatusEvent;
-import com.wcare.android.gocoro.bluetooth.StateChangeEvent;
+import com.wcare.android.gocoro.core.ProfileEvent;
+import com.wcare.android.gocoro.core.StateChangeEvent;
 import com.wcare.android.gocoro.model.RoastData;
 import com.wcare.android.gocoro.model.RoastProfile;
 import com.wcare.android.gocoro.ui.dialog.AlertDialog;
@@ -57,10 +56,8 @@ import com.wcare.android.gocoro.widget.LineMarkerView;
 import com.wcare.android.gocoro.widget.CustomNumberPicker;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.Realm;
@@ -70,7 +67,7 @@ import io.realm.RealmChangeListener;
  * Created by ttonway on 2016/12/13.
  */
 public class ActivityPlot extends BaseActivity
-        implements OnChartValueSelectedListener {
+        implements OnChartValueSelectedListener, RatingBar.OnRatingBarChangeListener {
     private static final String TAG = ActivityPlot.class.getSimpleName();
 
     public static void startRoast(Context context, String profileUuid, String referenceUuid) {
@@ -83,10 +80,15 @@ public class ActivityPlot extends BaseActivity
     }
 
     public static void viewPlot(Context context, String profileUuid) {
+        boolean roast = false;
+        RoastProfile profile = GoCoRoDevice.getInstance(context).getProfile();
+        if (profile != null && TextUtils.equals(profileUuid, profile.getUuid())) {
+            roast = true;
+        }
 
         Intent intent = new Intent(context, ActivityPlot.class);
         intent.putExtra(ActivityPlot.PARAM_UUID, profileUuid);
-        intent.putExtra(PARAM_ROAST, false);
+        intent.putExtra(PARAM_ROAST, roast);
         context.startActivity(intent);
     }
 
@@ -111,9 +113,12 @@ public class ActivityPlot extends BaseActivity
     public static final float TEMPERATURE_MIN = 0;
     public static final float FIRE_MAX = 10;
     public static final float FIRE_MIN = 0;
+    private static final float ONE_MIN_IN_SECONDS = 60;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.text_logo)
+    TextView mLogoTextView;
     @BindView(R.id.top_container)
     View mTopContainer;
     @BindView(R.id.bottom_container)
@@ -127,6 +132,8 @@ public class ActivityPlot extends BaseActivity
     CustomNumberPicker mSecondPicker;
     @BindView(R.id.ratingbar)
     RatingBar mRatingBar;
+    @BindView(R.id.btn_roast)
+    Button mSetButton;
 
     @BindView(R.id.text_country)
     TextView mCountryTextView;
@@ -134,6 +141,8 @@ public class ActivityPlot extends BaseActivity
     TextView mBeanTextView;
     @BindView(R.id.text_weight)
     TextView mWeightTextView;
+    @BindView(R.id.text_roast_time)
+    TextView mRoastTimeTextView;
 
     @BindView(R.id.event1)
     EventButton mEventButton1;
@@ -147,7 +156,6 @@ public class ActivityPlot extends BaseActivity
     RoastProfile mProfile;
     RoastProfile mReferenceProfile;
     boolean mRoast;
-    boolean mRoastStarted;
     boolean mCompleteDialogShowed;
 
 
@@ -161,10 +169,42 @@ public class ActivityPlot extends BaseActivity
     LineDataSet mReferenceTempDataSet;
     LineDataSet mReferenceFireDataSet;
 
-    Handler mHandler;
-    GoCoRoDevice mDevice;
     Realm mRealm;
+    final RealmChangeListener<RoastProfile> mProfileChangeListener = new RealmChangeListener<RoastProfile>() {
+        @Override
+        public void onChange(RoastProfile result) {
+            if (!TextUtils.equals(mCountryTextView.getText(), result.getBeanCountry())) {
+                mCountryTextView.setText(result.getBeanCountry());
+            }
+            if (!TextUtils.equals(mBeanTextView.getText(), result.getBeanName())) {
+                mBeanTextView.setText(result.getBeanName());
+            }
+            String weight = getString(R.string.x_g_unit, result.getStartWeight());
+            if (!TextUtils.equals(mWeightTextView.getText(), weight)) {
+                mWeightTextView.setText(weight);
+            }
+            if (result.getStartDruation() > 0) {
+                String time = getString(R.string.label_roast_time, Utils.formatTime(result.getStartDruation()));
+                if (!TextUtils.equals(mRoastTimeTextView.getText(), time)) {
+                    mRoastTimeTextView.setText(time);
+                }
+            }
 
+            String btnText = getString(result.plotDatas.isEmpty() ? R.string.btn_start : R.string.btn_set);
+            if (!TextUtils.equals(mSetButton.getText(), btnText)) {
+                mSetButton.setText(btnText);
+            }
+
+            int count = mTempDataSet.getEntryCount();
+            for (; count < result.plotDatas.size(); count++) {
+                addPlotData(result.plotDatas.get(count), mRoast);
+            }
+
+
+            mChart.notifyDataSetChanged();
+            mChart.invalidate();
+        }
+    };
 
     @Subscribe
     public void onDeviceStateChanged(final StateChangeEvent e) {
@@ -176,37 +216,47 @@ public class ActivityPlot extends BaseActivity
         });
     }
 
-    @Subscribe
-    public void onProfileStatusChanged(final ProfileStatusEvent e) {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mProfile.isComplete() && !mCompleteDialogShowed) {
-                    mCompleteDialogShowed = true;
-                    AlertDialog dialog = AlertDialog.newInstance(getString(R.string.roast_completed));
-                    dialog.show(getSupportFragmentManager(), "alert");
+    @Override
+    public void onProfileStatusChanged(final ProfileEvent e) {
+        super.onProfileStatusChanged(e);
+
+        if (mRoast && e.type == ProfileEvent.TYPE_PROFILE_RESET) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (mProfile.isComplete() && !mCompleteDialogShowed) {
+                        mCompleteDialogShowed = true;
+                        AlertDialog dialog = AlertDialog.newInstance(getString(R.string.roast_completed));
+                        dialog.show(getSupportFragmentManager(), "alert");
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Subscribe
     public void onError(final ErrorEvent e) {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                String message = getString(R.string.error_connect_x, e.cause);
-                if (e.cause == BluetoothLeDriver.ERROR_WRONG_DEVICE) {
-                    message = getString(R.string.error_wrong_device);
-                } else if (e.cause == BluetoothLeDriver.ERROR_TIMEOUT) {
-                    message = getString(R.string.error_timeout);
-                } else if (e.cause == BluetoothLeDriver.ERROR_CONNECTION_FAIL) {
-                    message = getString(R.string.error_connection_error);
+        if (mRoast) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    String message = getString(R.string.error_connect_x, e.cause);
+                    if (e.cause == BluetoothLeDriver.ERROR_WRONG_DEVICE) {
+                        message = getString(R.string.error_wrong_device);
+                    } else if (e.cause == BluetoothLeDriver.ERROR_TIMEOUT) {
+                        message = getString(R.string.error_timeout);
+                    } else if (e.cause == BluetoothLeDriver.ERROR_CONNECTION_FAIL) {
+                        message = getString(R.string.error_connection_error);
+                    }
+                    AlertDialog dialog = AlertDialog.newInstance(message);
+                    dialog.show(getSupportFragmentManager(), "alert");
                 }
-                AlertDialog dialog = AlertDialog.newInstance(message);
-                dialog.show(getSupportFragmentManager(), "alert");
-            }
-        });
+            });
+        }
+    }
+
+    public RoastProfile getProfile() {
+        return mProfile;
     }
 
     @Override
@@ -218,6 +268,7 @@ public class ActivityPlot extends BaseActivity
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mLogoTextView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Bauhaus93.ttf"));
         setupChart();
         mMinutePicker.setFormatter(CustomNumberPicker.getTwoDigitFormatter());
         mMinutePicker.setMaxValue(59);
@@ -233,15 +284,13 @@ public class ActivityPlot extends BaseActivity
         mEventButton2.setEventStatus(getString(R.string.event_unrecorded));
         mEventButton3.setEventStatus(getString(R.string.event_unrecorded));
         mEventButton4.setEventStatus(getString(R.string.event_unrecorded));
+        mRatingBar.setOnRatingBarChangeListener(this);
 
         String uuid = getIntent().getStringExtra(PARAM_UUID);
         String referenceUuid = getIntent().getStringExtra(PARAM_REFERENCE_UUID);
         mRoast = getIntent().getBooleanExtra(PARAM_ROAST, false);
         Log.d(TAG, "uuid " + uuid + ", reference-uuid " + referenceUuid);
 
-        mHandler = new Handler();
-        mDevice = GoCoRoDevice.getInstance(this);
-        mDevice.registerReceiver(this);
         mRealm = Realm.getDefaultInstance();
         mProfile = mRealm.where(RoastProfile.class).equalTo("uuid", uuid).findFirst();
         mReferenceProfile = mRealm.where(RoastProfile.class).equalTo("uuid", referenceUuid).findFirst();
@@ -257,9 +306,6 @@ public class ActivityPlot extends BaseActivity
             second = mReferenceProfile.getStartDruation() % 60;
             fire = mReferenceProfile.getStartFire();
         }
-        mMinutePicker.setValue(minute);
-        mSecondPicker.setValue(second);
-        mRatingBar.setRating(fire);
 
         CombinedData data = new CombinedData();
         data.setData(createLineData());
@@ -267,33 +313,12 @@ public class ActivityPlot extends BaseActivity
 //        data.setData(createBarData());
         mChart.setData(data);
 
-        final RealmChangeListener<RoastProfile> listener = new RealmChangeListener<RoastProfile>() {
-            @Override
-            public void onChange(RoastProfile result) {
-                if (!TextUtils.equals(mCountryTextView.getText(), result.getBeanCountry())) {
-                    mCountryTextView.setText(result.getBeanCountry());
-                }
-                if (!TextUtils.equals(mBeanTextView.getText(), result.getBeanName())) {
-                    mBeanTextView.setText(result.getBeanName());
-                }
-                String weight = getString(R.string.x_g_unit, result.getStartWeight());
-                if (!TextUtils.equals(mWeightTextView.getText(), weight)) {
-                    mWeightTextView.setText(weight);
-                }
-                int count = mTempDataSet.getEntryCount();
-                for (; count < result.plotDatas.size(); count++) {
-                    addPlotData(result.plotDatas.get(count), mRoast);
-                }
-                mChart.notifyDataSetChanged();
-                mChart.invalidate();
-            }
-        };
-        mProfile.addChangeListener(listener);
 
+        mProfile.addChangeListener(mProfileChangeListener);
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                listener.onChange(mProfile);
+                mProfileChangeListener.onChange(mProfile);
             }
         });
 
@@ -301,11 +326,32 @@ public class ActivityPlot extends BaseActivity
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);// 保持常亮的屏幕的状态
             setTitle("");
 
+            for (RoastData entry: mProfile.plotDatas) {
+                if (TextUtils.equals(entry.getEvent(), RoastData.EVENT_BURST1_START)) {
+                    mEventButton1.setSelected(true);
+                    mEventButton1.setEventStatus(getString(R.string.event_recorded));
+                } else if (TextUtils.equals(entry.getEvent(), RoastData.EVENT_BURST1)) {
+                    mEventButton2.setSelected(true);
+                    mEventButton2.setEventStatus(getString(R.string.event_recorded));
+                } else if (TextUtils.equals(entry.getEvent(), RoastData.EVENT_BURST2_START)) {
+                    mEventButton3.setSelected(true);
+                    mEventButton3.setEventStatus(getString(R.string.event_recorded));
+                } else if (TextUtils.equals(entry.getEvent(), RoastData.EVENT_BURST2)) {
+                    mEventButton4.setSelected(true);
+                    mEventButton4.setEventStatus(getString(R.string.event_recorded));
+                }
+            }
+
             mDevice.openDevice();
+            if (!mProfile.isComplete() && mProfile.getStartDruation() > 0) {
+                restoreRoast();
+
+                fire = mProfile.getStartFire();
+            }
         } else {
             XAxis xAxis = mChart.getXAxis();
             Number maxTime = mProfile.plotDatas.max("time");
-            float max = 3 * 60;
+            float max = ONE_MIN_IN_SECONDS;
             if (maxTime != null) {
                 max += maxTime.intValue();
             }
@@ -314,6 +360,9 @@ public class ActivityPlot extends BaseActivity
             mTopContainer.setVisibility(View.GONE);
             mBottomContainer.setVisibility(View.GONE);
         }
+        mMinutePicker.setValue(minute);
+        mSecondPicker.setValue(second);
+        mRatingBar.setRating(fire);
         mChart.invalidate();
     }
 
@@ -322,6 +371,7 @@ public class ActivityPlot extends BaseActivity
         super.onResume();
 
         if (mRoast) {
+            supportInvalidateOptionsMenu();
             mDevice.openDevice();
         }
     }
@@ -330,9 +380,9 @@ public class ActivityPlot extends BaseActivity
     protected void onDestroy() {
         super.onDestroy();
 
-        mDevice.unregisterReceiver(this);
+        mProfile.removeChangeListener(mProfileChangeListener);
 
-        if (mRoast && !mRoastStarted) {
+        if (mRoast && mProfile.plotDatas.isEmpty()) {
             mRealm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
@@ -409,7 +459,8 @@ public class ActivityPlot extends BaseActivity
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return Utils.formatTime((int) value);
+                int time = (int) value;
+                return Utils.formatTime(getTimeInStatus(time));
             }
         });
 
@@ -556,9 +607,25 @@ public class ActivityPlot extends BaseActivity
 //        return data;
 //    }
 
+    int getTimeInStatus(int time) {
+        if (mProfile.getCoolTime() != 0 && time >= mProfile.getCoolTime()) {
+            time -= mProfile.getCoolTime();
+        } else if (mProfile.getRoastTime() != 0 && time >= mProfile.getRoastTime()) {
+            time -= mProfile.getRoastTime();
+        }
+        return time;
+    }
 
     void addPlotData(RoastData data, boolean updateAxis) {
-        mTempDataSet.addEntry(new Entry(data.getTime(), data.getTemperature(), data));
+        StringBuilder sb = new StringBuilder(Utils.formatTime(getTimeInStatus(data.getTime())));
+        sb.append("  ").append(getString(R.string.x_celsius_unit, data.getTemperature()));
+        if (data.getFire() != 0) {
+            sb.append("-").append(getString(R.string.label_fire_x, data.getFire()));
+        }
+        if (data.getEvent() != null) {
+            sb.append("-").append(getString(data.getEventNameResId()));
+        }
+        mTempDataSet.addEntry(new Entry(data.getTime(), data.getTemperature(), sb));
         mFireDataSet.addEntry(new Entry(data.getTime(), data.getFire()));
         if (data.getStatus() == RoastData.STATUS_PREHEATING) {
             mPreHeatDataSet.addEntry(new Entry(data.getTime(), TEMPERATURE_MAX));
@@ -595,8 +662,8 @@ public class ActivityPlot extends BaseActivity
 
         if (updateAxis) {
             XAxis xAxis = mChart.getXAxis();
-            if (data.getTime() > xAxis.getAxisMaximum()) {
-                xAxis.setAxisMaximum(data.getTime() + 5 * 60);
+            if (data.getTime() + ONE_MIN_IN_SECONDS > xAxis.getAxisMaximum()) {
+                xAxis.setAxisMaximum(data.getTime() + 5 * ONE_MIN_IN_SECONDS);
             }
 
 //            mChart.moveViewToX(data.getTime());
@@ -613,36 +680,51 @@ public class ActivityPlot extends BaseActivity
         Log.i(TAG, "Nothing selected.");
     }
 
+    public void restoreRoast() {
+        mSetButton.setText(R.string.btn_set);
+
+        if (mDevice.isOpen()) {
+            if (mDevice.getProfile() == null) {
+                mDevice.readyProfile(mProfile);
+            }
+        }
+    }
+
     @OnClick(R.id.btn_roast)
     void startRoast(Button button) {
         mMinutePicker.clearFocus();
         mSecondPicker.clearFocus();
+        final int seconds = mMinutePicker.getValue() * 60 + mSecondPicker.getValue();
+        final int fire = (int) mRatingBar.getRating();
+
+        if (seconds == 0) {
+            Toast.makeText(this, R.string.toast_roast_time_zero, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (!mDevice.isOpen()) {
             Toast.makeText(this, R.string.toast_device_unconnected, Toast.LENGTH_SHORT).show();
         } else {
-            final int seconds = mMinutePicker.getValue() * 60 + mSecondPicker.getValue();
-            final int fire = (int) mRatingBar.getRating();
 
-            if (mRoastStarted) {
+            if (!mProfile.plotDatas.isEmpty()) {
+                boolean roasting = mProfile.getRoastTime() != 0 && mProfile.getCoolTime() == 0;
                 if (mProfile.isComplete()) {
                     Toast.makeText(this, R.string.toast_already_completed, Toast.LENGTH_SHORT).show();
                     return;
-                }
-
-                RoastData data = mProfile.plotDatas.isEmpty() ? null : mProfile.plotDatas.last();
-                if (data == null) {
+                } else if (!roasting) {
                     return;
                 }
 
                 mDevice.setRoast(seconds, fire);
 
-                mRealm.beginTransaction();
-                data.setChangeFire(fire);
-                data.setChangeTime(seconds);
-                mRealm.commitTransaction();
-
+                mRealm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        mProfile.setStartDruation(mProfile.getStartDruation() + seconds);
+                    }
+                });
             } else {
-                if (mDevice.isRoasting() || mDevice.isDeviceBusy()) {
+                if (mDevice.getProfile() != null || mDevice.isDeviceBusy()) {
                     Toast.makeText(this, R.string.toast_now_roasting, Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -653,17 +735,33 @@ public class ActivityPlot extends BaseActivity
                 mRealm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
+                        mProfile.setDeviceId(mDevice.getDeviceAddress());
                         mProfile.setStartTime(System.currentTimeMillis());
                         mProfile.setStartFire(fire);
                         mProfile.setStartDruation(seconds);
                     }
                 });
-                mRoastStarted = true;
-                button.setText(R.string.btn_set);
             }
 
             mMinutePicker.setValue(0);
             mSecondPicker.setValue(0);
+        }
+    }
+
+    @Override
+    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+        if (fromUser) {
+            Log.d(TAG, "onRatingChanged " + rating);
+
+            final int fire = (int) rating;
+            boolean roasting = mProfile.getRoastTime() != 0 && mProfile.getCoolTime() == 0;
+            if (mDevice.isOpen() && roasting && !mProfile.isComplete()) {
+
+                RoastData data = mProfile.plotDatas.isEmpty() ? null : mProfile.plotDatas.last();
+                if (data != null) {
+                    mDevice.setRoast(0, fire);
+                }
+            }
         }
     }
 
@@ -672,14 +770,21 @@ public class ActivityPlot extends BaseActivity
         if (!mDevice.isOpen()) {
             Toast.makeText(this, R.string.toast_device_unconnected, Toast.LENGTH_SHORT).show();
         } else {
-            mDevice.stopRoast();
+            RoastData data = mProfile.plotDatas.isEmpty() ? null : mProfile.plotDatas.last();
+            if (data != null && data.getStatus() == RoastData.STATUS_ROASTING) {
+                mDevice.stopRoast();
+
+                mRealm.beginTransaction();
+                data.setManualCool(true);
+                mRealm.commitTransaction();
+            }
         }
     }
 
     @OnClick({R.id.event1, R.id.event2, R.id.event3, R.id.event4})
     void addEvent(EventButton view) {
         RoastData data = mProfile.plotDatas.isEmpty() ? null : mProfile.plotDatas.last();
-        if (data == null || !TextUtils.isEmpty(data.getEvent())) {
+        if (data == null || data.getStatus() == RoastData.STATUS_PREHEATING || !TextUtils.isEmpty(data.getEvent())) {
             return;
         }
         if (mProfile.isComplete()) {

@@ -68,7 +68,7 @@
             </LinearLayout>
 
             <View
-                android:layout_width="4dp"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1" />
 
@@ -89,11 +89,24 @@
                     android:progressDrawable="@drawable/rating_bar"
                     android:stepSize="1" />
 
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/part_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/btn_cool"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
                     android:background="@drawable/btn_dark_background"
                     android:minHeight="0dp"
                     android:minWidth="45dp"
@@ -109,7 +122,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#221d23"
+        android:background="#25202b"
         android:orientation="horizontal"
         android:paddingBottom="4dp"
         android:paddingLeft="16dp"
@@ -133,10 +146,13 @@
             android:layout_height="wrap_content"
             android:textColor="@color/text_cyan" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
+        <TextView
+            android:id="@+id/text_roast_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/text_cyan" />
 
         <TextView
             android:id="@+id/text_weight"
@@ -150,9 +166,20 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/background4"
+        android:background="#2e2836"
+        android:paddingBottom="2dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp">
+
+        <TextView
+            android:id="@+id/text_logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="#2b2632"
+            android:textSize="120sp"
+            android:textStyle="bold" />
 
         <com.wcare.android.gocoro.widget.MyPlotChart
             android:id="@+id/chart"
@@ -164,8 +191,10 @@
         android:id="@+id/bottom_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:orientation="horizontal">
+        android:background="#36313c"
+        android:orientation="horizontal"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp">
 
         <View
             android:layout_width="0dp"

@@ -37,7 +37,7 @@ import android.widget.TextView;
 
 import com.google.common.eventbus.Subscribe;
 import com.wcare.android.gocoro.R;
-import com.wcare.android.gocoro.bluetooth.StateChangeEvent;
+import com.wcare.android.gocoro.core.StateChangeEvent;
 import com.wcare.android.gocoro.core.GoCoRoDevice;
 import com.wcare.android.gocoro.ui.adapter.BluetoothDeviceAdapter;
 
