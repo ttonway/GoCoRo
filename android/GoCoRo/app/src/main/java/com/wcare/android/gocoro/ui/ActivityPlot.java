@@ -157,8 +157,10 @@ public class ActivityPlot extends BaseActivity
 
     RoastProfile mProfile;
     RoastProfile mReferenceProfile;
+    int mReferenceIndex = 0;
     boolean mRoast;
     boolean mCompleteDialogShowed;
+    boolean mAutoChangeFire;
 
 
     LineDataSet mTempDataSet;
@@ -198,13 +200,32 @@ public class ActivityPlot extends BaseActivity
             }
 
             int count = mTempDataSet.getEntryCount();
+            RoastData currentData = null;// get the lastest one
             for (; count < result.plotDatas.size(); count++) {
-                addPlotData(result.plotDatas.get(count), mRoast);
+                currentData = result.plotDatas.get(count);
+                addPlotData(currentData, mRoast);
             }
 
 
             mChart.notifyDataSetChanged();
             mChart.invalidate();
+
+            // 自动调整火力
+            if (mAutoChangeFire && mReferenceProfile != null && currentData != null && currentData.getStatus() == RoastData.STATUS_ROASTING) {
+                int currentTime = currentData.getTime();
+                int currentFire = currentData.getFire();
+                int targetFire = -1;
+                for (; mReferenceIndex < mReferenceProfile.plotDatas.size(); mReferenceIndex++) {
+                    RoastData d = mReferenceProfile.plotDatas.get(mReferenceIndex);
+                    if (d.getStatus() == RoastData.STATUS_ROASTING && d.getTime() > currentTime) {
+                        targetFire = d.getFire();
+                        break;
+                    }
+                }
+                if (targetFire != -1 && currentFire != targetFire) {
+                    mDevice.setRoast(0, targetFire);
+                }
+            }
         }
     };
 
@@ -726,6 +747,10 @@ public class ActivityPlot extends BaseActivity
                     return;
                 }
 
+                if (mAutoChangeFire) {
+                    mAutoChangeFire = false;
+                }
+
                 mDevice.setRoast(seconds, fire);
 
                 mRealm.executeTransaction(new Realm.Transaction() {
@@ -738,6 +763,10 @@ public class ActivityPlot extends BaseActivity
                 if (mDevice.getProfile() != null || mDevice.isDeviceBusy()) {
                     Toast.makeText(this, R.string.toast_now_roasting, Toast.LENGTH_SHORT).show();
                     return;
+                }
+
+                if (mReferenceProfile != null && mReferenceProfile.getStartDruation() == seconds && mReferenceProfile.getStartFire() == fire) {
+                    mAutoChangeFire = true;
                 }
 
                 mDevice.readyProfile(mProfile);
@@ -770,6 +799,11 @@ public class ActivityPlot extends BaseActivity
 
                 RoastData data = mProfile.plotDatas.isEmpty() ? null : mProfile.plotDatas.last();
                 if (data != null) {
+
+                    if (mAutoChangeFire) {
+                        mAutoChangeFire = false;
+                    }
+
                     mDevice.setRoast(0, fire);
                 }
             }
@@ -782,7 +816,7 @@ public class ActivityPlot extends BaseActivity
             Toast.makeText(this, R.string.toast_device_unconnected, Toast.LENGTH_SHORT).show();
         } else {
             RoastData data = mProfile.plotDatas.isEmpty() ? null : mProfile.plotDatas.last();
-            if (data != null && data.getStatus() == RoastData.STATUS_ROASTING) {
+            if (data != null) {
                 mDevice.stopRoast();
 
                 mRealm.beginTransaction();
