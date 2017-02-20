@@ -9,9 +9,8 @@ import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.wcare.android.gocoro.R;
 import com.wcare.android.gocoro.model.RoastData;
-import com.wcare.android.gocoro.utils.Utils;
+import com.wcare.android.gocoro.ui.ActivityPlot;
 
 /**
  * Custom implementation of the MarkerView.
@@ -22,10 +21,14 @@ public class LineMarkerView extends MarkerView {
 
     private TextView tvContent;
 
+    private ActivityPlot activiey;
+
     public LineMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
 
         tvContent = (TextView) findViewById(android.R.id.text1);
+
+        activiey = (ActivityPlot) context;
     }
 
     // callbacks everytime the MarkerView is redrawn, can be used to update the
@@ -33,7 +36,7 @@ public class LineMarkerView extends MarkerView {
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
 
-        CharSequence data = (CharSequence) e.getData();
+        RoastData data = (RoastData) e.getData();
         if (e instanceof CandleEntry) {
 
             CandleEntry ce = (CandleEntry) e;
@@ -41,7 +44,7 @@ public class LineMarkerView extends MarkerView {
             tvContent.setText("Error");
         } else {
 
-            tvContent.setText(data);
+            tvContent.setText(activiey.getPlotDataLabel(data));
         }
 
         super.refreshContent(e, highlight);

@@ -1,5 +1,7 @@
 package com.wcare.android.gocoro.model;
 
+import android.content.Context;
+
 import com.wcare.android.gocoro.R;
 
 import io.realm.RealmObject;
@@ -84,7 +86,16 @@ public class RoastData extends RealmObject {
         this.coolStatusComplete = coolStatusComplete;
     }
 
-    public int getEventNameResId() {
+    public String getEventName(Context context) {
+        int resId = getEventNameResId(event);
+        if (resId == 0) {
+            return null;
+        } else {
+            return context.getString(resId);
+        }
+    }
+
+    public static int getEventNameResId(String event) {
         if (EVENT_BURST1_START.equals(event)) {
             return R.string.event_burst1_start;
         } else if (EVENT_BURST1.equals(event)) {

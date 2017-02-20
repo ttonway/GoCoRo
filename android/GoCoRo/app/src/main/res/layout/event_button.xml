@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/btn_event_background"
     android:duplicateParentState="true"
+    android:gravity="center_vertical"
     android:orientation="horizontal">
 
     <TextView
@@ -18,6 +19,8 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
         android:src="@drawable/btn_event_seperator" />
 
     <TextView

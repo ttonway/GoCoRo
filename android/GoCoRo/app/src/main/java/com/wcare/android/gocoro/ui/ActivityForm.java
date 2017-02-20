@@ -126,7 +126,7 @@ public class ActivityForm extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile, menu);
 
-        menu.findItem(R.id.action_setting).setVisible(false);
+        menu.findItem(R.id.action_device).setVisible(false);
         menu.findItem(R.id.action_plot).setVisible(false);
         menu.findItem(R.id.action_form).setVisible(false);
         return true;

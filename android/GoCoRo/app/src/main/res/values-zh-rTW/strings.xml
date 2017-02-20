@@ -1,0 +1,94 @@
+<resources>
+
+    <string name="activity_start_roast">開始烘焙</string>
+    <string name="activity_form">烘豆記錄詳情</string>
+    <string name="activity_cupping">杯測</string>
+    <string name="activity_profile_picker">選擇烘焙記錄</string>
+    <string name="activity_cupping_list">杯測記錄</string>
+    <string name="activity_profile_list">烘豆記錄</string>
+    <string name="activity_le_scan">設備搜索</string>
+    <string name="tab_home">烘豆</string>
+    <string name="tab_roast_history">記錄</string>
+    <string name="tab_cupping_history">杯測</string>
+    <string name="tab_more">更多</string>
+
+    <string name="action_share">分享</string>
+    <string name="action_plot">圖表</string>
+    <string name="action_form">數據</string>
+    <string name="action_add">新增</string>
+    <string name="action_done">完成</string>
+    <string name="action_edit">編輯</string>
+    <string name="action_scan">搜索</string>
+    <string name="action_stop">停止</string>
+    <string name="action_device">設備</string>
+    <string name="btn_ok">確定</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_delete">刪除</string>
+    <string name="btn_cupping">杯測</string>
+    <string name="btn_start_roast">開始烘焙</string>
+    <string name="btn_start">開始</string>
+    <string name="btn_set">設置</string>
+    <string name="btn_cool">冷卻</string>
+
+    <string name="label_roast_time">烘焙設置時間：%1$s</string>
+    <string name="label_unknown_device">未知設備</string>
+    <string name="label_lasttime">上一次</string>
+    <string name="label_no_profile">您還沒有烘焙過</string>
+    <string name="label_fire_x">火力%1$d</string>
+    <string name="label_total_score">總得分</string>
+    <string name="label_score_x">%1$s分</string>
+    <string name="label_cupping_name">杯測名稱</string>
+    <string name="label_cupping_profile">烘焙檔名</string>
+    <string name="label_cupping_time">杯測時間</string>
+    <string name="label_cupping_comment">杯測評語</string>
+    <string name="hint_comment">（無）</string>
+
+    <string name="toast_roast_time_zero">烘焙時間不能為0</string>
+    <string name="toast_cupping_name_empty">請輸入杯測名稱</string>
+    <string name="toast_device_unconnected">設備未連接</string>
+    <string name="toast_now_roasting">正在烘焙中</string>
+    <string name="toast_already_completed">烘焙已經結束</string>
+    <string name="toast_event_time_invalid">您選擇的時間無效</string>
+    <string name="error_connect_x">連接錯誤%1$d</string>
+    <string name="error_wrong_device">錯誤的設備</string>
+    <string name="error_timeout">讀取數據超時</string>
+    <string name="error_connection_error">連接錯誤</string>
+    <string name="error_bluetooth_not_supported">藍芽不可用</string>
+    <string name="ble_not_supported">該設備不支援BLE</string>
+    <string name="notification_service_running">GoCoRo正在烘焙</string>
+    <string name="roast_completed">烘焙完成</string>
+    <string name="continue_uncompleted_profile">設備正在烘焙，繼續未完成的記錄？</string>
+
+    <string name="state_open">已連接</string>
+    <string name="state_opening">正在連接</string>
+    <string name="state_close">未連接</string>
+    <string name="state_closing">正在斷開</string>
+    <string name="category_preheat">預熱</string>
+    <string name="category_roast">烘焙</string>
+    <string name="category_cool">冷卻</string>
+    <string name="event_burst1_start">一爆開始</string>
+    <string name="event_burst2_start">二爆開始</string>
+    <string name="event_burst1">一爆密集</string>
+    <string name="event_burst2">二爆密集</string>
+    <string name="event_burst1_start_abbr">@string/event_burst1_start</string>
+    <string name="event_burst2_start_abbr">@string/event_burst2_start</string>
+    <string name="event_burst1_abbr">@string/event_burst1</string>
+    <string name="event_burst2_abbr">@string/event_burst2</string>
+    <string name="event_change_fire">火力設置</string>
+    <string name="event_cool_set">冷卻設置</string>
+    <string name="event_cool_end">冷卻停止</string>
+    <string name="event_unrecorded">未記錄</string>
+    <string name="event_recorded">已記錄</string>
+
+    <string name="cupping_item1">香氣</string>
+    <string name="cupping_item2">風味</string>
+    <string name="cupping_item3">餘韻</string>
+    <string name="cupping_item4">酸度</string>
+    <string name="cupping_item5">口感</string>
+    <string name="cupping_item6">平衡</string>
+    <string name="cupping_item7">整體性</string>
+    <string name="cupping_item8">一致度</string>
+    <string name="cupping_item9">乾淨度</string>
+    <string name="cupping_item10">甜度</string>
+
+</resources>

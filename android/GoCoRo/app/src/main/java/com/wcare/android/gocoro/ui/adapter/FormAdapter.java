@@ -166,7 +166,7 @@ public class FormAdapter extends BaseExpandableListAdapter {
         RoastData data = getChild(groupPosition, childPosition);
         List<String> events = new ArrayList<>();
         if (data.getEvent() != null) {
-            events.add(mContext.getString(data.getEventNameResId()));
+            events.add(data.getEventName(mContext));
         }
         if (mFireChangedData.contains(data)) {
             events.add(mContext.getString(R.string.event_change_fire));
