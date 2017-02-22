@@ -9,7 +9,9 @@
     <string name="activity_profile_picker">Select roasted record</string>
     <string name="activity_cupping_list">Cupping record</string>
     <string name="activity_profile_list">Roasted record</string>
+    <string name="activity_more">More</string>
     <string name="activity_le_scan">Device searching</string>
+    <string name="activity_about">About</string>
     <string name="tab_home">Roaste</string>
     <string name="tab_roast_history">Record</string>
     <string name="tab_cupping_history">Cupping</string>
@@ -32,6 +34,10 @@
     <string name="btn_start">Start</string>
     <string name="btn_set">Set</string>
     <string name="btn_cool">Cool</string>
+    <string name="btn_knowledge">Knowledges</string>
+    <string name="btn_buy_device">Buy GoCoRo</string>
+    <string name="btn_store">Store</string>
+    <string name="btn_about">About</string>
 
     <string name="label_roast_time">Roast time Setting: %1$s</string>
     <string name="label_unknown_device">Unknown device</string>
@@ -44,8 +50,13 @@
     <string name="label_cupping_profile">Roast record</string>
     <string name="label_cupping_time">Time</string>
     <string name="label_cupping_comment">Comments</string>
+    <string name="label_socialization">Social</string>
+    <string name="label_more">More</string>
+    <string name="label_software_license_services_agreement">GoCoRo Softwcare License and Service Agreement</string>
+    <string name="label_all_rights_reserved">GoCoRo All Rights Reserved</string>
     <string name="hint_comment">(None)</string>
 
+    <string name="toast_coming_soon">Coming soon</string>
     <string name="toast_roast_time_zero">Roast time shouldn\'t be 0</string>
     <string name="toast_cupping_name_empty">Input the name of cup testing</string>
     <string name="toast_device_unconnected">Device unconnected</string>

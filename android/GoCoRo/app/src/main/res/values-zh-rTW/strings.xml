@@ -6,7 +6,9 @@
     <string name="activity_profile_picker">選擇烘焙記錄</string>
     <string name="activity_cupping_list">杯測記錄</string>
     <string name="activity_profile_list">烘豆記錄</string>
+    <string name="activity_more">更多</string>
     <string name="activity_le_scan">設備搜索</string>
+    <string name="activity_about">關于我們</string>
     <string name="tab_home">烘豆</string>
     <string name="tab_roast_history">記錄</string>
     <string name="tab_cupping_history">杯測</string>
@@ -29,6 +31,10 @@
     <string name="btn_start">開始</string>
     <string name="btn_set">設置</string>
     <string name="btn_cool">冷卻</string>
+    <string name="btn_knowledge">咖啡知識</string>
+    <string name="btn_buy_device">購買GoCoRo</string>
+    <string name="btn_store">商店</string>
+    <string name="btn_about">關于我們</string>
 
     <string name="label_roast_time">烘焙設置時間：%1$s</string>
     <string name="label_unknown_device">未知設備</string>
@@ -41,8 +47,13 @@
     <string name="label_cupping_profile">烘焙檔名</string>
     <string name="label_cupping_time">杯測時間</string>
     <string name="label_cupping_comment">杯測評語</string>
+    <string name="label_socialization">我們的圈子</string>
+    <string name="label_more">更多功能</string>
+    <string name="label_software_license_services_agreement">GoCoRo軟件許可及服務協議</string>
+    <string name="label_all_rights_reserved">GoCoRo版權所有</string>
     <string name="hint_comment">（無）</string>
 
+    <string name="toast_coming_soon">敬請期待</string>
     <string name="toast_roast_time_zero">烘焙時間不能為0</string>
     <string name="toast_cupping_name_empty">請輸入杯測名稱</string>
     <string name="toast_device_unconnected">設備未連接</string>

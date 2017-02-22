@@ -93,6 +93,12 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+        <activity
+            android:name=".ui.ActivityAbout"
+            android:label="@string/activity_about"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
 
         <activity
             android:name=".ui.ActivityLeScan"
