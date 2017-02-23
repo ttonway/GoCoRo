@@ -365,6 +365,7 @@ public class BluetoothDriver extends GoCoRoDriver {
                 Log.e(TAG, "create Rfcomm socket failed", e);
             }
             mmSocket = tmp;
+            Log.d(TAG, "Rfcomm socket: " + tmp);
         }
 
         public void run() {

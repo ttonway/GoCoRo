@@ -16,6 +16,7 @@
     <color name="text_white">#fff</color>
     <color name="text_light_gray">#c8cad2</color>
     <color name="text_dark">#333</color>
+    <color name="text_gray">#8a8a8a</color>
     <color name="text_cyan">#b598c4</color>
     <color name="text_orange">@color/common_orange</color>
     <color name="text_logo">#7b7b7b</color>

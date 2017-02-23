@@ -753,12 +753,6 @@ public class ActivityPlot extends BaseActivity
 
                 mDevice.setRoast(seconds, fire);
 
-                mRealm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        mProfile.setStartDruation(mProfile.getStartDruation() + seconds);
-                    }
-                });
             } else {
                 if (mDevice.getProfile() != null || mDevice.isDeviceBusy()) {
                     Toast.makeText(this, R.string.toast_now_roasting, Toast.LENGTH_SHORT).show();

@@ -12,6 +12,7 @@
     <string name="activity_more">More</string>
     <string name="activity_le_scan">Device searching</string>
     <string name="activity_about">About</string>
+    <string name="activity_knowledges">Knowledges</string>
     <string name="tab_home">Roaste</string>
     <string name="tab_roast_history">Record</string>
     <string name="tab_cupping_history">Cupping</string>

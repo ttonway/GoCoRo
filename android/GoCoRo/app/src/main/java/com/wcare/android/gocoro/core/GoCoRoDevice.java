@@ -288,9 +288,10 @@ public class GoCoRoDevice implements DriverCallback {
             // 数据帧
             case CMD_STATUS: {
                 final byte status = data[0];
-                final int time = data[2] & 0xFF | (data[1] & 0xFF) << 8;
-                final byte fire = data[3];
-                final byte temp = data[4];
+                final int time = (data[1] & 0xFF) << 8 | data[2] & 0xFF;
+                final int setTime =(data[3] & 0xFF) << 8 | data[4] & 0xFF;
+                final byte fire = data[5];
+                final byte temp = data[6];
 
                 mHandler.removeCallbacks(mTimeoutCheckRunnable);
                 mLastUpdateTime = System.currentTimeMillis();
@@ -331,6 +332,9 @@ public class GoCoRoDevice implements DriverCallback {
                                         return;
                                     }
 
+                                    if (mProfile.getStartDruation() != setTime) {
+                                        mProfile.setStartDruation(setTime);
+                                    }
 
                                     if (lastData != null && time <= lastData.getTime()) {
                                         Log.w(TAG, "Bad data found for duplicate or out-of-order.");
@@ -343,9 +347,6 @@ public class GoCoRoDevice implements DriverCallback {
                                     } else if (status == RoastData.STATUS_COOLING && mProfile.getCoolTime() == 0) {
                                         Log.d(TAG, "Cool process start!");
                                         mProfile.setCoolTime(time - 1);
-                                        if (mProfile.getRoastTime() != 0) {
-                                            mProfile.setStartDruation(time - 1 - mProfile.getRoastTime());
-                                        }
                                     }
                                     final RoastData data = realm.createObject(RoastData.class);
                                     data.setStatus(status);

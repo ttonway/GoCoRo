@@ -9,6 +9,7 @@
     <string name="activity_more">更多</string>
     <string name="activity_le_scan">設備搜索</string>
     <string name="activity_about">關于我們</string>
+    <string name="activity_knowledges">咖啡知識</string>
     <string name="tab_home">烘豆</string>
     <string name="tab_roast_history">記錄</string>
     <string name="tab_cupping_history">杯測</string>
