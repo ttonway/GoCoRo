@@ -41,6 +41,12 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.common.eventbus.Subscribe;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 import com.wcare.android.gocoro.R;
 import com.wcare.android.gocoro.bluetooth.BluetoothLeDriver;
 import com.wcare.android.gocoro.core.ErrorEvent;
@@ -982,9 +988,16 @@ public class ActivityPlot extends BaseActivity
                 startActivity(intent);
                 return true;
             case R.id.action_share:
+                Utils.shareContent(this, Utils.getChartBitmap(mChart));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

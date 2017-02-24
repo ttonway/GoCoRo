@@ -1,5 +1,6 @@
 <resources>
 
+    <string name="activity_main">烘豆趣</string>
     <string name="activity_start_roast">開始烘焙</string>
     <string name="activity_form">烘豆記錄詳情</string>
     <string name="activity_cupping">杯測</string>
@@ -54,6 +55,7 @@
     <string name="label_all_rights_reserved">GoCoRo版權所有</string>
     <string name="hint_comment">（無）</string>
 
+    <string name="toast_share_fail">分享失敗</string>
     <string name="toast_coming_soon">敬請期待</string>
     <string name="toast_roast_time_zero">烘焙時間不能為0</string>
     <string name="toast_cupping_name_empty">請輸入杯測名稱</string>

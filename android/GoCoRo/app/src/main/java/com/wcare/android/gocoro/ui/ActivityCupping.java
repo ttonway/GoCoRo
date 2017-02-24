@@ -29,9 +29,11 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
+import com.umeng.socialize.UMShareAPI;
 import com.wcare.android.gocoro.R;
 import com.wcare.android.gocoro.model.CuppingRecord;
 import com.wcare.android.gocoro.model.RoastProfile;
+import com.wcare.android.gocoro.utils.Utils;
 import com.wcare.android.gocoro.widget.RadarMarkerView;
 import com.wcare.android.gocoro.widget.SeekBar;
 
@@ -235,6 +237,7 @@ public class ActivityCupping extends BaseActivity {
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     float getScore(android.widget.SeekBar seekBar) {
@@ -394,6 +397,7 @@ public class ActivityCupping extends BaseActivity {
                 }
                 return true;
             case R.id.action_share:
+                Utils.shareContent(this, Utils.getChartBitmap(mChart));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

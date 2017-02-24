@@ -3,6 +3,7 @@
     <string name="x_celsius_unit" translatable="false">%1$d℃</string>
     <string name="x_g_unit" translatable="false">%1$dg</string>
 
+    <string name="activity_main">GoCoRo</string>
     <string name="activity_start_roast">Start</string>
     <string name="activity_form">Roasted destails</string>
     <string name="activity_cupping">Cupping</string>
@@ -57,6 +58,7 @@
     <string name="label_all_rights_reserved">GoCoRo All Rights Reserved</string>
     <string name="hint_comment">(None)</string>
 
+    <string name="toast_share_fail">Share failed</string>
     <string name="toast_coming_soon">Coming soon</string>
     <string name="toast_roast_time_zero">Roast time shouldn\'t be 0</string>
     <string name="toast_cupping_name_empty">Input the name of cup testing</string>

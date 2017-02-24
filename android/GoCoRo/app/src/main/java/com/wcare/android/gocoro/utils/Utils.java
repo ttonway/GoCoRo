@@ -1,9 +1,14 @@
 package com.wcare.android.gocoro.utils;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
@@ -11,7 +16,18 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.util.Log;
+import android.widget.Toast;
 
+
+import com.github.mikephil.charting.charts.Chart;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
+import com.wcare.android.gocoro.R;
 
 import java.io.File;
 import java.util.regex.Matcher;
@@ -254,5 +270,51 @@ public class Utils {
             str += sec + "sec";
         }
         return str;
+    }
+
+    public static Bitmap getChartBitmap(Chart chart) {
+        Bitmap returnedBitmap = Bitmap.createBitmap(chart.getWidth(), chart.getHeight(), Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(returnedBitmap);
+        canvas.drawColor(0xff2e2836);
+        chart.draw(canvas);
+        return returnedBitmap;
+    }
+
+    public static void shareContent(final Activity activity, Bitmap bitmap) {
+        ShareBoardConfig config = new ShareBoardConfig();
+        config.setShareboardPostion(ShareBoardConfig.SHAREBOARD_POSITION_CENTER);
+
+        UMImage image = new UMImage(activity, bitmap);
+        image.compressStyle = UMImage.CompressStyle.QUALITY;//质量压缩，适合长图的分享
+        UMImage thumb = new UMImage(activity, bitmap);
+        image.setThumb(thumb);
+
+        new ShareAction(activity)
+                .withText(activity.getString(R.string.app_name))
+                .withMedia(image)
+                .setDisplayList(SHARE_MEDIA.FACEBOOK, SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE)
+//                .addButton("umeng_sharebutton_copy", "umeng_sharebutton_copy", "umeng_socialize_copy", "umeng_socialize_copy")
+                .setCallback(new UMShareListener() {
+                    @Override
+                    public void onStart(SHARE_MEDIA share_media) {
+
+                    }
+
+                    @Override
+                    public void onResult(SHARE_MEDIA share_media) {
+                        Log.d(TAG, "shared success on " + share_media);
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+                        Log.e(TAG, "shared fail on " + share_media, throwable);
+                        Toast.makeText(activity, R.string.toast_share_fail, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media) {
+
+                    }
+                }).open(config);
     }
 }

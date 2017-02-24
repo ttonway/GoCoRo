@@ -24,19 +24,30 @@ android {
     }
 
     signingConfigs {
-        config {
+        debug {
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+            storeFile file('debug.keystore')
+            storePassword "android"
+        }
+        release {
             keyAlias 'ttxs'
             keyPassword 'androidgood'
-            storeFile file('../ttxs.keystore')
+            storeFile file('ttxs.keystore')
             storePassword 'androidgood'
         }
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
+            signingConfig signingConfigs.release
         }
     }
 
