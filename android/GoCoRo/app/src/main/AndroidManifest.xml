@@ -92,7 +92,7 @@
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="TODO" />
+            android:value="378363195865323" />
 
         <service android:name=".core.BackgroundService" />
 

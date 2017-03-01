@@ -29,9 +29,9 @@ public class GoCoRoApplicatoin extends Application {
 
     //各个平台的配置，建议放在全局Application或者程序入口
     {
-        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+        PlatformConfig.setWeixin("wx5ef8e20ebea2577c", "09e997da762195329e513d724f451f67");
         //豆瓣RENREN平台目前只能在服务器端配置
-        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com");
+        PlatformConfig.setSinaWeibo("1771001407", "fb08ed3cb0134002785b0006f4507270", "http://sns.whalecloud.com");
         PlatformConfig.setQQZone("1105931595", "EQV0iukAzQqWgyR3");
     }
 

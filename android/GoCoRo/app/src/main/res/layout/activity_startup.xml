@@ -31,7 +31,7 @@
         <TableRow android:gravity="center_vertical">
 
             <TextView
-                android:text="产地国家"
+                android:text="@string/label_country"
                 android:textColor="@color/text_dark"
                 android:textSize="@dimen/default_textsize" />
 
@@ -48,7 +48,7 @@
         <TableRow android:gravity="center_vertical">
 
             <TextView
-                android:text="庄园品种"
+                android:text="@string/label_bean"
                 android:textColor="@color/text_dark"
                 android:textSize="@dimen/default_textsize" />
 
@@ -65,7 +65,7 @@
         <TableRow android:gravity="center_vertical">
 
             <TextView
-                android:text="烘焙者"
+                android:text="@string/label_people"
                 android:textColor="@color/text_dark"
                 android:textSize="@dimen/default_textsize" />
 
@@ -82,7 +82,7 @@
         <TableRow android:gravity="center_vertical">
 
             <TextView
-                android:text="入豆重量"
+                android:text="@string/label_begin_weight"
                 android:textColor="@color/text_dark"
                 android:textSize="@dimen/default_textsize" />
 
@@ -97,7 +97,7 @@
                 android:textSize="@dimen/default_textsize" />
 
             <TextView
-                android:text="气温"
+                android:text="@string/label_temperature"
                 android:textColor="@color/text_dark"
                 android:textSize="@dimen/default_textsize" />
 
@@ -136,6 +136,7 @@
             android:background="@drawable/btn_primary_background"
             android:drawableStart="@drawable/ic_coffee_bean_small"
             android:minHeight="0dp"
+            android:minWidth="100dp"
             android:text="@string/btn_start_roast"
             android:textAllCaps="false"
             android:textColor="@color/text_white"

@@ -41,6 +41,17 @@
     <string name="btn_store">Store</string>
     <string name="btn_about">About</string>
 
+    <string name="label_people">People</string>
+    <string name="label_country">Country</string>
+    <string name="label_bean">Bean</string>
+    <string name="label_begin_weight">Begin weight</string>
+    <string name="label_end_weight">End weight</string>
+    <string name="label_weight_ratio">Loss ratio</string>
+    <string name="label_temperature">Temperature</string>
+    <string name="label_date">Date</string>
+    <string name="label_begin_time">Begin time</string>
+    <string name="label_end_time">End time</string>
+    <string name="label_start_fire">Fire</string>
     <string name="label_roast_time">Roast time Setting: %1$s</string>
     <string name="label_unknown_device">Unknown device</string>
     <string name="label_lasttime">Last</string>

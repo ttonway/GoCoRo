@@ -283,6 +283,8 @@ public class Utils {
     public static void shareContent(final Activity activity, Bitmap bitmap) {
         ShareBoardConfig config = new ShareBoardConfig();
         config.setShareboardPostion(ShareBoardConfig.SHAREBOARD_POSITION_CENTER);
+        config.setTitleVisibility(false);
+        config.setCancelButtonText(activity.getString(R.string.btn_cancel));
 
         UMImage image = new UMImage(activity, bitmap);
         image.compressStyle = UMImage.CompressStyle.QUALITY;//质量压缩，适合长图的分享

@@ -9,7 +9,7 @@
 
         <TextView
             style="@style/Widget.TableCell"
-            android:text="烘培者" />
+            android:text="@string/label_people" />
 
         <EditText
             android:id="@+id/text_people"
@@ -20,7 +20,7 @@
 
         <TextView
             style="@style/Widget.TableCell"
-            android:text="产地（国家）" />
+            android:text="@string/label_country" />
 
         <EditText
             android:id="@+id/text_country"
@@ -31,7 +31,7 @@
 
         <TextView
             style="@style/Widget.TableCell"
-            android:text="品种" />
+            android:text="@string/label_bean" />
 
         <EditText
             android:id="@+id/text_bean"
@@ -43,7 +43,7 @@
 
         <TextView
             style="@style/Widget.TableCell"
-            android:text="入豆重量" />
+            android:text="@string/label_begin_weight" />
 
         <EditText
             android:id="@+id/text_begin_weight"
@@ -55,7 +55,7 @@
 
         <TextView
             style="@style/Widget.TableCell"
-            android:text="出豆重量" />
+            android:text="@string/label_end_weight" />
 
         <EditText
             android:id="@+id/text_end_weight"
@@ -67,7 +67,7 @@
 
         <TextView
             style="@style/Widget.TableCell"
-            android:text="失重比（出豆／入豆）" />
+            android:text="@string/label_weight_ratio" />
 
         <TextView
             android:id="@+id/text_weight_ratio"
@@ -78,7 +78,7 @@
 
         <TextView
             style="@style/Widget.TableCell"
-            android:text="当日气温" />
+            android:text="@string/label_temperature" />
 
         <EditText
             android:id="@+id/text_env_temperature"
@@ -90,7 +90,7 @@
 
         <TextView
             style="@style/Widget.TableCell"
-            android:text="烘培日期" />
+            android:text="@string/label_date" />
 
         <TextView
             android:id="@+id/text_date"
@@ -102,7 +102,7 @@
 
         <TextView
             style="@style/Widget.TableCell"
-            android:text="烘培开始时间" />
+            android:text="@string/label_begin_time" />
 
         <TextView
             android:id="@+id/text_begin_time"
@@ -113,7 +113,7 @@
 
         <TextView
             style="@style/Widget.TableCell"
-            android:text="烘培结束时间" />
+            android:text="@string/label_end_time" />
 
         <TextView
             android:id="@+id/text_end_time"
@@ -124,7 +124,7 @@
 
         <TextView
             style="@style/Widget.TableCell"
-            android:text="起始火力设定" />
+            android:text="@string/label_start_fire" />
 
         <TextView
             android:id="@+id/text_start_fire"

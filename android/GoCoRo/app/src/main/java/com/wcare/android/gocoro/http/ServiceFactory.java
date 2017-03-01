@@ -14,7 +14,7 @@ public class ServiceFactory {
     public static synchronized WebService getWebService() {
         if (sWebService == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.1.109:3000/")
+                    .baseUrl("http://beta.wcare.cn:3003/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 

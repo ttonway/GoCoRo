@@ -38,6 +38,17 @@
     <string name="btn_store">商店</string>
     <string name="btn_about">关于我们</string>
 
+    <string name="label_people">烘培者</string>
+    <string name="label_country">产地（国家）</string>
+    <string name="label_bean">品种</string>
+    <string name="label_begin_weight">入豆重量</string>
+    <string name="label_end_weight">出豆重量</string>
+    <string name="label_weight_ratio">失重比（出豆／入豆）</string>
+    <string name="label_temperature">当日气温</string>
+    <string name="label_date">烘培日期</string>
+    <string name="label_begin_time">烘培开始时间</string>
+    <string name="label_end_time">烘培结束时间</string>
+    <string name="label_start_fire">起始火力设定</string>
     <string name="label_roast_time">烘焙设置时间：%1$s</string>
     <string name="label_unknown_device">未知设备</string>
     <string name="label_lasttime">上一次</string>
