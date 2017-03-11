@@ -9,7 +9,8 @@
     <string name="activity_profile_list">烘豆記錄</string>
     <string name="activity_more">更多</string>
     <string name="activity_le_scan">設備搜索</string>
-    <string name="activity_about">關于我們</string>
+    <string name="activity_about">關於我們</string>
+    <string name="activity_coporate">與我們合作</string>
     <string name="activity_knowledges">咖啡知識</string>
     <string name="tab_home">烘豆</string>
     <string name="tab_roast_history">記錄</string>
@@ -35,9 +36,13 @@
     <string name="btn_cool">冷卻</string>
     <string name="btn_knowledge">咖啡知識</string>
     <string name="btn_buy_device">購買GoCoRo</string>
+    <string name="btn_buy_bean">生豆團購</string>
+    <string name="btn_coporate">與我們合作</string>
+    <string name="btn_news">最新消息</string>
     <string name="btn_store">商店</string>
-    <string name="btn_about">關于我們</string>
+    <string name="btn_about">關於我們</string>
 
+    <string name="label_roast_time">烘焙時間</string>
     <string name="label_people">烘培者</string>
     <string name="label_country">産地（國家）</string>
     <string name="label_bean">品種</string>
@@ -49,7 +54,7 @@
     <string name="label_begin_time">烘培開始時間</string>
     <string name="label_end_time">烘培結束時間</string>
     <string name="label_start_fire">起始火力設定</string>
-    <string name="label_roast_time">烘焙設置時間：%1$s</string>
+    <string name="label_roast_time_x">烘焙設置時間：%1$s</string>
     <string name="label_unknown_device">未知設備</string>
     <string name="label_lasttime">上一次</string>
     <string name="label_no_profile">您還沒有烘焙過</string>
@@ -115,5 +120,38 @@
     <string name="cupping_item8">一致度</string>
     <string name="cupping_item9">乾淨度</string>
     <string name="cupping_item10">甜度</string>
+
+    <string name="about_content">GoCoRo 豆酷樂 : 自己烘豆，是一件很酷又有樂趣的享受!!\n
+\n
+GoCoRo 是一群喜愛咖啡的科技人, 透過自己的專業領域用科技去解鎖咖啡烘焙的難度，希望找到與我們一樣熱愛咖啡的人，讓咖啡的消費更加平民化，一起傳播健康的咖啡文化。\n
+\n
+我們以專業的工匠精神，為中小型咖啡店家、咖啡發燒友、甚至喜愛咖啡的朋友們打造一款，化繁為簡，安全可靠，智慧卓越的咖啡豆烘焙機。\n
+\n
+現在, 我們更推出APP更方便為烘豆增添了樂趣, 關於咖啡烘焙曲線與記錄，我們認為APP不應該僅僅受限只是份文件或是圖面，而是可以重複restore讓烘豆更簡便可以專業的自動去烘焙， 所以未來所記錄的烘焙的檔案是可以重新使用去自動控制GoCoRo執行烘豆作業。\n
+\n
+另外，我們本著初衷要將簡單烘焙跟學習享受咖啡的各項知識，無論您未來是否擁有GoCoRo, ProAPP將免費提供下載可以使用其他附加的功能與介面，我相信真正喜歡咖啡的朋友是樂於分享, GoCoRo 團隊將以科技的專長協助將自烘新鮮咖啡的文化散播開來，我們也將在ProAPP上繼續增加與咖啡相關的介面功能, 只要您喜歡咖啡跟有想法能夠讓精緻美味的咖啡更加平民化，都歡迎您來找我們共同研究這GoCoRo 與ProAPP的未來發展。\n
+\n\n
+Make your coffee style, Let\'s GoCoRo!!\n
+自己的咖啡風格，自己決定！！</string>
+
+    <string name="coporate_content">1.	產品共同開發合作\n
+    GoCoRo將以現有的技術基礎,繼續投入產品機種的改良與開發, 未來將研發更具競爭優勢的600G可編輯全自動烘焙的咖啡烘豆機\n
+    如果您具備咖啡相關行業的經銷代理資格並有意願投資GoCoRo團隊成為未來的產品合作夥伴, 請使用以下管道聯繫:\n
+    Mail to: fred.feng@synmaster.com\n
+    聯繫電話: 886-3-3177618\n
+\n
+    2.	區域經銷代理合作\n
+    我們竭誠歡迎各地區經銷合作夥伴的加入, 請洽以下聯繫管道:\n
+    Mail to: jasmine.yue@synmaster.com\n
+    聯繫電話: 86-13881197339\n
+\n
+    3.	其他合作\n
+    Home Café (烘咖啡):\n
+    Home Café 是一種把咖啡店當成自己家(Home)想法的理念, 我們希望能過透過結合GoCoRo產品的使用, 讓上門的客戶能夠自己體驗”烘咖啡”, 在烘豆的過程中, 客戶可以點杯咖啡, 一面喝咖啡一面享受烘豆過程的美好時光, 我們希望店家不只是販售新鮮烘焙的咖啡豆,而是能更進一步的讓喜愛咖啡的朋友自己能夠接觸並體驗烘豆的樂趣!!\n
+\n
+    想了解更多的合作內容,請洽以下聯繫管道:\n
+    Mail to: fred.feng@synmaster.com\n
+    聯繫電話: 886-3-3177618
+    </string>
 
 </resources>

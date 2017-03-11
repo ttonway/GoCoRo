@@ -69,6 +69,17 @@
                 android:textColor="#776d7d" />
 
             <Button
+                android:id="@+id/btn_buy_bean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/ic_shopping"
+                android:padding="4dp"
+                android:text="@string/btn_buy_bean"
+                android:textColor="#776d7d" />
+
+            <Button
                 android:id="@+id/btn_store"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,6 +88,36 @@
                 android:drawableTop="@drawable/ic_store"
                 android:padding="4dp"
                 android:text="@string/btn_store"
+                android:textColor="#776d7d" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_news"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/ic_news"
+                android:padding="4dp"
+                android:text="@string/btn_news"
+                android:textColor="#776d7d" />
+
+            <Button
+                android:id="@+id/btn_coporate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/ic_about"
+                android:padding="4dp"
+                android:text="@string/btn_coporate"
                 android:textColor="#776d7d" />
 
             <Button
@@ -89,6 +130,17 @@
                 android:padding="4dp"
                 android:text="@string/btn_about"
                 android:textColor="#776d7d" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/ic_about"
+                android:padding="4dp"
+                android:text="@string/btn_about"
+                android:textColor="#776d7d"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <View

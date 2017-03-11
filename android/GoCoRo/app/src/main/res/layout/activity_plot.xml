@@ -34,11 +34,22 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.wcare.android.gocoro.widget.CustomNumberPicker
+                <!-- <com.wcare.android.gocoro.widget.CustomNumberPicker
                     android:id="@+id/picker_minute"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:picker_layout="@layout/number_picker_inverse" />
+                    app:picker_layout="@layout/number_picker_inverse" /> -->
+
+                <com.wcare.android.gocoro.widget.TimeTextView
+                    android:id="@+id/text_minute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dark_edittext"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/text_white"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -49,11 +60,22 @@
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
-                <com.wcare.android.gocoro.widget.CustomNumberPicker
+                <!-- <com.wcare.android.gocoro.widget.CustomNumberPicker
                     android:id="@+id/picker_second"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:picker_layout="@layout/number_picker" />
+                    app:picker_layout="@layout/number_picker" /> -->
+
+                <com.wcare.android.gocoro.widget.TimeTextView
+                    android:id="@+id/text_second"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dark_edittext"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/text_white"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/btn_roast"

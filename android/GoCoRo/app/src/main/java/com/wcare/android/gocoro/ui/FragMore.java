@@ -54,11 +54,21 @@ public class FragMore extends BaseFragment {
         startActivity(intent);
     }
 
+    @OnClick(R.id.btn_news)
+    public void gotoNews() {
+        Toast.makeText(getActivity(), R.string.toast_coming_soon, Toast.LENGTH_SHORT).show();
+    }
+
     @OnClick(R.id.btn_buy_device)
     public void gotoBuyDevice() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("https://abudodo.world.taobao.com/"));
         startActivity(intent);
+    }
+
+    @OnClick(R.id.btn_buy_bean)
+    public void gotoBuyBean() {
+        Toast.makeText(getActivity(), R.string.toast_coming_soon, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btn_store)
@@ -69,6 +79,12 @@ public class FragMore extends BaseFragment {
     @OnClick(R.id.btn_about)
     public void gotoAbout() {
         Intent intent = new Intent(getActivity(), ActivityAbout.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.btn_coporate)
+    public void gotoCoporate() {
+        Intent intent = new Intent(getActivity(), ActivityCoporate.class);
         startActivity(intent);
     }
 

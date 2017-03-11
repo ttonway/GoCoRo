@@ -57,10 +57,12 @@ import com.wcare.android.gocoro.model.RoastData;
 import com.wcare.android.gocoro.model.RoastProfile;
 import com.wcare.android.gocoro.ui.dialog.AlertDialog;
 import com.wcare.android.gocoro.ui.dialog.EventTimeDialog;
+import com.wcare.android.gocoro.ui.dialog.TimeDialog;
 import com.wcare.android.gocoro.utils.Utils;
 import com.wcare.android.gocoro.widget.EventButton;
 import com.wcare.android.gocoro.widget.LineMarkerView;
 import com.wcare.android.gocoro.widget.CustomNumberPicker;
+import com.wcare.android.gocoro.widget.TimeTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,10 +136,10 @@ public class ActivityPlot extends BaseActivity
 
     @BindView(R.id.chart)
     CombinedChart mChart;
-    @BindView(R.id.picker_minute)
-    CustomNumberPicker mMinutePicker;
-    @BindView(R.id.picker_second)
-    CustomNumberPicker mSecondPicker;
+    @BindView(R.id.text_minute)
+    TimeTextView mMinuteTextView;
+    @BindView(R.id.text_second)
+    TimeTextView mSecondTextView;
     @BindView(R.id.ratingbar)
     RatingBar mRatingBar;
     @BindView(R.id.btn_roast)
@@ -194,7 +196,7 @@ public class ActivityPlot extends BaseActivity
                 mWeightTextView.setText(weight);
             }
             if (result.getStartDruation() > 0) {
-                String time = getString(R.string.label_roast_time, Utils.formatTime(result.getStartDruation()));
+                String time = getString(R.string.label_roast_time_x, Utils.formatTime(result.getStartDruation()));
                 if (!TextUtils.equals(mRoastTimeTextView.getText(), time)) {
                     mRoastTimeTextView.setText(time);
                 }
@@ -299,12 +301,12 @@ public class ActivityPlot extends BaseActivity
 
         mLogoTextView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Bauhaus93.ttf"));
         setupChart();
-        mMinutePicker.setFormatter(CustomNumberPicker.getTwoDigitFormatter());
-        mMinutePicker.setMaxValue(59);
-        mMinutePicker.setMinValue(0);
-        mSecondPicker.setFormatter(CustomNumberPicker.getTwoDigitFormatter());
-        mSecondPicker.setMaxValue(59);
-        mSecondPicker.setMinValue(0);
+//        mMinutePicker.setFormatter(CustomNumberPicker.getTwoDigitFormatter());
+//        mMinutePicker.setMaxValue(59);
+//        mMinutePicker.setMinValue(0);
+//        mSecondPicker.setFormatter(CustomNumberPicker.getTwoDigitFormatter());
+//        mSecondPicker.setMaxValue(59);
+//        mSecondPicker.setMinValue(0);
         mEventButton1.setEventName(getString(R.string.event_burst1_start_abbr));
         mEventButton2.setEventName(getString(R.string.event_burst1_abbr));
         mEventButton3.setEventName(getString(R.string.event_burst2_start_abbr));
@@ -393,8 +395,8 @@ public class ActivityPlot extends BaseActivity
             mTopContainer.setVisibility(View.GONE);
             mBottomContainer.setVisibility(View.GONE);
         }
-        mMinutePicker.setValue(minute);
-        mSecondPicker.setValue(second);
+        mMinuteTextView.setValue(minute);
+        mSecondTextView.setValue(second);
         mRatingBar.setRating(fire);
         mChart.invalidate();
     }
@@ -718,6 +720,21 @@ public class ActivityPlot extends BaseActivity
         Log.i(TAG, "Nothing selected.");
     }
 
+    @OnClick({R.id.text_minute, R.id.text_second})
+    public void changeRoastTime() {
+        final int seconds = mMinuteTextView.getValue() * 60 + mSecondTextView.getValue();
+        TimeDialog dialog = TimeDialog.newInstance(seconds);
+        dialog.show(getSupportFragmentManager(), "roast-time");
+    }
+
+    public void changeRoastTime(int seconds) {
+        int minutes = seconds / 60;
+        seconds = seconds - minutes * 60;
+
+        mMinuteTextView.setValue(minutes);
+        mSecondTextView.setValue(seconds);
+    }
+
     public void restoreRoast() {
         mSetButton.setText(R.string.btn_set);
 
@@ -730,9 +747,7 @@ public class ActivityPlot extends BaseActivity
 
     @OnClick(R.id.btn_roast)
     void startRoast(Button button) {
-        mMinutePicker.clearFocus();
-        mSecondPicker.clearFocus();
-        final int seconds = mMinutePicker.getValue() * 60 + mSecondPicker.getValue();
+        final int seconds = mMinuteTextView.getValue() * 60 + mSecondTextView.getValue();
         final int fire = (int) mRatingBar.getRating();
 
         if (seconds == 0) {
@@ -783,8 +798,8 @@ public class ActivityPlot extends BaseActivity
                 });
             }
 
-            mMinutePicker.setValue(0);
-            mSecondPicker.setValue(0);
+            mMinuteTextView.setValue(0);
+            mSecondTextView.setValue(0);
         }
     }
 

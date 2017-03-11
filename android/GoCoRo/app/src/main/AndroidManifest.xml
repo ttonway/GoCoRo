@@ -153,6 +153,10 @@
             android:label="@string/activity_about"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.ActivityCoporate"
+            android:label="@string/activity_coporate"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.ActivityWebView"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />

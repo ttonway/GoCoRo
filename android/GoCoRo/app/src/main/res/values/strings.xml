@@ -13,6 +13,7 @@
     <string name="activity_more">More</string>
     <string name="activity_le_scan">Device searching</string>
     <string name="activity_about">About</string>
+    <string name="activity_coporate">Coporate</string>
     <string name="activity_knowledges">Knowledges</string>
     <string name="tab_home">Roaste</string>
     <string name="tab_roast_history">Record</string>
@@ -38,9 +39,13 @@
     <string name="btn_cool">Cool</string>
     <string name="btn_knowledge">Knowledges</string>
     <string name="btn_buy_device">Buy GoCoRo</string>
+    <string name="btn_buy_bean">Buy Bean</string>
+    <string name="btn_coporate">Coporate</string>
+    <string name="btn_news">News</string>
     <string name="btn_store">Store</string>
     <string name="btn_about">About</string>
 
+    <string name="label_roast_time">Roast time</string>
     <string name="label_people">People</string>
     <string name="label_country">Country</string>
     <string name="label_bean">Bean</string>
@@ -52,7 +57,7 @@
     <string name="label_begin_time">Begin time</string>
     <string name="label_end_time">End time</string>
     <string name="label_start_fire">Fire</string>
-    <string name="label_roast_time">Roast time Setting: %1$s</string>
+    <string name="label_roast_time_x">Roast time Setting: %1$s</string>
     <string name="label_unknown_device">Unknown device</string>
     <string name="label_lasttime">Last</string>
     <string name="label_no_profile">You don\'t have roast history</string>
@@ -108,17 +113,17 @@
     <string name="event_unrecorded">Unrecorded</string>
     <string name="event_recorded">Record</string>
 
-<!-- 分別為:
-1. Aroma 香氣 (乾香, 濕香)
-2. Flavor  風味
-3. Aftertaste 餘韻
-4. Acidity  酸度
-5. Body 口感
-6. Balance 平衡
-7. Overall  整體性
-Uniformity, Clean Cup, Sweetness
-瑕疵	Ｄefect
--->
+    <!-- 分別為:
+    1. Aroma 香氣 (乾香, 濕香)
+    2. Flavor  風味
+    3. Aftertaste 餘韻
+    4. Acidity  酸度
+    5. Body 口感
+    6. Balance 平衡
+    7. Overall  整體性
+    Uniformity, Clean Cup, Sweetness
+    瑕疵	Ｄefect
+    -->
     <string name="cupping_item1">Aroma</string>
     <string name="cupping_item2">Flavor</string>
     <string name="cupping_item3">Aftertaste</string>
@@ -129,5 +134,38 @@ Uniformity, Clean Cup, Sweetness
     <string name="cupping_item8">Uniformity</string>
     <string name="cupping_item9">Clean cup</string>
     <string name="cupping_item10">Sweetness</string>
+
+    <string name="about_content">GoCoRo 豆酷乐 : 自己烘豆，是一件很酷又有乐趣的享受!!\n
+\n
+GoCoRo 是一群喜爱咖啡的科技人, 透过自己的专业领域用科技去解锁咖啡烘焙的难度，希望找到与我们一样热爱咖啡的人，让咖啡的消费更加平民化，一起传播健康的咖啡文化。\n
+\n
+我们以专业的工匠精神，为中小型咖啡店家、咖啡发烧友、甚至喜爱咖啡的朋友们打造一款，化繁为简，安全可靠，智慧卓越的咖啡豆烘焙机。\n
+\n
+现在, 我们更推出APP更方便为烘豆增添了乐趣, 关于咖啡烘焙曲线与记录，我们认为APP不应该仅仅受限只是份文件或是图面，而是可以重複restore让烘豆更简便可以专业的自动去烘焙， 所以未来所记录的烘焙的档案是可以重新使用去自动控制GoCoRo执行烘豆作业。\n
+\n
+另外，我们本著初衷要将简单烘焙跟学习享受咖啡的各项知识，无论您未来是否拥有GoCoRo, ProAPP将免费提供下载可以使用其他附加的功能与介面，我相信真正喜欢咖啡的朋友是乐于分享, GoCoRo 团队将以科技的专长协助将自烘新鲜咖啡的文化散播开来，我们也将在ProAPP上继续增加与咖啡相关的介面功能, 只要您喜欢咖啡跟有想法能够让精緻美味的咖啡更加平民化，都欢迎您来找我们共同研究这GoCoRo 与ProAPP的未来发展。\n
+\n\n
+Make your coffee style, Let\'s GoCoRo!!\n
+自己的咖啡风格，自己决定！！</string>
+
+    <string name="coporate_content">1.	产品共同开发合作\n
+    GoCoRo将以现有的技术基础,继续投入产品机种的改良与开发, 未来将研发更具竞争优势的600G可编辑全自动烘焙的咖啡烘豆机\n
+    如果您具备咖啡相关行业的经销代理资格并有意愿投资GoCoRo团队成为未来的产品合作伙伴, 请使用以下管道联繫:\n
+    Mail to: fred.feng@synmaster.com\n
+    联繫电话: 886-3-3177618\n
+\n
+    2.	区域经销代理合作\n
+    我们竭诚欢迎各地区经销合作伙伴的加入, 请洽以下联繫管道:\n
+    Mail to: jasmine.yue@synmaster.com\n
+    联繫电话: 86-13881197339\n
+\n
+    3.	其他合作\n
+    Home Café (烘咖啡):\n
+    Home Café 是一种把咖啡店当成自己家(Home)想法的理念, 我们希望能过透过结合GoCoRo产品的使用, 让上门的客户能够自己体验”烘咖啡”, 在烘豆的过程中, 客户可以点杯咖啡, 一面喝咖啡一面享受烘豆过程的美好时光, 我们希望店家不只是贩售新鲜烘焙的咖啡豆,而是能更进一步的让喜爱咖啡的朋友自己能够接触并体验烘豆的乐趣!!\n
+\n
+    想了解更多的合作内容,请洽以下联繫管道:\n
+    Mail to: fred.feng@synmaster.com\n
+    联繫电话: 886-3-3177618
+    </string>
 
 </resources>
