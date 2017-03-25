@@ -90,11 +90,15 @@
                 android:id="@+id/input_weight"
                 android:layout_width="0dp"
                 android:layout_margin="8dp"
+                android:layout_span="3"
                 android:background="@drawable/edittext_background"
                 android:inputType="number"
                 android:singleLine="true"
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/default_textsize" />
+        </TableRow>
+
+        <TableRow android:gravity="center_vertical">
 
             <TextView
                 android:text="@string/label_temperature"
@@ -111,6 +115,18 @@
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/default_textsize" />
 
+            <TextView
+                android:text="@string/label_cool_temperature"
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/default_textsize" />
+
+            <Spinner
+                android:id="@+id/spinner_cool_temp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/edittext_background"
+                android:spinnerMode="dialog" />
         </TableRow>
 
     </TableLayout>

@@ -30,6 +30,8 @@ import com.umeng.socialize.utils.ShareBoardlistener;
 import com.wcare.android.gocoro.R;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -272,6 +274,25 @@ public class Utils {
         return str;
     }
 
+    public static boolean saveImage(Bitmap bitmap, File file) {
+
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "saveImage fail.", e);
+            return false;
+        } finally {
+            try {
+                out.close();
+            } catch (IOException ignored) {
+            }
+        }
+    }
+
     public static Bitmap getChartBitmap(Chart chart) {
         Bitmap returnedBitmap = Bitmap.createBitmap(chart.getWidth(), chart.getHeight(), Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(returnedBitmap);
@@ -310,7 +331,7 @@ public class Utils {
                     @Override
                     public void onError(SHARE_MEDIA share_media, Throwable throwable) {
                         Log.e(TAG, "shared fail on " + share_media, throwable);
-                        Toast.makeText(activity, R.string.toast_share_fail, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, activity.getString(R.string.toast_share_fail) + " " + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

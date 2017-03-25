@@ -27,6 +27,7 @@ public class RoastProfile extends RealmObject {
 
     int startFire;
     int startDruation;// in seconds
+    int coolTemperature;
     int preHeatTime;
     int roastTime;
     int coolTime;
@@ -156,6 +157,14 @@ public class RoastProfile extends RealmObject {
 
     public void setComplete(boolean complete) {
         this.complete = complete;
+    }
+
+    public int getCoolTemperature() {
+        return coolTemperature;
+    }
+
+    public void setCoolTemperature(int coolTemperature) {
+        this.coolTemperature = coolTemperature;
     }
 
     public String getFullName() {

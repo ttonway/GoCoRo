@@ -5,14 +5,19 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.wcare.android.gocoro.R;
 import com.wcare.android.gocoro.model.RoastProfile;
 import com.wcare.android.gocoro.ui.adapter.SelectProfileAdapter;
 import com.wcare.android.gocoro.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -41,6 +46,8 @@ public class ActivityStartRoast extends BaseActivity {
     EditText mInputWeight;
     @BindView(R.id.input_temperature)
     EditText mInputTemperature;
+    @BindView(R.id.spinner_cool_temp)
+    Spinner mSpinnerCoolTemp;
 
     @BindView(R.id.list)
     ListView mListView;
@@ -57,6 +64,16 @@ public class ActivityStartRoast extends BaseActivity {
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        List<CoolTemperature> list = new ArrayList<>();
+        final int[] array = new int[]{40, 50, 60, 70, 80};
+        for (int t : array) {
+            list.add(new CoolTemperature(t, getString(R.string.x_celsius_unit, t)));
+        }
+        ArrayAdapter<CoolTemperature> adapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        mSpinnerCoolTemp.setAdapter(adapter);
+        mSpinnerCoolTemp.setSelection(3);
 
         mRealm = Realm.getDefaultInstance();
         mProfiles = mRealm.where(RoastProfile.class).greaterThan("startTime", 0).findAll().sort("startTime", Sort.DESCENDING);
@@ -83,6 +100,11 @@ public class ActivityStartRoast extends BaseActivity {
                         mInputPeople.setText(selected.getPeople());
                         mInputWeight.setText(String.valueOf((int) selected.getStartWeight()));
                         mInputTemperature.setText(String.valueOf(selected.getEnvTemperature()));
+                        int coolTemp = selected.getCoolTemperature();
+                        int index = Arrays.binarySearch(array, coolTemp);
+                        if (index >= 0) {
+                            mSpinnerCoolTemp.setSelection(index);
+                        }
                     }
                 }
             }
@@ -105,11 +127,29 @@ public class ActivityStartRoast extends BaseActivity {
         profile.setBeanName(mInputBean.getText().toString());
         profile.setStartWeight(Utils.parseInt(mInputWeight.getText().toString()));
         profile.setEnvTemperature(Utils.parseInt(mInputTemperature.getText().toString()));
+        CoolTemperature bean = (CoolTemperature) mSpinnerCoolTemp.getSelectedItem();
+        profile.setCoolTemperature(bean.temperature);
         mRealm.commitTransaction();
 
         RoastProfile reference = mAdapter.getSelectedProfile();
 
         ActivityPlot.startRoast(this, profile.getUuid(), reference == null ? null : reference.getUuid());
         finish();
+    }
+
+
+    private static class CoolTemperature {
+        int temperature;
+        String name;
+
+        public CoolTemperature(int temperature, String name) {
+            this.temperature = temperature;
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 }

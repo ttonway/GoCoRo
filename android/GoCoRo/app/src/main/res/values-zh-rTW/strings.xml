@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="activity_main">烘豆趣</string>
+    <string name="activity_main">豆酷樂</string>
     <string name="activity_start_roast">開始烘焙</string>
     <string name="activity_form">烘豆記錄詳情</string>
     <string name="activity_cupping">杯測</string>
@@ -12,6 +12,7 @@
     <string name="activity_about">關於我們</string>
     <string name="activity_coporate">與我們合作</string>
     <string name="activity_knowledges">咖啡知識</string>
+    <string name="activity_news">最新消息</string>
     <string name="tab_home">烘豆</string>
     <string name="tab_roast_history">記錄</string>
     <string name="tab_cupping_history">杯測</string>
@@ -50,6 +51,7 @@
     <string name="label_end_weight">出豆重量</string>
     <string name="label_weight_ratio">失重比（出豆／入豆）</string>
     <string name="label_temperature">當日氣溫</string>
+    <string name="label_cool_temperature">冷卻溫度</string>
     <string name="label_date">烘培日期</string>
     <string name="label_begin_time">烘培開始時間</string>
     <string name="label_end_time">烘培結束時間</string>
@@ -135,23 +137,26 @@ Make your coffee style, Let\'s GoCoRo!!\n
 自己的咖啡風格，自己決定！！</string>
 
     <string name="coporate_content">1.	產品共同開發合作\n
-    GoCoRo將以現有的技術基礎,繼續投入產品機種的改良與開發, 未來將研發更具競爭優勢的600G可編輯全自動烘焙的咖啡烘豆機\n
-    如果您具備咖啡相關行業的經銷代理資格並有意願投資GoCoRo團隊成為未來的產品合作夥伴, 請使用以下管道聯繫:\n
-    Mail to: fred.feng@synmaster.com\n
-    聯繫電話: 886-3-3177618\n
+GoCoRo將以現有的技術基礎,繼續投入產品機種的改良與開發, 未來將研發更具競爭優勢的600G可編輯全自動烘焙的咖啡烘豆機\n
+如果您具備咖啡相關行業的經銷代理資格並有意願投資GoCoRo團隊成為未來的產品合作夥伴, 請使用以下管道聯繫:\n
+Mail to: fred.feng@synmaster.com\n
+聯繫電話: 886-3-3177618\n
 \n
-    2.	區域經銷代理合作\n
-    我們竭誠歡迎各地區經銷合作夥伴的加入, 請洽以下聯繫管道:\n
-    Mail to: jasmine.yue@synmaster.com\n
-    聯繫電話: 86-13881197339\n
+2.	區域經銷代理合作\n
+我們竭誠歡迎各地區經銷合作夥伴的加入, 請洽以下聯繫管道:\n
+中國大陸:\n
+Mail to: jasmine.yue@synmaster.com\n
+聯繫電話: 86-13881197339\n
+台灣:\n
+Mail to: fred.feng@synmaster.com\n
+聯繫電話: 886-3-3177618\n
 \n
-    3.	其他合作\n
-    Home Café (烘咖啡):\n
-    Home Café 是一種把咖啡店當成自己家(Home)想法的理念, 我們希望能過透過結合GoCoRo產品的使用, 讓上門的客戶能夠自己體驗”烘咖啡”, 在烘豆的過程中, 客戶可以點杯咖啡, 一面喝咖啡一面享受烘豆過程的美好時光, 我們希望店家不只是販售新鮮烘焙的咖啡豆,而是能更進一步的讓喜愛咖啡的朋友自己能夠接觸並體驗烘豆的樂趣!!\n
+3.	其他合作\n
+Home Café (烘咖啡):\n
+Home Café 是一種把咖啡店當成自己家(Home)想法的理念, 我們希望能過透過結合GoCoRo產品的使用, 讓上門的客戶能夠自己體驗”烘咖啡”, 在烘豆的過程中, 客戶可以點杯咖啡, 一面喝咖啡一面享受烘豆過程的美好時光, 我們希望店家不只是販售新鮮烘焙的咖啡豆,而是能更進一步的讓喜愛咖啡的朋友自己能夠接觸並體驗烘豆的樂趣!!\n
 \n
-    想了解更多的合作內容,請洽以下聯繫管道:\n
-    Mail to: fred.feng@synmaster.com\n
-    聯繫電話: 886-3-3177618
-    </string>
+想了解更多的合作內容,請洽以下聯繫管道:\n
+Mail to: fred.feng@synmaster.com\n
+聯繫電話: 886-3-3177618</string>
 
 </resources>

@@ -50,13 +50,13 @@ public class FragMore extends BaseFragment {
 
     @OnClick(R.id.btn_knowledge)
     public void gotoCoffeeKnowledges() {
-        Intent intent = new Intent(getActivity(), ActivityKnowledgeList.class);
-        startActivity(intent);
+        Toast.makeText(getActivity(), R.string.toast_coming_soon, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btn_news)
     public void gotoNews() {
-        Toast.makeText(getActivity(), R.string.toast_coming_soon, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), ActivityNewsList.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.btn_buy_device)

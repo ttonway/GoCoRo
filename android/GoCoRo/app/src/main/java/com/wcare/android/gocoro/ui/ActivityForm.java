@@ -1,5 +1,6 @@
 package com.wcare.android.gocoro.ui;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -137,6 +138,11 @@ public class ActivityForm extends BaseActivity {
         switch (item.getItemId()) {
 
             case R.id.action_share:
+                mListView.setDrawingCacheEnabled(true);
+                Bitmap bitmap = Bitmap.createBitmap(mListView.getDrawingCache());
+                mListView.destroyDrawingCache();
+
+                Utils.shareContent(this, bitmap);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

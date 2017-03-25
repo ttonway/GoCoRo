@@ -30,8 +30,8 @@ import retrofit2.Response;
  * Created by ttonway on 2017/2/23.
  */
 
-public class ActivityKnowledgeList extends BaseActivity {
-    private static final String TAG = ActivityKnowledgeList.class.getSimpleName();
+public class ActivityNewsList extends BaseActivity {
+    private static final String TAG = ActivityNewsList.class.getSimpleName();
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -68,7 +68,7 @@ public class ActivityKnowledgeList extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 KnowledgeMessage knowledge = (KnowledgeMessage) parent.getItemAtPosition(position);
                 if (knowledge != null) {
-                    Intent intent = new Intent(ActivityKnowledgeList.this, ActivityWebView.class);
+                    Intent intent = new Intent(ActivityNewsList.this, ActivityWebView.class);
                     intent.setData(Uri.parse(knowledge.url));
                     startActivity(intent);
                 }

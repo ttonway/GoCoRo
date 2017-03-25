@@ -182,12 +182,13 @@ public class GoCoRoDevice implements DriverCallback {
         }
     }
 
-    public void startRoast(int seconds, int fire) {
+    public void startRoast(int seconds, int fire, int coolTemperature) {
         Log.d(TAG, "startRoast " + seconds + " " + fire);
-        byte[] data = new byte[3];
+        byte[] data = new byte[4];
         data[0] = (byte) ((seconds >> 8) & 0xFF);
         data[1] = (byte) (seconds & 0xFF);
         data[2] = (byte) (fire & 0xFF);
+        data[3] = (byte) (coolTemperature & 0xFF);
         writeData(CMD_ROAST, data);
     }
 

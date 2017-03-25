@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,7 @@ import com.wcare.android.gocoro.core.StateChangeEvent;
 import com.wcare.android.gocoro.core.GoCoRoDevice;
 import com.wcare.android.gocoro.ui.adapter.BluetoothDeviceAdapter;
 
+import java.lang.reflect.Method;
 import java.util.Set;
 
 import butterknife.BindView;
@@ -170,6 +172,12 @@ public class ActivityClassicScan extends AppCompatActivity
             case android.R.id.home:
                 this.finish();
                 return true;
+            case R.id.menu_clear:
+                Set<BluetoothDevice> devices = mBtAdapter.getBondedDevices();
+                for (BluetoothDevice device : devices) {
+                    unpairDevice(device);
+                }
+                break;
             case R.id.menu_scan:
                 mDeviceListAdapter.clear();
                 scanLeDevice(true);
@@ -180,6 +188,17 @@ public class ActivityClassicScan extends AppCompatActivity
         }
         return true;
     }
+
+    public void unpairDevice(BluetoothDevice device) {
+        try {
+            Method m = device.getClass()
+                    .getMethod("removeBond", (Class[]) null);
+            m.invoke(device, (Object[]) null);
+        } catch (Exception e) {
+            Log.e(TAG, "unpairDevice fail.", e);
+        }
+    }
+
 
     @Override
     protected void onResume() {

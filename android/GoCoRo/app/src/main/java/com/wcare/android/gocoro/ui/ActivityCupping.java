@@ -2,9 +2,11 @@ package com.wcare.android.gocoro.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -12,7 +14,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +41,7 @@ import com.wcare.android.gocoro.utils.Utils;
 import com.wcare.android.gocoro.widget.RadarMarkerView;
 import com.wcare.android.gocoro.widget.SeekBar;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -85,6 +90,8 @@ public class ActivityCupping extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.text_logo)
     TextView mLogoTextView;
+    @BindView(R.id.crop_layout)
+    ViewGroup mCropLayout;
     @BindView(R.id.radar_chart)
     RadarChart mChart;
     @BindView(R.id.input_name)
@@ -280,10 +287,10 @@ public class ActivityCupping extends BaseActivity {
         mv.setChartView(mChart); // For bounds control
         mChart.setMarker(mv); // Set the marker to the chart
 
-        mChart.animateXY(
-                1400, 1400,
-                Easing.EasingOption.EaseInOutQuad,
-                Easing.EasingOption.EaseInOutQuad);
+//        mChart.animateXY(
+//                1400, 1400,
+//                Easing.EasingOption.EaseInOutQuad,
+//                Easing.EasingOption.EaseInOutQuad);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setTextSize(14f);
@@ -397,7 +404,11 @@ public class ActivityCupping extends BaseActivity {
                 }
                 return true;
             case R.id.action_share:
-                Utils.shareContent(this, Utils.getChartBitmap(mChart));
+                mCropLayout.setDrawingCacheEnabled(true);
+                Bitmap bitmap = Bitmap.createBitmap(mCropLayout.getDrawingCache());
+                mCropLayout.destroyDrawingCache();
+
+                Utils.shareContent(this, bitmap);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

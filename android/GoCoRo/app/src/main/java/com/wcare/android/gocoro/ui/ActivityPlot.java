@@ -2,6 +2,7 @@ package com.wcare.android.gocoro.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -134,6 +136,8 @@ public class ActivityPlot extends BaseActivity
     @BindView(R.id.bottom_container)
     View mBottomContainer;
 
+    @BindView(R.id.crop_layout)
+    ViewGroup mCropLayout;
     @BindView(R.id.chart)
     CombinedChart mChart;
     @BindView(R.id.text_minute)
@@ -785,7 +789,7 @@ public class ActivityPlot extends BaseActivity
                 }
 
                 mDevice.readyProfile(mProfile);
-                mDevice.startRoast(seconds, fire);
+                mDevice.startRoast(seconds, fire, mProfile.getCoolTemperature());
 
                 mRealm.executeTransaction(new Realm.Transaction() {
                     @Override
@@ -1003,7 +1007,11 @@ public class ActivityPlot extends BaseActivity
                 startActivity(intent);
                 return true;
             case R.id.action_share:
-                Utils.shareContent(this, Utils.getChartBitmap(mChart));
+                mCropLayout.setDrawingCacheEnabled(true);
+                Bitmap bitmap = Bitmap.createBitmap(mCropLayout.getDrawingCache());
+                mCropLayout.destroyDrawingCache();
+
+                Utils.shareContent(this, bitmap);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
