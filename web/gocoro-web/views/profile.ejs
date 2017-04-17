@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><%= fullName %></title>
+
+    <link rel='stylesheet' href='/bootstrap/dist/css/bootstrap.css'/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <style>
+        .col-md-4 {
+            padding: 0;
+        }
+        .table {
+            margin: 0;
+        }
+        #canvas {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">GoCoRo</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+
+    <canvas id="canvas" width="400" height="200"></canvas>
+
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th width="50%">烘焙者</th>
+                    <td><%= people %></td>
+                </tr>
+                <tr>
+                    <th width="50%">产地（国家）</th>
+                    <td><%= beanCountry %></td>
+                </tr>
+                <tr>
+                    <th width="50%">品种</th>
+                    <td><%= beanName %></td>
+                </tr>
+                <tr>
+                    <th width="50%">当日气温</th>
+                    <td><%= envTemperature %></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-4">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th width="50%">入豆重量</th>
+                    <td><%= startWeight %></td>
+                </tr>
+                <tr>
+                    <th width="50%">出豆重量</th>
+                    <td><%= endWeight %></td>
+                </tr>
+                <tr>
+                    <th width="50%">失重比（出豆／入豆）</th>
+                    <td><%= aspectRatio %></td>
+                </tr>
+                <tr>
+                    <th width="50%">起始火力设定</th>
+                    <td><%= startFire %></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-4">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th width="50%">烘焙日期</th>
+                    <td><%= moment(startTime).format("YYYY-MM-DD") %></td>
+                </tr>
+                <tr>
+                    <th width="50%">烘焙开始时间</th>
+                    <td><%= moment(startTime).format("HH:mm:ss") %></td>
+                </tr>
+                <tr>
+                    <th width="50%">烘焙结束时间</th>
+                    <td><%= moment(endTime).format("HH:mm:ss") %></td>
+                </tr>
+                <tr>
+                    <th colspan="2">&nbsp;</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-bordered">
+                <thead>
+                <tr class="active">
+                    <th colspan="2">预热</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% preheatData.forEach(function(data){ %>
+                <tr>
+                    <th><%= data.showTime %></th>
+                    <td><%= data.temperature %>℃</td>
+                </tr>
+                <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table class="table table-bordered">
+                <thead>
+                <tr class="active">
+                    <th colspan="4">烘焙</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% roastData.forEach(function(data){ %>
+                <tr>
+                    <th><%= data.showTime %></th>
+                    <td><%= data.temperature %>℃</td>
+                    <td>火力<%= data.fire %></td>
+                    <td><%= data.allevents.join(' ') %></td>
+                </tr>
+                <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table class="table table-bordered">
+                <thead>
+                <tr class="active">
+                    <th colspan="3">冷却</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% coolData.forEach(function(data){ %>
+                <tr>
+                    <th><%= data.showTime %></th>
+                    <td><%= data.temperature %>℃</td>
+                    <td><%= data.allevents.join(' ') %></td>
+                </tr>
+                <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="/jquery/dist/jquery.js"></script>
+<script src="/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/chart.js/dist/Chart.js"></script>
+<script src="/javascripts/line.js"></script>
+
+</body>
+</html>

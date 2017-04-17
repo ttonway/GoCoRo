@@ -1,0 +1,22 @@
+{
+  "name": "gocoro",
+  "description": "gocoro web portal",
+  "main": "",
+  "authors": [
+    "tfeng <tang.feng@wcare.cn>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "chart.js": "^2.5.0"
+  }
+}

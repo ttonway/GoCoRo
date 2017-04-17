@@ -1,14 +1,12 @@
 package com.wcare.android.gocoro.model;
 
-import com.wcare.android.gocoro.R;
-
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by ttonway on 2016/12/19.
  */
-public class CuppingRecord extends RealmObject {
+public class Cupping extends RealmObject {
 
     @PrimaryKey
     String uuid;
@@ -29,6 +27,10 @@ public class CuppingRecord extends RealmObject {
     float score8;
     float score9;
     float score10;
+
+    // sync with server
+    boolean dirty;
+    int sid;
 
     public String getUuid() {
         return uuid;
@@ -148,6 +150,22 @@ public class CuppingRecord extends RealmObject {
 
     public void setScore10(float score10) {
         this.score10 = score10;
+    }
+
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
+    }
+
+    public int getSid() {
+        return sid;
+    }
+
+    public void setSid(int sid) {
+        this.sid = sid;
     }
 
     public float getTotalScore() {

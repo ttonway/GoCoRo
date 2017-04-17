@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><%= name %></title>
+
+    <link rel='stylesheet' href='/bootstrap/dist/css/bootstrap.css'/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">GoCoRo</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+
+    <table class="table">
+        <tr>
+            <th>杯测名称</th>
+            <td><%= name %></td>
+        </tr>
+        <% if (profile.id) { %>
+        <tr>
+            <th>烘焙档名</th>
+            <td><a href="/profile/<%= profile.id %>/chart"><%= profile.fullName %></a></td>
+        </tr>
+        <% } %>
+        <tr>
+            <th>杯测时间</th>
+            <td><%= moment(time).format("YYYY-MM-DD HH:mm:ss") %></td>
+        </tr>
+        <tr>
+            <th>杯测评语</th>
+            <td><%= comment %></td>
+        </tr>
+        <tr>
+            <th>总得分</th>
+            <td><span style="font-size: 30px;"><%= totalStore %>分</span></td>
+        </tr>
+    </table>
+
+    <div class="center-block" style="max-width: 600px;">
+        <canvas id="canvas" width="400" height="400"></canvas>
+    </div>
+
+</div>
+
+<script src="/jquery/dist/jquery.js"></script>
+<script src="/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/chart.js/dist/Chart.js"></script>
+<script src="/javascripts/radar.js"></script>
+
+</body>
+</html>
