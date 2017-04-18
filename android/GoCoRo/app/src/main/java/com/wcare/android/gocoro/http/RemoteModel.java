@@ -5,4 +5,6 @@ package com.wcare.android.gocoro.http;
  */
 
 public class RemoteModel {
+
+    public int sid;
 }

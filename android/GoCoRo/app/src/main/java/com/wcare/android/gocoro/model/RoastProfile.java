@@ -33,6 +33,10 @@ public class RoastProfile extends RealmObject {
     int coolTime;
     boolean complete;// if roast process completed
 
+    // sync with server
+    boolean dirty;
+    int sid;
+
     public RealmList<RoastData> plotDatas;
 
     public String getUuid() {
@@ -165,6 +169,30 @@ public class RoastProfile extends RealmObject {
 
     public void setCoolTemperature(int coolTemperature) {
         this.coolTemperature = coolTemperature;
+    }
+
+    public RealmList<RoastData> getPlotDatas() {
+        return plotDatas;
+    }
+
+    public void setPlotDatas(RealmList<RoastData> plotDatas) {
+        this.plotDatas = plotDatas;
+    }
+
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
+    }
+
+    public int getSid() {
+        return sid;
+    }
+
+    public void setSid(int sid) {
+        this.sid = sid;
     }
 
     public String getFullName() {

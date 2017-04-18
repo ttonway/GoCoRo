@@ -24,6 +24,7 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 import com.umeng.socialize.shareboard.SnsPlatform;
 import com.umeng.socialize.utils.ShareBoardlistener;
@@ -301,31 +302,35 @@ public class Utils {
         return returnedBitmap;
     }
 
-    public static void shareContent(final Activity activity, Bitmap bitmap) {
+    public static void shareContent(final Activity activity, Bitmap bitmap, String url) {
         ShareBoardConfig config = new ShareBoardConfig();
         config.setShareboardPostion(ShareBoardConfig.SHAREBOARD_POSITION_CENTER);
         config.setTitleVisibility(false);
         config.setCancelButtonText(activity.getString(R.string.btn_cancel));
 
-        UMImage image = new UMImage(activity, bitmap);
-        image.compressStyle = UMImage.CompressStyle.QUALITY;//质量压缩，适合长图的分享
+        ShareAction action = new ShareAction(activity);
         UMImage thumb = new UMImage(activity, bitmap);
-        image.setThumb(thumb);
+        thumb.compressStyle = UMImage.CompressStyle.SCALE;
 
-        new ShareAction(activity)
-                .withText(activity.getString(R.string.app_name))
-                .withMedia(image)
+        UMWeb web = new UMWeb(url);
+        web.setTitle(activity.getString(R.string.activity_main));//标题
+        web.setThumb(thumb);  //缩略图
+        web.setDescription(activity.getString(R.string.about_content));//描述
+
+        action.withMedia(web);
+
+        action.withText(activity.getString(R.string.app_name))
                 .setDisplayList(SHARE_MEDIA.FACEBOOK, SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE)
 //                .addButton("umeng_sharebutton_copy", "umeng_sharebutton_copy", "umeng_socialize_copy", "umeng_socialize_copy")
                 .setCallback(new UMShareListener() {
                     @Override
                     public void onStart(SHARE_MEDIA share_media) {
-
+                        Log.e(TAG, "shared start on " + share_media);
                     }
 
                     @Override
                     public void onResult(SHARE_MEDIA share_media) {
-                        Log.d(TAG, "shared success on " + share_media);
+                        Log.e(TAG, "shared success on " + share_media);
                     }
 
                     @Override
@@ -336,7 +341,7 @@ public class Utils {
 
                     @Override
                     public void onCancel(SHARE_MEDIA share_media) {
-
+                        Log.e(TAG, "shared canceled on " + share_media);
                     }
                 }).open(config);
     }

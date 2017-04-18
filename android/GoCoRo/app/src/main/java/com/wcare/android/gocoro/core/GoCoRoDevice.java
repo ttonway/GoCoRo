@@ -324,9 +324,6 @@ public class GoCoRoDevice implements DriverCallback {
                                         if (!mProfile.isComplete()) {
                                             mProfile.setEndTime(System.currentTimeMillis());
                                             mProfile.setComplete(true);
-                                            if (lastData != null && lastData.getStatus() == RoastData.STATUS_COOLING) {
-                                                lastData.setCoolStatusComplete(true);
-                                            }
                                         }
 
                                         resetProfile();

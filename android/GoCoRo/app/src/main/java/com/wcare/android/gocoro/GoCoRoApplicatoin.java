@@ -62,9 +62,9 @@ public class GoCoRoApplicatoin extends Application {
                 .build();
         Realm.setDefaultConfiguration(config);
 
-        if (BuildConfig.DEBUG) {
+//        if (BuildConfig.DEBUG) {
             initMockData();
-        }
+//        }
     }
 
     public static void saveLogcatToFile(Context context) {
@@ -82,13 +82,13 @@ public class GoCoRoApplicatoin extends Application {
     void initMockData() {
         Realm realm = Realm.getDefaultInstance();
 
-        final RealmResults<RoastProfile> profiles = realm.where(RoastProfile.class).equalTo("uuid", "test").findAll();
+        final RealmResults<RoastProfile> profiles = realm.where(RoastProfile.class).equalTo("uuid", "11111111").findAll();
         if (profiles.size() == 0) {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    RoastProfile profile = realm.createObject(RoastProfile.class, "test");
-                    profile.setPeople("ppp");
+                    RoastProfile profile = realm.createObject(RoastProfile.class, "11111111");
+                    profile.setPeople("55555");
                     profile.setBeanCountry("巴拿马");
                     profile.setBeanName("蓝山");
                     profile.setStartTime(System.currentTimeMillis());
@@ -124,7 +124,6 @@ public class GoCoRoApplicatoin extends Application {
                         } else if (i == 20 * 60) {
                             data.setEvent(RoastData.EVENT_BURST2);
                         }
-                        data.setCoolStatusComplete(i == 30 * 60 - 1);
 
                         data.setTemperature((int) (-230.f / 900 / 900 * i * i + 230.f * 2 / 900 * i + 0.5f));
 

@@ -28,7 +28,6 @@ public class RoastData extends RealmObject {
     String event;
 
     boolean manualCool;//冷却设置
-    boolean coolStatusComplete;//冷却停止
 
     public int getTime() {
         return time;
@@ -76,14 +75,6 @@ public class RoastData extends RealmObject {
 
     public void setManualCool(boolean manualCool) {
         this.manualCool = manualCool;
-    }
-
-    public boolean isCoolStatusComplete() {
-        return coolStatusComplete;
-    }
-
-    public void setCoolStatusComplete(boolean coolStatusComplete) {
-        this.coolStatusComplete = coolStatusComplete;
     }
 
     public String getEventName(Context context) {

@@ -21,7 +21,7 @@
     <!-- 可选-->
     <uses-permission android:name="android.permission.READ_LOGS" /> <!-- 获取logcat日志 -->
 
-    <!-- umeng share sdk -->
+    <!-- umeng share sdk 6.4.3 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

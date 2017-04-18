@@ -13,14 +13,14 @@ apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.wcare.android.gocoro"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 18
-        versionName "0.18"
+        versionCode 19
+        versionName "0.19"
     }
 
     signingConfigs {
@@ -71,6 +71,7 @@ dependencies {
 
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
 
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     compile "com.daimajia.swipelayout:library:1.2.0@aar"

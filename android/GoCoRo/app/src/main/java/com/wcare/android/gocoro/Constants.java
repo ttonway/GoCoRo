@@ -33,4 +33,9 @@ public class Constants {
 
     public static UUID NOTIFY_CHARACTERISTIC_UUID = UUID.fromString(NOTIFY_CHARACTERISTIC);
     public static UUID WRITE_CHARACTERISTIC_UUID = UUID.fromString(WRITE_CHARACTERISTIC);
+
+
+    public static final String WEB_HOST = "http://beta.wcare.cn:3003/";
+    public static final String PROFILE_WEB_URL = "http://beta.wcare.cn:3003/profile/%d/chart";
+    public static final String CUPPING_WEB_URL = "http://beta.wcare.cn:3003/cupping/%d/chart";
 }

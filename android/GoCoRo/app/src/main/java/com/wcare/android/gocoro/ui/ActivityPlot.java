@@ -3,6 +3,7 @@ package com.wcare.android.gocoro.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -43,29 +44,28 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.common.eventbus.Subscribe;
-import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.shareboard.ShareBoardConfig;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
+import com.wcare.android.gocoro.Constants;
 import com.wcare.android.gocoro.R;
 import com.wcare.android.gocoro.bluetooth.BluetoothLeDriver;
 import com.wcare.android.gocoro.core.ErrorEvent;
 import com.wcare.android.gocoro.core.GoCoRoDevice;
 import com.wcare.android.gocoro.core.ProfileEvent;
 import com.wcare.android.gocoro.core.StateChangeEvent;
+import com.wcare.android.gocoro.http.RemoteModel;
+import com.wcare.android.gocoro.http.ServiceFactory;
 import com.wcare.android.gocoro.model.RoastData;
 import com.wcare.android.gocoro.model.RoastProfile;
 import com.wcare.android.gocoro.ui.dialog.AlertDialog;
 import com.wcare.android.gocoro.ui.dialog.EventTimeDialog;
+import com.wcare.android.gocoro.ui.dialog.ProgressDialog;
 import com.wcare.android.gocoro.ui.dialog.TimeDialog;
 import com.wcare.android.gocoro.utils.Utils;
 import com.wcare.android.gocoro.widget.EventButton;
 import com.wcare.android.gocoro.widget.LineMarkerView;
-import com.wcare.android.gocoro.widget.CustomNumberPicker;
 import com.wcare.android.gocoro.widget.TimeTextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +74,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by ttonway on 2016/12/13.
@@ -166,6 +169,8 @@ public class ActivityPlot extends BaseActivity
     EventButton mEventButton3;
     @BindView(R.id.event4)
     EventButton mEventButton4;
+
+    ProgressDialog mProgressDialog;
 
     RoastProfile mProfile;
     RoastProfile mReferenceProfile;
@@ -1007,15 +1012,63 @@ public class ActivityPlot extends BaseActivity
                 startActivity(intent);
                 return true;
             case R.id.action_share:
-                mCropLayout.setDrawingCacheEnabled(true);
-                Bitmap bitmap = Bitmap.createBitmap(mCropLayout.getDrawingCache());
-                mCropLayout.destroyDrawingCache();
 
-                Utils.shareContent(this, bitmap);
+                if (mProfile.getSid() != 0) {
+                    shareProfile(mProfile.getSid());
+                } else {
+                    mProgressDialog = ProgressDialog.show(this);
+
+                    Call<RemoteModel> call = ServiceFactory.getWebService().uploadProfile(mProfile);
+                    call.enqueue(new Callback<RemoteModel>() {
+                        @Override
+                        public void onResponse(Call<RemoteModel> call, Response<RemoteModel> response) {
+                            mProgressDialog.dismissAllowingStateLoss();
+                            if (response.isSuccessful()) {
+                                final RemoteModel result = response.body();
+                                if (mProfile.isValid()) {
+                                    mRealm.executeTransaction(new Realm.Transaction() {
+                                        @Override
+                                        public void execute(Realm realm) {
+                                            mProfile.setSid(result.sid);
+                                        }
+                                    });
+                                }
+
+                                shareProfile(result.sid);
+                            } else {
+                                Toast.makeText(ActivityPlot.this, getString(R.string.error_network_x, ""), Toast.LENGTH_SHORT).show();
+                                try {
+                                    Log.e(TAG, "onResponse error: " + response.errorBody().string());
+                                } catch (IOException e) {
+                                    Log.e(TAG, "onResponse error.", e);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<RemoteModel> call, Throwable t) {
+                            mProgressDialog.dismissAllowingStateLoss();
+                            Toast.makeText(ActivityPlot.this, getString(R.string.error_network_x, t.getLocalizedMessage()), Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "onFailure.", t);
+                        }
+                    });
+                }
+
+//                mCropLayout.setDrawingCacheEnabled(true);
+//                Bitmap bitmap = Bitmap.createBitmap(mCropLayout.getDrawingCache());
+//                mCropLayout.destroyDrawingCache();
+//
+//                Utils.shareContent(this, bitmap);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void shareProfile(int sid) {
+//        Bitmap bitmap = Utils.getChartBitmap(mChart);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        Utils.shareContent(this, bitmap, String.format(Constants.PROFILE_WEB_URL, sid));
     }
 
     @Override

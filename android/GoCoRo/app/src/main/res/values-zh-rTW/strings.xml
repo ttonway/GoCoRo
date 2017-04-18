@@ -81,6 +81,7 @@
     <string name="toast_now_roasting">正在烘焙中</string>
     <string name="toast_already_completed">烘焙已經結束</string>
     <string name="toast_event_time_invalid">您選擇的時間無效</string>
+    <string name="error_network_x">網絡錯誤 %1$s</string>
     <string name="error_connect_x">連接錯誤%1$d</string>
     <string name="error_wrong_device">錯誤的設備</string>
     <string name="error_timeout">讀取數據超時</string>
@@ -90,6 +91,7 @@
     <string name="notification_service_running">GoCoRo正在烘焙</string>
     <string name="roast_completed">烘焙完成</string>
     <string name="continue_uncompleted_profile">設備正在烘焙，繼續未完成的記錄？</string>
+    <string name="waiting_progress">請稍候</string>
 
     <string name="state_open">已連接</string>
     <string name="state_opening">正在連接</string>

@@ -16,7 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.wcare.android.gocoro.R;
-import com.wcare.android.gocoro.model.CuppingRecord;
+import com.wcare.android.gocoro.model.Cupping;
 import com.wcare.android.gocoro.ui.adapter.CuppingAdapter;
 
 import butterknife.BindView;
@@ -43,7 +43,7 @@ public class FragCuppingList extends BaseFragment {
     }
 
     Realm mRealm;
-    RealmResults<CuppingRecord> mCuppings;
+    RealmResults<Cupping> mCuppings;
     String mProfileUuid;
     boolean mInternalToobar;
 
@@ -71,15 +71,15 @@ public class FragCuppingList extends BaseFragment {
             mInternalToobar = true;
         }
         mRealm = Realm.getDefaultInstance();
-        RealmQuery<CuppingRecord> query = mRealm.where(CuppingRecord.class);
+        RealmQuery<Cupping> query = mRealm.where(Cupping.class);
         if (!TextUtils.isEmpty(mProfileUuid)) {
             query.equalTo("profile.uuid", mProfileUuid);
         }
         mCuppings = query.findAll().sort("time", Sort.DESCENDING);
         mAdapter = new CuppingAdapter(getActivity(), mCuppings);
-        mCuppings.addChangeListener(new RealmChangeListener<RealmResults<CuppingRecord>>() {
+        mCuppings.addChangeListener(new RealmChangeListener<RealmResults<Cupping>>() {
             @Override
-            public void onChange(RealmResults<CuppingRecord> results) {
+            public void onChange(RealmResults<Cupping> results) {
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -114,7 +114,7 @@ public class FragCuppingList extends BaseFragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CuppingRecord item = (CuppingRecord) parent.getItemAtPosition(position);
+                Cupping item = (Cupping) parent.getItemAtPosition(position);
                 if (item != null) {
                     ActivityCupping.viewCupping(getActivity(), item.getUuid());
                 }

@@ -85,6 +85,7 @@
     <string name="toast_now_roasting">In roasting</string>
     <string name="toast_already_completed">Roasted complete</string>
     <string name="toast_event_time_invalid">Invalid time</string>
+    <string name="error_network_x">Network error %1$s</string>
     <string name="error_connect_x">Connection error %1$d</string>
     <string name="error_wrong_device">Wrong device</string>
     <string name="error_timeout">Read data timeout</string>
@@ -94,6 +95,7 @@
     <string name="notification_service_running">GoCoRo is Roasting process</string>
     <string name="roast_completed">Roasted complete</string>
     <string name="continue_uncompleted_profile">Device is in roasting process, Save the unfinished record?</string>
+    <string name="waiting_progress">Please wait</string>
 
     <string name="state_open">Connected</string>
     <string name="state_opening">Connecting</string>

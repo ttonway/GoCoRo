@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -16,12 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
@@ -34,14 +31,18 @@ import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.umeng.socialize.UMShareAPI;
+import com.wcare.android.gocoro.Constants;
 import com.wcare.android.gocoro.R;
-import com.wcare.android.gocoro.model.CuppingRecord;
+import com.wcare.android.gocoro.http.RemoteModel;
+import com.wcare.android.gocoro.http.ServiceFactory;
+import com.wcare.android.gocoro.model.Cupping;
 import com.wcare.android.gocoro.model.RoastProfile;
+import com.wcare.android.gocoro.ui.dialog.ProgressDialog;
 import com.wcare.android.gocoro.utils.Utils;
 import com.wcare.android.gocoro.widget.RadarMarkerView;
 import com.wcare.android.gocoro.widget.SeekBar;
 
-import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,6 +55,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.Realm;
 import io.techery.progresshint.ProgressHintDelegate;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by ttonway on 2017/1/3.
@@ -109,10 +113,12 @@ public class ActivityCupping extends BaseActivity {
     @BindView(R.id.seekbar_container)
     TableLayout mSeekBarContainer;
 
+    ProgressDialog mProgressDialog;
+
     RadarDataSet mRadarDataSet;
 
     Realm mRealm;
-    CuppingRecord mCupping;
+    Cupping mCupping;
     RoastProfile mProfile;
     boolean mEditMode;
     DateFormat mDateFormat = DateFormat.getDateTimeInstance();
@@ -131,10 +137,10 @@ public class ActivityCupping extends BaseActivity {
         mRealm = Realm.getDefaultInstance();
         if (getIntent().hasExtra(PARAM_CUPPING_UUID)) {
             String uuid = getIntent().getStringExtra(PARAM_CUPPING_UUID);
-            mCupping = mRealm.where(CuppingRecord.class).equalTo("uuid", uuid).findFirst();
+            mCupping = mRealm.where(Cupping.class).equalTo("uuid", uuid).findFirst();
             mProfile = mCupping.getProfile();
         } else {
-            mCupping = new CuppingRecord();
+            mCupping = new Cupping();
             mCupping.setUuid(UUID.randomUUID().toString());
             mCupping.setTime(System.currentTimeMillis());
             mCupping.setScore1(6.f);
@@ -404,15 +410,57 @@ public class ActivityCupping extends BaseActivity {
                 }
                 return true;
             case R.id.action_share:
-                mCropLayout.setDrawingCacheEnabled(true);
-                Bitmap bitmap = Bitmap.createBitmap(mCropLayout.getDrawingCache());
-                mCropLayout.destroyDrawingCache();
 
-                Utils.shareContent(this, bitmap);
+                if (mCupping.getSid() != 0) {
+                    shareCupping(mCupping.getSid());
+                } else {
+                    mProgressDialog = ProgressDialog.show(this);
+
+                    Call<RemoteModel> call = ServiceFactory.getWebService().uploadCupping(mCupping);
+                    call.enqueue(new Callback<RemoteModel>() {
+                        @Override
+                        public void onResponse(Call<RemoteModel> call, Response<RemoteModel> response) {
+                            mProgressDialog.dismissAllowingStateLoss();
+                            if (response.isSuccessful()) {
+                                final RemoteModel result = response.body();
+                                if (mCupping.isValid()) {
+                                    mRealm.executeTransaction(new Realm.Transaction() {
+                                        @Override
+                                        public void execute(Realm realm) {
+                                            mCupping.setSid(result.sid);
+                                        }
+                                    });
+                                }
+
+                                shareCupping(result.sid);
+                            } else {
+                                Toast.makeText(ActivityCupping.this, getString(R.string.error_network_x, ""), Toast.LENGTH_SHORT).show();
+                                try {
+                                    Log.e(TAG, "onResponse error: " + response.errorBody().string());
+                                } catch (IOException e) {
+                                    Log.e(TAG, "onResponse error.", e);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<RemoteModel> call, Throwable t) {
+                            mProgressDialog.dismissAllowingStateLoss();
+                            Toast.makeText(ActivityCupping.this, getString(R.string.error_network_x, t.getLocalizedMessage()), Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "onFailure.", t);
+                        }
+                    });
+                }
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void shareCupping(int sid) {
+        Bitmap bitmap = Utils.getChartBitmap(mChart);
+        Utils.shareContent(this, bitmap, String.format(Constants.CUPPING_WEB_URL, sid));
     }
 
     void saveOrUpdateCupping() {

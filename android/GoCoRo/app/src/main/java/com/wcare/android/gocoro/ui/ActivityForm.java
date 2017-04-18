@@ -142,7 +142,7 @@ public class ActivityForm extends BaseActivity {
                 Bitmap bitmap = Bitmap.createBitmap(mListView.getDrawingCache());
                 mListView.destroyDrawingCache();
 
-                Utils.shareContent(this, bitmap);
+                Utils.shareContent(this, bitmap, "");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -6,23 +6,12 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.wcare.android.gocoro.R;
-import com.wcare.android.gocoro.model.CuppingRecord;
-import com.wcare.android.gocoro.model.RoastProfile;
-import com.wcare.android.gocoro.ui.adapter.SelectProfileAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
-import io.realm.Sort;
 
 /**
  * Created by ttonway on 2016/12/20.

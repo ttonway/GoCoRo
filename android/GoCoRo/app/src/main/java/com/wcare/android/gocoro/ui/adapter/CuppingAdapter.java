@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.wcare.android.gocoro.R;
-import com.wcare.android.gocoro.model.CuppingRecord;
+import com.wcare.android.gocoro.model.Cupping;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -29,9 +29,9 @@ public class CuppingAdapter extends BaseSwipeAdapter {
     LayoutInflater mInflater;
     DateFormat mDateFormat;
 
-    List<CuppingRecord> mData;
+    List<Cupping> mData;
 
-    public CuppingAdapter(Context context, List<CuppingRecord> objects) {
+    public CuppingAdapter(Context context, List<Cupping> objects) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mDateFormat = DateFormat.getDateTimeInstance();
@@ -44,7 +44,7 @@ public class CuppingAdapter extends BaseSwipeAdapter {
     }
 
     @Override
-    public CuppingRecord getItem(int position) {
+    public Cupping getItem(int position) {
         return mData.get(position);
     }
 
@@ -69,7 +69,7 @@ public class CuppingAdapter extends BaseSwipeAdapter {
     @Override
     public void fillValues(int position, View convertView) {
         final ViewHolder holder = (ViewHolder) convertView.getTag();
-        final CuppingRecord item = getItem(position);
+        final Cupping item = getItem(position);
         holder.name.setText(item.getName());
         holder.score.setText(item.getTotalScore() + "分");
         holder.time.setText(mDateFormat.format(new Date(item.getTime())));

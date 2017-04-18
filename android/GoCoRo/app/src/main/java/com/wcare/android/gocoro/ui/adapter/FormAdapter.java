@@ -28,6 +28,7 @@ public class FormAdapter extends BaseExpandableListAdapter {
     int mRoastStartTime = -1;
     int mCoolStartTime = -1;
     List<RoastData> mFireChangedData = new ArrayList<>();
+    RoastData mCompleteData;
 
     Context mContext;
     LayoutInflater mInflater;
@@ -41,6 +42,10 @@ public class FormAdapter extends BaseExpandableListAdapter {
 
         boolean hasEvents;
         int lastFire = -1;
+        RoastData last = profile.plotDatas.size() > 0 ? profile.plotDatas.last() : null;
+        if (profile.isComplete()) {
+            mCompleteData = last;
+        }
         for (RoastData entry : profile.plotDatas) {
             boolean fireChanged = false;
             if (entry.getStatus() == RoastData.STATUS_ROASTING) {
@@ -54,7 +59,7 @@ public class FormAdapter extends BaseExpandableListAdapter {
             hasEvents = entry.getEvent() != null ||
                     fireChanged ||
                     entry.isManualCool() ||
-                    entry.isCoolStatusComplete();
+                    entry.equals(mCompleteData);
 
             int time = entry.getTime();
             if (entry.getStatus() == RoastData.STATUS_PREHEATING) {
@@ -174,7 +179,7 @@ public class FormAdapter extends BaseExpandableListAdapter {
         if (data.isManualCool()) {
             events.add(mContext.getString(R.string.event_cool_set));
         }
-        if (data.isCoolStatusComplete()) {
+        if (data.equals(mCompleteData)) {
             events.add(mContext.getString(R.string.event_cool_end));
         }
         if (groupPosition == 0) {

@@ -79,10 +79,14 @@ public class ActivityNewsList extends BaseActivity {
         call.enqueue(new Callback<List<KnowledgeMessage>>() {
             @Override
             public void onResponse(Call<List<KnowledgeMessage>> call, Response<List<KnowledgeMessage>> response) {
-                List<KnowledgeMessage> list = response.body();
-                Log.d(TAG, "onResponse: " + list);
+                if (response.isSuccessful()) {
+                    List<KnowledgeMessage> list = response.body();
+                    Log.d(TAG, "onResponse: " + list);
 
-                mAdapter.addAll(list);
+                    mAdapter.addAll(list);
+                } else {
+
+                }
             }
 
             @Override
