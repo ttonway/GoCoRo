@@ -47,7 +47,7 @@ public class ProfileRestoreDialog extends DialogFragment {
                             }
                         }
 
-                        ActivityPlot.startRoast(activity, uid, null);
+                        ActivityPlot.startRoast(activity, uid);
                     }
                 })
                 .setNegativeButton(R.string.btn_cancel, null)

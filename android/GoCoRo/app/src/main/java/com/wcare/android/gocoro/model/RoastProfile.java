@@ -37,7 +37,9 @@ public class RoastProfile extends RealmObject {
     boolean dirty;
     int sid;
 
-    public RealmList<RoastData> plotDatas;
+    RoastProfile referenceProfile;
+
+    RealmList<RoastData> plotDatas;
 
     public String getUuid() {
         return uuid;
@@ -171,12 +173,24 @@ public class RoastProfile extends RealmObject {
         this.coolTemperature = coolTemperature;
     }
 
+    public RoastProfile getReferenceProfile() {
+        return referenceProfile;
+    }
+
+    public void setReferenceProfile(RoastProfile referenceProfile) {
+        this.referenceProfile = referenceProfile;
+    }
+
     public RealmList<RoastData> getPlotDatas() {
         return plotDatas;
     }
 
     public void setPlotDatas(RealmList<RoastData> plotDatas) {
         this.plotDatas = plotDatas;
+    }
+
+    public RoastData getLastPlotData() {
+        return getPlotDatas().isEmpty() ? null : getPlotDatas().last();
     }
 
     public boolean isDirty() {
@@ -198,7 +212,7 @@ public class RoastProfile extends RealmObject {
     public String getFullName() {
         StringBuilder sb = new StringBuilder();
         if (!TextUtils.isEmpty(getBeanCountry())) {
-            sb.append(getBeanCountry()).append(" ");
+            sb.append(getBeanCountry()).append("-");
         }
         sb.append(getBeanName());
         if (!TextUtils.isEmpty(getPeople())) {

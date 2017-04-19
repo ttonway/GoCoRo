@@ -318,7 +318,7 @@ public class GoCoRoDevice implements DriverCallback {
                                         }
                                     }
                                 } else {
-                                    RoastData lastData = mProfile.plotDatas.isEmpty() ? null : mProfile.plotDatas.last();
+                                    RoastData lastData = mProfile.getLastPlotData();
                                     if (status == RoastData.STATUS_IDLE) {
                                         Log.i(TAG, "current profile compelted.");
                                         if (!mProfile.isComplete()) {
@@ -351,7 +351,7 @@ public class GoCoRoDevice implements DriverCallback {
                                     data.setTime(time);
                                     data.setFire(fire);
                                     data.setTemperature(temp & 0xff);
-                                    mProfile.plotDatas.add(data);
+                                    mProfile.getPlotDatas().add(data);
                                 }
                             }
                         });

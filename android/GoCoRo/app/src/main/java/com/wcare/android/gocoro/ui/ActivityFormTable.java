@@ -100,7 +100,7 @@ public class ActivityFormTable extends BaseActivity {
         int roastTime = 0;
         int coolTime = 0;
         int minutes = 0;
-        for (RoastData entry : mProfile.plotDatas) {
+        for (RoastData entry : mProfile.getPlotDatas()) {
             int m = entry.getTime() / 60;
             if (minutes == m) {
                 continue;

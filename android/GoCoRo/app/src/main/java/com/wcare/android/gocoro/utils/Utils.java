@@ -7,8 +7,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
@@ -16,18 +14,10 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.util.Log;
-import android.widget.Toast;
 
 
 import com.github.mikephil.charting.charts.Chart;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
-import com.umeng.socialize.shareboard.ShareBoardConfig;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
+import com.wcare.android.gocoro.Constants;
 import com.wcare.android.gocoro.R;
 
 import java.io.File;
@@ -35,6 +25,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import cn.sharesdk.onekeyshare.OnekeyShare;
 
 /**
  * Created with IntelliJ IDEA.
@@ -302,47 +294,79 @@ public class Utils {
         return returnedBitmap;
     }
 
-    public static void shareContent(final Activity activity, Bitmap bitmap, String url) {
-        ShareBoardConfig config = new ShareBoardConfig();
-        config.setShareboardPostion(ShareBoardConfig.SHAREBOARD_POSITION_CENTER);
-        config.setTitleVisibility(false);
-        config.setCancelButtonText(activity.getString(R.string.btn_cancel));
+    public static void shareContent(final Activity activity, String title, Bitmap bitmap, String url) {
 
-        ShareAction action = new ShareAction(activity);
-        UMImage thumb = new UMImage(activity, bitmap);
-        thumb.compressStyle = UMImage.CompressStyle.SCALE;
+        File cacheDir = activity.getCacheDir();
+        File file = new File(cacheDir, "chart.jpg");
+        saveImage(bitmap, file);
 
-        UMWeb web = new UMWeb(url);
-        web.setTitle(activity.getString(R.string.activity_main));//标题
-        web.setThumb(thumb);  //缩略图
-        web.setDescription(activity.getString(R.string.about_content));//描述
+        OnekeyShare oks = new OnekeyShare();
+        oks.setSilent(true);
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+        // title标题，印象笔记、邮箱、信息、微信、人人网、QQ和QQ空间使用
+        oks.setTitle(title);
+        // titleUrl是标题的网络链接，仅在Linked-in,QQ和QQ空间使用
+        oks.setTitleUrl(url);
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText(activity.getString(R.string.share_content));
+        //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
+        // oks.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg");
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+        oks.setImagePath(file.getAbsolutePath());//确保SDcard下面存在此张图片
+        // url仅在微信（包括好友和朋友圈）中使用
+        oks.setUrl(url);
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        // oks.setComment("我是测试评论文本");
+        // site是分享此内容的网站名称，仅在QQ空间使用
+        oks.setSite("GoCoRo");
+        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        oks.setSiteUrl(Constants.WEB_HOST);
 
-        action.withMedia(web);
+        // 启动分享GUI
+        oks.show(activity);
 
-        action.withText(activity.getString(R.string.app_name))
-                .setDisplayList(SHARE_MEDIA.FACEBOOK, SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE)
-//                .addButton("umeng_sharebutton_copy", "umeng_sharebutton_copy", "umeng_socialize_copy", "umeng_socialize_copy")
-                .setCallback(new UMShareListener() {
-                    @Override
-                    public void onStart(SHARE_MEDIA share_media) {
-                        Log.e(TAG, "shared start on " + share_media);
-                    }
 
-                    @Override
-                    public void onResult(SHARE_MEDIA share_media) {
-                        Log.e(TAG, "shared success on " + share_media);
-                    }
-
-                    @Override
-                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                        Log.e(TAG, "shared fail on " + share_media, throwable);
-                        Toast.makeText(activity, activity.getString(R.string.toast_share_fail) + " " + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onCancel(SHARE_MEDIA share_media) {
-                        Log.e(TAG, "shared canceled on " + share_media);
-                    }
-                }).open(config);
+//        ShareBoardConfig config = new ShareBoardConfig();
+//        config.setShareboardPostion(ShareBoardConfig.SHAREBOARD_POSITION_CENTER);
+//        config.setTitleVisibility(false);
+//        config.setCancelButtonText(activity.getString(R.string.btn_cancel));
+//
+//        ShareAction action = new ShareAction(activity);
+//        UMImage thumb = new UMImage(activity, bitmap);
+//        thumb.compressStyle = UMImage.CompressStyle.SCALE;
+//
+//        UMWeb web = new UMWeb(url);
+//        web.setTitle(activity.getString(R.string.activity_main));//标题
+//        web.setThumb(thumb);  //缩略图
+//        web.setDescription(activity.getString(R.string.about_content));//描述
+//
+//        action.withMedia(web);
+//
+//        action.withText(activity.getString(R.string.app_name))
+//                .setDisplayList(SHARE_MEDIA.FACEBOOK, SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE)
+////                .addButton("umeng_sharebutton_copy", "umeng_sharebutton_copy", "umeng_socialize_copy", "umeng_socialize_copy")
+//                .setCallback(new UMShareListener() {
+//                    @Override
+//                    public void onStart(SHARE_MEDIA share_media) {
+//                        Log.e(TAG, "shared start on " + share_media);
+//                    }
+//
+//                    @Override
+//                    public void onResult(SHARE_MEDIA share_media) {
+//                        Log.e(TAG, "shared success on " + share_media);
+//                    }
+//
+//                    @Override
+//                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+//                        Log.e(TAG, "shared fail on " + share_media, throwable);
+//                        Toast.makeText(activity, activity.getString(R.string.toast_share_fail) + " " + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onCancel(SHARE_MEDIA share_media) {
+//                        Log.e(TAG, "shared canceled on " + share_media);
+//                    }
+//                }).open(config);
     }
 }

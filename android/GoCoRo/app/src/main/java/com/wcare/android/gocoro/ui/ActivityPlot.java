@@ -3,7 +3,6 @@ package com.wcare.android.gocoro.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -15,6 +14,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -42,9 +42,10 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.common.eventbus.Subscribe;
-import com.umeng.socialize.UMShareAPI;
 import com.wcare.android.gocoro.Constants;
 import com.wcare.android.gocoro.R;
 import com.wcare.android.gocoro.bluetooth.BluetoothLeDriver;
@@ -82,14 +83,13 @@ import retrofit2.Response;
  * Created by ttonway on 2016/12/13.
  */
 public class ActivityPlot extends BaseActivity
-        implements OnChartValueSelectedListener, RatingBar.OnRatingBarChangeListener {
+        implements OnChartValueSelectedListener, OnChartGestureListener, RatingBar.OnRatingBarChangeListener {
     private static final String TAG = ActivityPlot.class.getSimpleName();
 
-    public static void startRoast(Context context, String profileUuid, String referenceUuid) {
+    public static void startRoast(Context context, String profileUuid) {
 
         Intent intent = new Intent(context, ActivityPlot.class);
         intent.putExtra(ActivityPlot.PARAM_UUID, profileUuid);
-        intent.putExtra(ActivityPlot.PARAM_REFERENCE_UUID, referenceUuid);
         intent.putExtra(PARAM_ROAST, true);
         context.startActivity(intent);
     }
@@ -109,7 +109,6 @@ public class ActivityPlot extends BaseActivity
 
 
     private static final String PARAM_UUID = "ActivityPlot:uuid";
-    private static final String PARAM_REFERENCE_UUID = "ActivityPlot:reference";
     private static final String PARAM_ROAST = "ActivityPlot:roast";
 
     public static final int COLOR_LINE = 0xfffff100;
@@ -180,6 +179,15 @@ public class ActivityPlot extends BaseActivity
     boolean mAutoChangeFire;
 
 
+    Highlight mHighlight;
+    boolean mAutoHighlightEnabled = true;
+    final Runnable mEnableAutoHighlightRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mAutoHighlightEnabled = true;
+        }
+    };
+
     LineDataSet mTempDataSet;
     LineDataSet mPreHeatDataSet;
     LineDataSet mRoastDataSet;
@@ -211,18 +219,23 @@ public class ActivityPlot extends BaseActivity
                 }
             }
 
-            String btnText = getString(result.plotDatas.isEmpty() ? R.string.btn_start : R.string.btn_set);
+            String btnText = getString(result.getPlotDatas().isEmpty() ? R.string.btn_start : R.string.btn_set);
             if (!TextUtils.equals(mSetButton.getText(), btnText)) {
                 mSetButton.setText(btnText);
             }
 
             int count = mTempDataSet.getEntryCount();
             RoastData currentData = null;// get the lastest one
-            for (; count < result.plotDatas.size(); count++) {
-                currentData = result.plotDatas.get(count);
+            for (; count < result.getPlotDatas().size(); count++) {
+                currentData = result.getPlotDatas().get(count);
                 addPlotData(currentData, mRoast);
             }
 
+            if (mRoast && mAutoHighlightEnabled && currentData != null) {
+                Highlight highlight = new Highlight(currentData.getTime(), Float.NaN, mHighlight.getDataSetIndex());
+                highlight.setDataIndex(mHighlight.getDataIndex());
+                mChart.highlightValue(highlight);
+            }
 
             mChart.notifyDataSetChanged();
             mChart.invalidate();
@@ -232,8 +245,8 @@ public class ActivityPlot extends BaseActivity
                 int currentTime = currentData.getTime();
                 int currentFire = currentData.getFire();
                 int targetFire = -1;
-                for (; mReferenceIndex < mReferenceProfile.plotDatas.size(); mReferenceIndex++) {
-                    RoastData d = mReferenceProfile.plotDatas.get(mReferenceIndex);
+                for (; mReferenceIndex < mReferenceProfile.getPlotDatas().size(); mReferenceIndex++) {
+                    RoastData d = mReferenceProfile.getPlotDatas().get(mReferenceIndex);
                     if (d.getStatus() == RoastData.STATUS_ROASTING && d.getTime() > currentTime) {
                         targetFire = d.getFire();
                         break;
@@ -327,13 +340,12 @@ public class ActivityPlot extends BaseActivity
         mRatingBar.setOnRatingBarChangeListener(this);
 
         String uuid = getIntent().getStringExtra(PARAM_UUID);
-        String referenceUuid = getIntent().getStringExtra(PARAM_REFERENCE_UUID);
         mRoast = getIntent().getBooleanExtra(PARAM_ROAST, false);
-        Log.d(TAG, "uuid " + uuid + ", reference-uuid " + referenceUuid);
+        Log.d(TAG, "uuid " + uuid);
 
         mRealm = Realm.getDefaultInstance();
         mProfile = mRealm.where(RoastProfile.class).equalTo("uuid", uuid).findFirst();
-        mReferenceProfile = mRealm.where(RoastProfile.class).equalTo("uuid", referenceUuid).findFirst();
+        mReferenceProfile = mRoast ? mProfile.getReferenceProfile() : null;
         Log.d(TAG, "profile " + mProfile);
         Log.d(TAG, "reference " + mReferenceProfile);
 
@@ -352,8 +364,12 @@ public class ActivityPlot extends BaseActivity
         data.setData(createScatterData());
 //        data.setData(createBarData());
         mChart.setData(data);
+        int dataIndex = data.getDataIndex(data.getLineData());
+        int dataSetIndex = data.getIndexOfDataSet(mTempDataSet);
+        mHighlight = new Highlight(0, Float.NaN, dataSetIndex);
+        mHighlight.setDataIndex(dataIndex);
 
-        for (RoastData entry : mProfile.plotDatas) {
+        for (RoastData entry : mProfile.getPlotDatas()) {
             if (TextUtils.equals(entry.getEvent(), RoastData.EVENT_BURST1_START)) {
                 mEventButton1.setTag(entry);
                 mEventButton1.setSelected(true);
@@ -394,7 +410,7 @@ public class ActivityPlot extends BaseActivity
             }
         } else {
             XAxis xAxis = mChart.getXAxis();
-            Number maxTime = mProfile.plotDatas.max("time");
+            Number maxTime = mProfile.getPlotDatas().max("time");
             float max = ONE_MIN_IN_SECONDS;
             if (maxTime != null) {
                 max += maxTime.intValue();
@@ -426,7 +442,7 @@ public class ActivityPlot extends BaseActivity
 
         mProfile.removeChangeListener(mProfileChangeListener);
 
-        if (mRoast && mProfile.plotDatas.isEmpty()) {
+        if (mRoast && mProfile.getPlotDatas().isEmpty()) {
             mRealm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
@@ -441,6 +457,8 @@ public class ActivityPlot extends BaseActivity
         mChart.setLogEnabled(true);
 
         mChart.setOnChartValueSelectedListener(this);
+
+        mChart.setOnChartGestureListener(this);
 
         mChart.getDescription().setEnabled(false);
 
@@ -545,7 +563,7 @@ public class ActivityPlot extends BaseActivity
             mReferenceFireDataSet = createFireLineDataSet("reference-fire");
             mReferenceFireDataSet.setColor(COLOR_FIRE, 50);
 
-            for (RoastData data : mReferenceProfile.plotDatas) {
+            for (RoastData data : mReferenceProfile.getPlotDatas()) {
                 mReferenceTempDataSet.addEntry(new Entry(data.getTime(), data.getTemperature()));
                 mReferenceFireDataSet.addEntry(new Entry(data.getTime(), data.getFire()));
             }
@@ -553,7 +571,7 @@ public class ActivityPlot extends BaseActivity
             dataSets.add(mReferenceFireDataSet);
             dataSets.add(mReferenceTempDataSet);
 
-            Number maxTime = mReferenceProfile.plotDatas.max("time");
+            Number maxTime = mReferenceProfile.getPlotDatas().max("time");
             if (maxTime != null) {
                 XAxis xAxis = mChart.getXAxis();
                 xAxis.setAxisMaximum(maxTime.intValue());
@@ -729,6 +747,48 @@ public class ActivityPlot extends BaseActivity
         Log.i(TAG, "Nothing selected.");
     }
 
+
+    @Override
+    public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
+        mHandler.removeCallbacks(mEnableAutoHighlightRunnable);
+        mAutoHighlightEnabled = false;
+    }
+
+    @Override
+    public void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
+        mHandler.postDelayed(mEnableAutoHighlightRunnable, 5000);
+    }
+
+    @Override
+    public void onChartLongPressed(MotionEvent me) {
+
+    }
+
+    @Override
+    public void onChartDoubleTapped(MotionEvent me) {
+
+    }
+
+    @Override
+    public void onChartSingleTapped(MotionEvent me) {
+
+    }
+
+    @Override
+    public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
+
+    }
+
+    @Override
+    public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
+
+    }
+
+    @Override
+    public void onChartTranslate(MotionEvent me, float dX, float dY) {
+
+    }
+
     @OnClick({R.id.text_minute, R.id.text_second})
     public void changeRoastTime() {
         final int seconds = mMinuteTextView.getValue() * 60 + mSecondTextView.getValue();
@@ -768,7 +828,7 @@ public class ActivityPlot extends BaseActivity
             Toast.makeText(this, R.string.toast_device_unconnected, Toast.LENGTH_SHORT).show();
         } else {
 
-            if (!mProfile.plotDatas.isEmpty()) {
+            if (!mProfile.getPlotDatas().isEmpty()) {
                 boolean roasting = mProfile.getRoastTime() != 0 && mProfile.getCoolTime() == 0;
                 if (mProfile.isComplete()) {
                     Toast.makeText(this, R.string.toast_already_completed, Toast.LENGTH_SHORT).show();
@@ -821,7 +881,7 @@ public class ActivityPlot extends BaseActivity
             boolean roasting = mProfile.getRoastTime() != 0 && mProfile.getCoolTime() == 0;
             if (mDevice.isOpen() && roasting && !mProfile.isComplete()) {
 
-                RoastData data = mProfile.plotDatas.isEmpty() ? null : mProfile.plotDatas.last();
+                RoastData data = mProfile.getLastPlotData();
                 if (data != null) {
 
                     if (mAutoChangeFire) {
@@ -839,7 +899,7 @@ public class ActivityPlot extends BaseActivity
         if (!mDevice.isOpen()) {
             Toast.makeText(this, R.string.toast_device_unconnected, Toast.LENGTH_SHORT).show();
         } else {
-            RoastData data = mProfile.plotDatas.isEmpty() ? null : mProfile.plotDatas.last();
+            RoastData data = mProfile.getLastPlotData();
             if (data != null) {
                 mDevice.stopRoast();
 
@@ -852,7 +912,7 @@ public class ActivityPlot extends BaseActivity
 
     @OnClick({R.id.event1, R.id.event2, R.id.event3, R.id.event4})
     void addEvent(EventButton view) {
-        RoastData lastData = mProfile.plotDatas.isEmpty() ? null : mProfile.plotDatas.last();
+        RoastData lastData = mProfile.getLastPlotData();
         if (view.isSelected()) {
             RoastData data = (RoastData) view.getTag();
             int seconds = getTimeInStatus(data.getTime());
@@ -931,7 +991,7 @@ public class ActivityPlot extends BaseActivity
 
         RoastData oldData = (RoastData) button.getTag();
         RoastData newData = null;
-        for (RoastData data : mProfile.plotDatas) {
+        for (RoastData data : mProfile.getPlotDatas()) {
             if (data.getEvent() != null) {
                 continue;
             }
@@ -1014,7 +1074,7 @@ public class ActivityPlot extends BaseActivity
             case R.id.action_share:
 
                 if (mProfile.getSid() != 0) {
-                    shareProfile(mProfile.getSid());
+                    shareProfile(mProfile.getFullName(), mProfile.getSid());
                 } else {
                     mProgressDialog = ProgressDialog.show(this);
 
@@ -1034,7 +1094,7 @@ public class ActivityPlot extends BaseActivity
                                     });
                                 }
 
-                                shareProfile(result.sid);
+                                shareProfile(mProfile.getFullName(), result.sid);
                             } else {
                                 Toast.makeText(ActivityPlot.this, getString(R.string.error_network_x, ""), Toast.LENGTH_SHORT).show();
                                 try {
@@ -1065,15 +1125,8 @@ public class ActivityPlot extends BaseActivity
         }
     }
 
-    private void shareProfile(int sid) {
-//        Bitmap bitmap = Utils.getChartBitmap(mChart);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        Utils.shareContent(this, bitmap, String.format(Constants.PROFILE_WEB_URL, sid));
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    private void shareProfile(String title, int sid) {
+        Bitmap bitmap = Utils.getChartBitmap(mChart);
+        Utils.shareContent(this, title, bitmap, String.format(Constants.PROFILE_WEB_URL, sid));
     }
 }

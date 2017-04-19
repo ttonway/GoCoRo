@@ -7,8 +7,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.pgyersdk.crash.PgyCrashManager;
-import com.umeng.socialize.PlatformConfig;
-import com.umeng.socialize.UMShareAPI;
 import com.wcare.android.gocoro.model.RoastData;
 import com.wcare.android.gocoro.model.RoastProfile;
 import com.wcare.android.gocoro.utils.Utils;
@@ -17,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import cn.sharesdk.framework.ShareSDK;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
@@ -27,13 +26,7 @@ import io.realm.RealmResults;
 public class GoCoRoApplicatoin extends Application {
     private static final String TAG = GoCoRoApplicatoin.class.getSimpleName();
 
-    //各个平台的配置，建议放在全局Application或者程序入口
-    {
-        PlatformConfig.setWeixin("wx5ef8e20ebea2577c", "09e997da762195329e513d724f451f67");
-        //豆瓣RENREN平台目前只能在服务器端配置
-        PlatformConfig.setSinaWeibo("1771001407", "fb08ed3cb0134002785b0006f4507270", "http://sns.whalecloud.com");
-        PlatformConfig.setQQZone("1105931595", "EQV0iukAzQqWgyR3");
-    }
+
 
     @Override
     public void onCreate() {
@@ -54,7 +47,7 @@ public class GoCoRoApplicatoin extends Application {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         Log.i(TAG, "DisplayMetrics: " + metrics);
 
-        UMShareAPI.get(this);
+        ShareSDK.initSDK(this);
 
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder()
@@ -127,7 +120,7 @@ public class GoCoRoApplicatoin extends Application {
 
                         data.setTemperature((int) (-230.f / 900 / 900 * i * i + 230.f * 2 / 900 * i + 0.5f));
 
-                        profile.plotDatas.add(data);
+                        profile.getPlotDatas().add(data);
 
                         realm.copyToRealmOrUpdate(profile);
                     }

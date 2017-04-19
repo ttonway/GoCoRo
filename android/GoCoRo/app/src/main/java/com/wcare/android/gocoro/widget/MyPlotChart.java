@@ -4,12 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.charts.CombinedChart;
-import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 
 /**
  * Created by ttonway on 2017/2/3.
  */
 public class MyPlotChart extends CombinedChart {
+
 
     public MyPlotChart(Context context) {
         super(context);

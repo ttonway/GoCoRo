@@ -5,29 +5,40 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.wcare.android.gocoro.Constants;
 import com.wcare.android.gocoro.R;
+import com.wcare.android.gocoro.http.RemoteModel;
+import com.wcare.android.gocoro.http.ServiceFactory;
 import com.wcare.android.gocoro.model.RoastProfile;
 import com.wcare.android.gocoro.ui.adapter.FormAdapter;
+import com.wcare.android.gocoro.ui.dialog.ProgressDialog;
 import com.wcare.android.gocoro.utils.Utils;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by ttonway on 2016/12/20.
  */
 public class ActivityForm extends BaseActivity {
+    private static final String TAG = ActivityForm.class.getSimpleName();
 
     public static final String PARAM_UUID = "ActivityFormTable:uuid";
 
@@ -40,6 +51,8 @@ public class ActivityForm extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.expand_list)
     ExpandableListView mListView;
+
+    ProgressDialog mProgressDialog;
 
     FormAdapter mAdapter;
 
@@ -138,15 +151,63 @@ public class ActivityForm extends BaseActivity {
         switch (item.getItemId()) {
 
             case R.id.action_share:
-                mListView.setDrawingCacheEnabled(true);
-                Bitmap bitmap = Bitmap.createBitmap(mListView.getDrawingCache());
-                mListView.destroyDrawingCache();
+                if (mProfile.getSid() != 0) {
+                    shareProfile(mProfile.getFullName(), mProfile.getSid());
+                } else {
+                    mProgressDialog = ProgressDialog.show(this);
 
-                Utils.shareContent(this, bitmap, "");
+                    Call<RemoteModel> call = ServiceFactory.getWebService().uploadProfile(mProfile);
+                    call.enqueue(new Callback<RemoteModel>() {
+                        @Override
+                        public void onResponse(Call<RemoteModel> call, Response<RemoteModel> response) {
+                            mProgressDialog.dismissAllowingStateLoss();
+                            if (response.isSuccessful()) {
+                                final RemoteModel result = response.body();
+                                if (mProfile.isValid()) {
+                                    mRealm.executeTransaction(new Realm.Transaction() {
+                                        @Override
+                                        public void execute(Realm realm) {
+                                            mProfile.setSid(result.sid);
+                                        }
+                                    });
+                                }
+
+                                shareProfile(mProfile.getFullName(), result.sid);
+                            } else {
+                                Toast.makeText(ActivityForm.this, getString(R.string.error_network_x, ""), Toast.LENGTH_SHORT).show();
+                                try {
+                                    Log.e(TAG, "onResponse error: " + response.errorBody().string());
+                                } catch (IOException e) {
+                                    Log.e(TAG, "onResponse error.", e);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<RemoteModel> call, Throwable t) {
+                            mProgressDialog.dismissAllowingStateLoss();
+                            Toast.makeText(ActivityForm.this, getString(R.string.error_network_x, t.getLocalizedMessage()), Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "onFailure.", t);
+                        }
+                    });
+                }
+
+//                mListView.setDrawingCacheEnabled(true);
+//                Bitmap bitmap = Bitmap.createBitmap(mListView.getDrawingCache());
+//                mListView.destroyDrawingCache();
+//
+//                Utils.shareContent(this, bitmap, "");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void shareProfile(String title, int sid) {
+        mListView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(mListView.getDrawingCache());
+        mListView.destroyDrawingCache();
+        Utils.shareContent(this, title, bitmap, String.format(Constants.PROFILE_WEB_URL, sid));
     }
 
     static class ListHeaderBinder {

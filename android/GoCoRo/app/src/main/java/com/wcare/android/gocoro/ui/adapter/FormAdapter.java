@@ -42,11 +42,11 @@ public class FormAdapter extends BaseExpandableListAdapter {
 
         boolean hasEvents;
         int lastFire = -1;
-        RoastData last = profile.plotDatas.size() > 0 ? profile.plotDatas.last() : null;
+        RoastData last = profile.getLastPlotData();
         if (profile.isComplete()) {
             mCompleteData = last;
         }
-        for (RoastData entry : profile.plotDatas) {
+        for (RoastData entry : profile.getPlotDatas()) {
             boolean fireChanged = false;
             if (entry.getStatus() == RoastData.STATUS_ROASTING) {
                 if (lastFire != -1 && lastFire != entry.getFire()) {

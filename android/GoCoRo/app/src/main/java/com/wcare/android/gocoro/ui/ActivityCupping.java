@@ -30,7 +30,6 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
-import com.umeng.socialize.UMShareAPI;
 import com.wcare.android.gocoro.Constants;
 import com.wcare.android.gocoro.R;
 import com.wcare.android.gocoro.http.RemoteModel;
@@ -250,7 +249,6 @@ public class ActivityCupping extends BaseActivity {
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     float getScore(android.widget.SeekBar seekBar) {
@@ -412,7 +410,7 @@ public class ActivityCupping extends BaseActivity {
             case R.id.action_share:
 
                 if (mCupping.getSid() != 0) {
-                    shareCupping(mCupping.getSid());
+                    shareCupping(mCupping.getName(), mCupping.getSid());
                 } else {
                     mProgressDialog = ProgressDialog.show(this);
 
@@ -432,7 +430,7 @@ public class ActivityCupping extends BaseActivity {
                                     });
                                 }
 
-                                shareCupping(result.sid);
+                                shareCupping(mCupping.getName(), result.sid);
                             } else {
                                 Toast.makeText(ActivityCupping.this, getString(R.string.error_network_x, ""), Toast.LENGTH_SHORT).show();
                                 try {
@@ -458,9 +456,9 @@ public class ActivityCupping extends BaseActivity {
         }
     }
 
-    private void shareCupping(int sid) {
+    private void shareCupping(String title, int sid) {
         Bitmap bitmap = Utils.getChartBitmap(mChart);
-        Utils.shareContent(this, bitmap, String.format(Constants.CUPPING_WEB_URL, sid));
+        Utils.shareContent(this, title, bitmap, String.format(Constants.CUPPING_WEB_URL, sid));
     }
 
     void saveOrUpdateCupping() {

@@ -129,11 +129,12 @@ public class ActivityStartRoast extends BaseActivity {
         profile.setEnvTemperature(Utils.parseInt(mInputTemperature.getText().toString()));
         CoolTemperature bean = (CoolTemperature) mSpinnerCoolTemp.getSelectedItem();
         profile.setCoolTemperature(bean.temperature);
+
+        profile.setReferenceProfile(mAdapter.getSelectedProfile());
         mRealm.commitTransaction();
 
-        RoastProfile reference = mAdapter.getSelectedProfile();
 
-        ActivityPlot.startRoast(this, profile.getUuid(), reference == null ? null : reference.getUuid());
+        ActivityPlot.startRoast(this, profile.getUuid());
         finish();
     }
 
