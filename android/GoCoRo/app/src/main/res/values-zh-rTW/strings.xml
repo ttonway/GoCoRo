@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="activity_main">豆酷樂</string>
+    <string name="app_name">豆酷樂</string>
     <string name="activity_start_roast">開始烘焙</string>
     <string name="activity_form">烘豆記錄詳情</string>
     <string name="activity_cupping">杯測</string>
@@ -81,6 +81,7 @@
     <string name="toast_now_roasting">正在烘焙中</string>
     <string name="toast_already_completed">烘焙已經結束</string>
     <string name="toast_event_time_invalid">您選擇的時間無效</string>
+    <string name="toast_downloading">正在下載，請稍候</string>
     <string name="error_network_x">網絡錯誤 %1$s</string>
     <string name="error_connect_x">連接錯誤%1$d</string>
     <string name="error_wrong_device">錯誤的設備</string>
@@ -88,10 +89,12 @@
     <string name="error_connection_error">連接錯誤</string>
     <string name="error_bluetooth_not_supported">藍芽不可用</string>
     <string name="ble_not_supported">該設備不支援BLE</string>
+    <string name="sdcard_unavailable">SD卡不可用!</string>
     <string name="notification_service_running">GoCoRo正在烘焙</string>
     <string name="roast_completed">烘焙完成</string>
     <string name="continue_uncompleted_profile">設備正在烘焙，繼續未完成的記錄？</string>
     <string name="waiting_progress">請稍候</string>
+    <string name="have_new_app_version">有新版本，點擊確定更新。</string>
 
     <string name="state_open">已連接</string>
     <string name="state_opening">正在連接</string>

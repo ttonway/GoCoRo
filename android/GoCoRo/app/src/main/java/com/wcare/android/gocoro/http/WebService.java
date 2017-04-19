@@ -16,6 +16,9 @@ import retrofit2.http.POST;
 
 public interface WebService {
 
+    @GET("android_version.json")
+    Call<AppVersion> queryAndroidVerion();
+
     @GET("knowledge/list")
     Call<List<KnowledgeMessage>> listKnowledgeMessages();
 

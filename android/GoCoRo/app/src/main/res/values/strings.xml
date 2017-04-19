@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name" translatable="false">GoCoRo</string>
+    <string name="gocoro" translatable="false">GoCoRo</string>
     <string name="x_celsius_unit" translatable="false">%1$d℃</string>
     <string name="x_g_unit" translatable="false">%1$dg</string>
     <string name="facebook_app_id" translatable="false">378363195865323</string>
 
-    <string name="activity_main">GoCoRo</string>
+    <string name="app_name">GoCoRo</string>
     <string name="activity_start_roast">Start</string>
     <string name="activity_form">Roasted destails</string>
     <string name="activity_cupping">Cupping</string>
@@ -85,6 +85,7 @@
     <string name="toast_now_roasting">In roasting</string>
     <string name="toast_already_completed">Roasted complete</string>
     <string name="toast_event_time_invalid">Invalid time</string>
+    <string name="toast_downloading">Start downloading</string>
     <string name="error_network_x">Network error %1$s</string>
     <string name="error_connect_x">Connection error %1$d</string>
     <string name="error_wrong_device">Wrong device</string>
@@ -92,10 +93,13 @@
     <string name="error_connection_error">Connection error</string>
     <string name="error_bluetooth_not_supported">Bluetooth is not available</string>
     <string name="ble_not_supported">The device does not support BLE</string>
+    <string name="sdcard_unavailable">SD-card unavailable!</string>
     <string name="notification_service_running">GoCoRo is Roasting process</string>
     <string name="roast_completed">Roasted complete</string>
     <string name="continue_uncompleted_profile">Device is in roasting process, Save the unfinished record?</string>
     <string name="waiting_progress">Please wait</string>
+    <string name="have_new_app_version">A New version is released, click OK to update.</string>
+
 
     <string name="state_open">Connected</string>
     <string name="state_opening">Connecting</string>
