@@ -25,13 +25,15 @@
             android:id="@+id/device_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:textAppearanceLarge" />
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/text_light_gray" />
 
         <TextView
             android:id="@+id/device_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:textAppearanceSmall" />
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/text_light_gray" />
     </LinearLayout>
 
     <TextView

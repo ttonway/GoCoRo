@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background1"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -12,8 +11,9 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/actionbar_background"
-        app:popupTheme="@style/AppTheme.PopupOverlay">
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:theme="@style/Widget.ToolBar">
 
     </android.support.v7.widget.Toolbar>
 
@@ -68,7 +68,8 @@
         android:layout_marginBottom="4dp"
         android:text="@string/label_software_license_services_agreement"
         android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="#776d7d" />
+        android:textColor="@color/text_light_gray"
+        android:visibility="gone" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -76,7 +77,8 @@
         android:layout_marginBottom="4dp"
         android:text="@string/label_all_rights_reserved"
         android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="#776d7d" />
+        android:textColor="@color/text_light_gray"
+        android:visibility="gone" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -84,6 +86,6 @@
         android:layout_marginBottom="8dp"
         android:text="Copyright 2016-2017 GoCoRo.All Rights Reserved"
         android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="#776d7d" />
+        android:textColor="@color/text_light_gray" />
 
 </LinearLayout>

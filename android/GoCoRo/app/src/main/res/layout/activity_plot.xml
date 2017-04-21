@@ -3,15 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/window_background"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        app:popupTheme="@style/AppTheme.PopupOverlay">
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:theme="@style/Widget.ToolBar">
 
         <LinearLayout
             android:id="@+id/top_container"
@@ -21,7 +22,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="2dp"
-            android:background="@color/window_background"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -56,7 +56,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text=":"
-                    android:textColor="@color/text_white"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
@@ -73,7 +72,6 @@
                     android:background="@drawable/dark_edittext"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:textColor="@color/text_white"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
@@ -146,12 +144,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#25202b"
+            android:background="#292929"
             android:orientation="horizontal"
             android:paddingBottom="4dp"
             android:paddingLeft="16dp"
@@ -162,7 +161,7 @@
                 android:id="@+id/text_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_cyan" />
+                android:textColor="@color/text_light_gray" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -173,7 +172,7 @@
                 android:id="@+id/text_bean"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_cyan" />
+                android:textColor="@color/text_light_gray" />
 
             <TextView
                 android:id="@+id/text_roast_time"
@@ -181,20 +180,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/text_cyan" />
+                android:textColor="@color/text_light_gray" />
 
             <TextView
                 android:id="@+id/text_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_cyan" />
+                android:textColor="@color/text_light_gray" />
 
         </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#2e2836"
             android:paddingBottom="2dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp">
@@ -205,7 +203,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/gocoro"
-                android:textColor="#2b2632"
+                android:textColor="#3a3a3a"
                 android:textSize="120sp"
                 android:textStyle="bold" />
 
@@ -220,7 +218,7 @@
         android:id="@+id/bottom_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#36313c"
+        android:background="#292929"
         android:orientation="horizontal"
         android:paddingBottom="3dp"
         android:paddingTop="3dp">

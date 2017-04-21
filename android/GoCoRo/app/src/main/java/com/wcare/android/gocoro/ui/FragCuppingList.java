@@ -51,8 +51,6 @@ public class FragCuppingList extends BaseFragment {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.image_background)
-    ImageView mBackgroundImage;
     @BindView(R.id.text_title)
     TextView mTitleTextView;
     @BindView(R.id.list)
@@ -101,12 +99,10 @@ public class FragCuppingList extends BaseFragment {
         if (mInternalToobar) {
             getBaseActivity().setSupportActionBar(mToolbar);
             getBaseActivity().getSupportActionBar().setTitle("");
-            mBackgroundImage.setImageResource(R.drawable.background5);
             mTitleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_cupping, 0, 0, 0);
             mTitleTextView.setText(R.string.activity_cupping_list);
         } else {
             mToolbar.setVisibility(View.GONE);
-            mBackgroundImage.setVisibility(View.GONE);
         }
 
 

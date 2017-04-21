@@ -4,18 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/background3" />
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/actionbar_background"
-        app:popupTheme="@style/AppTheme.PopupOverlay">
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:theme="@style/Widget.ToolBar">
 
     </android.support.v7.widget.Toolbar>
 
@@ -32,7 +27,7 @@
 
             <TextView
                 android:text="@string/label_country"
-                android:textColor="@color/text_dark"
+                android:textColor="@color/text_light_gray"
                 android:textSize="@dimen/default_textsize" />
 
             <EditText
@@ -49,7 +44,7 @@
 
             <TextView
                 android:text="@string/label_bean"
-                android:textColor="@color/text_dark"
+                android:textColor="@color/text_light_gray"
                 android:textSize="@dimen/default_textsize" />
 
             <EditText
@@ -66,7 +61,7 @@
 
             <TextView
                 android:text="@string/label_people"
-                android:textColor="@color/text_dark"
+                android:textColor="@color/text_light_gray"
                 android:textSize="@dimen/default_textsize" />
 
             <EditText
@@ -83,7 +78,7 @@
 
             <TextView
                 android:text="@string/label_begin_weight"
-                android:textColor="@color/text_dark"
+                android:textColor="@color/text_light_gray"
                 android:textSize="@dimen/default_textsize" />
 
             <EditText
@@ -102,7 +97,7 @@
 
             <TextView
                 android:text="@string/label_temperature"
-                android:textColor="@color/text_dark"
+                android:textColor="@color/text_light_gray"
                 android:textSize="@dimen/default_textsize" />
 
             <EditText
@@ -117,7 +112,7 @@
 
             <TextView
                 android:text="@string/label_cool_temperature"
-                android:textColor="@color/text_dark"
+                android:textColor="@color/text_light_gray"
                 android:textSize="@dimen/default_textsize" />
 
             <Spinner

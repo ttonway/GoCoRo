@@ -324,6 +324,7 @@ public class GoCoRoDevice implements DriverCallback {
                                         if (!mProfile.isComplete()) {
                                             mProfile.setEndTime(System.currentTimeMillis());
                                             mProfile.setComplete(true);
+                                            mProfile.setDirty(true);
                                         }
 
                                         resetProfile();
@@ -332,6 +333,7 @@ public class GoCoRoDevice implements DriverCallback {
 
                                     if (mProfile.getStartDruation() != setTime) {
                                         mProfile.setStartDruation(setTime);
+                                        mProfile.setDirty(true);
                                     }
 
                                     if (lastData != null && time <= lastData.getTime()) {
@@ -352,6 +354,7 @@ public class GoCoRoDevice implements DriverCallback {
                                     data.setFire(fire);
                                     data.setTemperature(temp & 0xff);
                                     mProfile.getPlotDatas().add(data);
+                                    mProfile.setDirty(true);
                                 }
                             }
                         });

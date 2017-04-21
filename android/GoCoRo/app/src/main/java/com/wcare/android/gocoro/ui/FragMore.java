@@ -22,8 +22,6 @@ import butterknife.Unbinder;
  */
 public class FragMore extends BaseFragment {
 
-    @BindView(R.id.text_title)
-    TextView mTitleTextView;
     private Unbinder mUnbinder;
 
 
@@ -37,9 +35,6 @@ public class FragMore extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
-
-        mTitleTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star, 0, 0, 0);
-        mTitleTextView.setText(R.string.activity_more);
     }
 
     @Override

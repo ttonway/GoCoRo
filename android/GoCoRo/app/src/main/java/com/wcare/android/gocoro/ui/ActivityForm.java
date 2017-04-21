@@ -56,6 +56,8 @@ public class ActivityForm extends BaseActivity {
 
     FormAdapter mAdapter;
 
+    boolean mChanged = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +91,7 @@ public class ActivityForm extends BaseActivity {
         mHeaderBinder.mTextStartFire.setText(String.valueOf(mProfile.getStartFire()));
         mHeaderBinder.mTextWeightRatio.setText(mProfile.formatWeightRatio(mProfile.getStartWeight(), mProfile.getEndWeight()));
 
-        final TextWatcher textWatcher = new TextWatcher() {
+        final TextWatcher weightWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -102,14 +104,37 @@ public class ActivityForm extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                mChanged = true;
 
                 int start = Utils.parseInt(mHeaderBinder.mTextBeginWeight.getText().toString());
                 int end = Utils.parseInt(mHeaderBinder.mTextEndWeight.getText().toString());
                 mHeaderBinder.mTextWeightRatio.setText(mProfile.formatWeightRatio(start, end));
             }
         };
-        mHeaderBinder.mTextBeginWeight.addTextChangedListener(textWatcher);
-        mHeaderBinder.mTextEndWeight.addTextChangedListener(textWatcher);
+        mHeaderBinder.mTextBeginWeight.addTextChangedListener(weightWatcher);
+        mHeaderBinder.mTextEndWeight.addTextChangedListener(weightWatcher);
+
+        final TextWatcher changeWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+               mChanged = true;
+            }
+        };
+        mHeaderBinder.mTextPeople.addTextChangedListener(changeWatcher);
+        mHeaderBinder.mTextCountry.addTextChangedListener(changeWatcher);
+        mHeaderBinder.mTextBean.addTextChangedListener(changeWatcher);
+        mHeaderBinder.mTextEnvTemperature.addTextChangedListener(changeWatcher);
+
 
         mAdapter = new FormAdapter(this, mProfile);
         mListView.setAdapter(mAdapter);
@@ -119,14 +144,17 @@ public class ActivityForm extends BaseActivity {
     protected void onPause() {
         super.onPause();
 
-        mRealm.beginTransaction();
-        mProfile.setPeople(mHeaderBinder.mTextPeople.getText().toString());
-        mProfile.setBeanCountry(mHeaderBinder.mTextCountry.getText().toString());
-        mProfile.setBeanName(mHeaderBinder.mTextBean.getText().toString());
-        mProfile.setStartWeight(Utils.parseInt(mHeaderBinder.mTextBeginWeight.getText().toString()));
-        mProfile.setEndWeight(Utils.parseInt(mHeaderBinder.mTextEndWeight.getText().toString()));
-        mProfile.setEnvTemperature(Utils.parseInt(mHeaderBinder.mTextEnvTemperature.getText().toString()));
-        mRealm.commitTransaction();
+        if (mChanged) {
+            mRealm.beginTransaction();
+            mProfile.setPeople(mHeaderBinder.mTextPeople.getText().toString());
+            mProfile.setBeanCountry(mHeaderBinder.mTextCountry.getText().toString());
+            mProfile.setBeanName(mHeaderBinder.mTextBean.getText().toString());
+            mProfile.setStartWeight(Utils.parseInt(mHeaderBinder.mTextBeginWeight.getText().toString()));
+            mProfile.setEndWeight(Utils.parseInt(mHeaderBinder.mTextEndWeight.getText().toString()));
+            mProfile.setEnvTemperature(Utils.parseInt(mHeaderBinder.mTextEnvTemperature.getText().toString()));
+            mProfile.setDirty(true);
+            mRealm.commitTransaction();
+        }
     }
 
     @Override
@@ -141,7 +169,6 @@ public class ActivityForm extends BaseActivity {
         getMenuInflater().inflate(R.menu.menu_profile, menu);
 
         menu.findItem(R.id.action_device).setVisible(false);
-        menu.findItem(R.id.action_plot).setVisible(false);
         menu.findItem(R.id.action_form).setVisible(false);
         return true;
     }
@@ -151,7 +178,7 @@ public class ActivityForm extends BaseActivity {
         switch (item.getItemId()) {
 
             case R.id.action_share:
-                if (mProfile.getSid() != 0) {
+                if (mProfile.getSid() != 0 && !mProfile.isDirty()) {
                     shareProfile(mProfile.getFullName(), mProfile.getSid());
                 } else {
                     mProgressDialog = ProgressDialog.show(this);

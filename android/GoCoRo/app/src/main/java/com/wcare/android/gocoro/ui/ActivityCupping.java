@@ -409,7 +409,7 @@ public class ActivityCupping extends BaseActivity {
                 return true;
             case R.id.action_share:
 
-                if (mCupping.getSid() != 0) {
+                if (mCupping.getSid() != 0 && !mCupping.isDirty()) {
                     shareCupping(mCupping.getName(), mCupping.getSid());
                 } else {
                     mProgressDialog = ProgressDialog.show(this);
@@ -478,6 +478,7 @@ public class ActivityCupping extends BaseActivity {
         mCupping.setScore5(getScore(mSeekBars.get(4)));
         mCupping.setScore6(getScore(mSeekBars.get(5)));
         mCupping.setScore7(getScore(mSeekBars.get(6)));
+        mCupping.setDirty(true);
 
         if (mCupping.isManaged()) {
             mRealm.commitTransaction();

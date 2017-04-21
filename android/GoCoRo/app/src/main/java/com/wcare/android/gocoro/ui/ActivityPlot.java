@@ -113,7 +113,8 @@ public class ActivityPlot extends BaseActivity
 
     public static final int COLOR_LINE = 0xfffff100;
     public static final int COLOR_FIRE = 0xb275001b;
-
+    public static final int COLOR_LINE2 = 0xff0075c9;
+    public static final int COLOR_FIRE2 = 0x32c20430;
 
 //    private static final int[] COLOR_BAR = new int[]{0xfff7b27f, 0xffff8123, 0xfff75441, 0xffed3861, 0xfff40a3f};
 //    public static final float[] FIRE_LEVEL0 = new float[]{0, 0, 0, 0, 0};
@@ -557,11 +558,11 @@ public class ActivityPlot extends BaseActivity
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         if (mReferenceProfile != null) {
             mReferenceTempDataSet = createTemperatureDataSet("reference-temperature");
-            mReferenceTempDataSet.setColor(COLOR_LINE, 50);
+            mReferenceTempDataSet.setColor(COLOR_LINE2);
             mReferenceTempDataSet.setHighlightEnabled(false);
 
             mReferenceFireDataSet = createFireLineDataSet("reference-fire");
-            mReferenceFireDataSet.setColor(COLOR_FIRE, 50);
+            mReferenceFireDataSet.setColor(COLOR_FIRE2);
 
             for (RoastData data : mReferenceProfile.getPlotDatas()) {
                 mReferenceTempDataSet.addEntry(new Entry(data.getTime(), data.getTemperature()));
@@ -863,6 +864,7 @@ public class ActivityPlot extends BaseActivity
                         mProfile.setStartTime(System.currentTimeMillis());
                         mProfile.setStartFire(fire);
                         mProfile.setStartDruation(seconds);
+                        mProfile.setDirty(true);
                     }
                 });
             }
@@ -1018,6 +1020,7 @@ public class ActivityPlot extends BaseActivity
 
 
         mRealm.beginTransaction();
+        mProfile.setDirty(true);
         oldData.setEvent(null);
         newData.setEvent(event);
         mRealm.commitTransaction();
@@ -1042,7 +1045,6 @@ public class ActivityPlot extends BaseActivity
 //                MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 //        MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_refresh),
 //                MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
-        menu.findItem(R.id.action_plot).setVisible(false);
         if (mRoast) {
             menu.findItem(R.id.action_share).setVisible(false);
             menu.findItem(R.id.action_form).setVisible(false);
@@ -1073,7 +1075,7 @@ public class ActivityPlot extends BaseActivity
                 return true;
             case R.id.action_share:
 
-                if (mProfile.getSid() != 0) {
+                if (mProfile.getSid() != 0 && !mProfile.isDirty()) {
                     shareProfile(mProfile.getFullName(), mProfile.getSid());
                 } else {
                     mProgressDialog = ProgressDialog.show(this);

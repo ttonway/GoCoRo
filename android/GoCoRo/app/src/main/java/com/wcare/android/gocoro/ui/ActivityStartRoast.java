@@ -131,6 +131,8 @@ public class ActivityStartRoast extends BaseActivity {
         profile.setCoolTemperature(bean.temperature);
 
         profile.setReferenceProfile(mAdapter.getSelectedProfile());
+
+        profile.setDirty(true);
         mRealm.commitTransaction();
 
 

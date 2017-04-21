@@ -4,12 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/background5" />
-
     <TextView
         android:id="@+id/text_logo"
         android:layout_width="wrap_content"
@@ -26,8 +20,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/actionbar_background"
-        app:popupTheme="@style/AppTheme.PopupOverlay">
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:theme="@style/Widget.ToolBar">
 
     </android.support.v7.widget.Toolbar>
 

@@ -66,8 +66,6 @@ public class ActivityLeScan extends AppCompatActivity
     Toolbar mToolbar;
     @BindView(R.id.text_logo)
     TextView mLogoTextView;
-    @BindView(R.id.image_background)
-    ImageView mBackgroundImage;
     @BindView(R.id.list)
     ListView mListView;
 
@@ -82,7 +80,6 @@ public class ActivityLeScan extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mLogoTextView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Bauhaus93.ttf"));
-        mBackgroundImage.setImageResource(R.drawable.background1);
 
         mListView.setOnItemClickListener(this);
 

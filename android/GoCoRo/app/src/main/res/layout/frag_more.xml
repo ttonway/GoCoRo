@@ -1,207 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/image_background"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/background1" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:theme="@style/Widget.ToolBar">
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/activity_more"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1affffff"
+        android:padding="8dp"
+        android:text="@string/label_more"
+        android:textColor="@color/text_white" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/actionbar_background"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <TextView
-                android:id="@+id/text_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/text_white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </android.support.v7.widget.Toolbar>
-
-        <TextView
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_knowledge"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#1affffff"
-            android:padding="8dp"
-            android:text="@string/label_more" />
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/ic_knowledges"
+            android:padding="4dp"
+            android:text="@string/btn_knowledge"
+            android:textColor="@color/text_light_gray" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_buy_device"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/ic_shopping"
+            android:padding="4dp"
+            android:text="@string/btn_buy_device"
+            android:textColor="@color/text_light_gray" />
 
-            <Button
-                android:id="@+id/btn_knowledge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:drawableTop="@drawable/ic_knowledges"
-                android:padding="4dp"
-                android:text="@string/btn_knowledge"
-                android:textColor="#776d7d" />
-
-            <Button
-                android:id="@+id/btn_buy_device"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:drawableTop="@drawable/ic_shopping"
-                android:padding="4dp"
-                android:text="@string/btn_buy_device"
-                android:textColor="#776d7d" />
-
-            <Button
-                android:id="@+id/btn_buy_bean"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:drawableTop="@drawable/ic_shopping"
-                android:padding="4dp"
-                android:text="@string/btn_buy_bean"
-                android:textColor="#776d7d" />
-
-            <Button
-                android:id="@+id/btn_store"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:drawableTop="@drawable/ic_store"
-                android:padding="4dp"
-                android:text="@string/btn_store"
-                android:textColor="#776d7d" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_buy_bean"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/ic_buy_bean"
+            android:padding="4dp"
+            android:text="@string/btn_buy_bean"
+            android:textColor="@color/text_light_gray" />
 
-            <Button
-                android:id="@+id/btn_news"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:drawableTop="@drawable/ic_news"
-                android:padding="4dp"
-                android:text="@string/btn_news"
-                android:textColor="#776d7d" />
-
-            <Button
-                android:id="@+id/btn_coporate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:drawableTop="@drawable/ic_about"
-                android:padding="4dp"
-                android:text="@string/btn_coporate"
-                android:textColor="#776d7d" />
-
-            <Button
-                android:id="@+id/btn_about"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:drawableTop="@drawable/ic_about"
-                android:padding="4dp"
-                android:text="@string/btn_about"
-                android:textColor="#776d7d" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:drawableTop="@drawable/ic_about"
-                android:padding="4dp"
-                android:text="@string/btn_about"
-                android:textColor="#776d7d"
-                android:visibility="invisible" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <TextView
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_store"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#1affffff"
-            android:padding="8dp"
-            android:text="@string/label_socialization"
-            android:textColor="#776d7d" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#1affffff"
-            android:orientation="horizontal">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/btn_facebook"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:drawableLeft="@drawable/ic_facebook"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:text="Facebook"
-                android:textColor="#a6a6a6" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/btn_sina_weibo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:drawableLeft="@drawable/ic_sina_weibo"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:text="微博"
-                android:textColor="#a6a6a6" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-        </LinearLayout>
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/ic_store"
+            android:padding="4dp"
+            android:text="@string/btn_store"
+            android:textColor="@color/text_light_gray" />
 
     </LinearLayout>
-</FrameLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/btn_news"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/ic_news"
+            android:padding="4dp"
+            android:text="@string/btn_news"
+            android:textColor="@color/text_light_gray" />
 
+        <Button
+            android:id="@+id/btn_coporate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/ic_coporate"
+            android:padding="4dp"
+            android:text="@string/btn_coporate"
+            android:textColor="@color/text_light_gray" />
+
+        <Button
+            android:id="@+id/btn_about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/ic_about"
+            android:padding="4dp"
+            android:text="@string/btn_about"
+            android:textColor="@color/text_light_gray" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/ic_about"
+            android:padding="4dp"
+            android:text="@string/btn_about"
+            android:textColor="@color/text_light_gray"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1affffff"
+        android:padding="8dp"
+        android:text="@string/label_socialization"
+        android:textColor="@color/text_white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1affffff"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:drawableLeft="@drawable/ic_facebook"
+            android:drawablePadding="8dp"
+            android:padding="8dp"
+            android:text="Facebook"
+            android:textColor="@color/text_light_gray" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_sina_weibo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:drawableLeft="@drawable/ic_sina_weibo"
+            android:drawablePadding="8dp"
+            android:padding="8dp"
+            android:text="微博"
+            android:textColor="@color/text_light_gray" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</LinearLayout>

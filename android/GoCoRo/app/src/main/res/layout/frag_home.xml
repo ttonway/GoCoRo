@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background1"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -11,8 +10,9 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/actionbar_background"
-        app:popupTheme="@style/AppTheme.PopupOverlay">
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:theme="@style/Widget.ToolBar">
 
         <TextView
             android:id="@+id/text_title"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/gocoro"
-            android:textColor="#322737"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="24sp"
             android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
@@ -83,21 +83,20 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#000"
         android:paddingBottom="4dp"
-        android:paddingLeft="8dp"
+        android:paddingLeft="16dp"
         android:paddingTop="4dp"
         android:text="@string/label_lasttime"
-        android:textColor="@color/white" />
+        android:textColor="@color/text_orange" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#16151d"
+        android:background="#2b2b2b"
         android:orientation="vertical"
-        android:paddingBottom="8dp"
+        android:paddingBottom="16dp"
         android:paddingLeft="16dp"
-        android:paddingRight="8dp"
+        android:paddingRight="16dp"
         android:paddingTop="8dp">
 
         <TextView
@@ -105,13 +104,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/text_light_gray"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/text2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:textAppearanceSmall" />
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/text_light_gray" />
     </LinearLayout>
 
 </LinearLayout>

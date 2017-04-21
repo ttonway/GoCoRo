@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/transparent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
@@ -19,12 +19,20 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
+
     <style name="Widget"></style>
+
+    <style name="Widget.ToolBar" >
+        <item name="android:textColorPrimary">@color/colorAccent</item>
+        <item name="actionMenuTextColor">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/colorAccent</item>
+    </style>
 
     <style name="Widget.MainTabButton">
         <item name="android:ellipsize">marquee</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:background">@drawable/tab_button_background</item>
+        <item name="android:background">@color/colorPrimary</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:button">@null</item>

@@ -8,7 +8,7 @@
         android:id="@+id/indicator"
         android:layout_width="10dp"
         android:layout_height="match_parent"
-        android:background="@color/indicator"/>
+        android:background="@color/indicator" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/text_light_gray"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -33,13 +34,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAppearance="?android:textAppearanceSmall" />
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="@color/text_light_gray" />
 
             <TextView
                 android:id="@+id/text3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:textAppearanceSmall" />
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="@color/text_light_gray" />
         </LinearLayout>
     </LinearLayout>
 

@@ -98,10 +98,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".ui.ActivityFormTable"
-            android:label="@string/activity_form"
-            android:screenOrientation="userLandscape" />
-        <activity
             android:name=".ui.ActivityForm"
             android:label="@string/activity_form"
             android:theme="@style/AppTheme.NoActionBar" />

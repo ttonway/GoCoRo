@@ -26,8 +26,6 @@ import io.realm.RealmResults;
 public class GoCoRoApplicatoin extends Application {
     private static final String TAG = GoCoRoApplicatoin.class.getSimpleName();
 
-
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -75,12 +73,12 @@ public class GoCoRoApplicatoin extends Application {
     void initMockData() {
         Realm realm = Realm.getDefaultInstance();
 
-        final RealmResults<RoastProfile> profiles = realm.where(RoastProfile.class).equalTo("uuid", "11111111").findAll();
+        final RealmResults<RoastProfile> profiles = realm.where(RoastProfile.class).equalTo("uuid", "test").findAll();
         if (profiles.size() == 0) {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    RoastProfile profile = realm.createObject(RoastProfile.class, "11111111");
+                    RoastProfile profile = realm.createObject(RoastProfile.class, "test");
                     profile.setPeople("55555");
                     profile.setBeanCountry("巴拿马");
                     profile.setBeanName("蓝山");

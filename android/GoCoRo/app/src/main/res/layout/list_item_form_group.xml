@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/form_border"
+    android:background="@color/common_orange"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -11,6 +11,7 @@
         style="@style/Widget.TableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textColor="@color/text_dark"
         android:layout_weight="1"
         android:background="@null"
         android:textStyle="bold" />
