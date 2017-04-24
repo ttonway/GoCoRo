@@ -153,6 +153,7 @@ public class FormAdapter extends BaseExpandableListAdapter {
         }
 
         imageView.setBackgroundResource(isExpanded ? R.drawable.expander_open : R.drawable.expander_close);
+        imageView.setVisibility(View.GONE);
 
         return convertView;
     }

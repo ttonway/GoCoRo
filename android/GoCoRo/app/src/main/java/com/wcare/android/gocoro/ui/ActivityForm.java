@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,8 +49,10 @@ public class ActivityForm extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.expand_list)
-    ExpandableListView mListView;
+    //    @BindView(R.id.expand_list)
+//    ExpandableListView mListView;
+    @BindView(R.id.linear_layout)
+    LinearLayout mLinearLayout;
 
     ProgressDialog mProgressDialog;
 
@@ -71,11 +73,9 @@ public class ActivityForm extends BaseActivity {
         mRealm = Realm.getDefaultInstance();
         mProfile = mRealm.where(RoastProfile.class).equalTo("uuid", uuid).findFirst();
 
-        View header = getLayoutInflater().inflate(R.layout.list_header_form, mListView, false);
+        View header = getLayoutInflater().inflate(R.layout.list_header_form, mLinearLayout, false);
         ButterKnife.bind(mHeaderBinder, header);
-        mListView.addHeaderView(header);
-        View footer = getLayoutInflater().inflate(R.layout.list_footer_form, mListView, false);
-        mListView.addFooterView(footer);
+        mLinearLayout.addView(header);
 
         DateFormat dateFormat = DateFormat.getDateInstance();
         DateFormat timeFormat = DateFormat.getTimeInstance();
@@ -127,7 +127,7 @@ public class ActivityForm extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-               mChanged = true;
+                mChanged = true;
             }
         };
         mHeaderBinder.mTextPeople.addTextChangedListener(changeWatcher);
@@ -137,7 +137,19 @@ public class ActivityForm extends BaseActivity {
 
 
         mAdapter = new FormAdapter(this, mProfile);
-        mListView.setAdapter(mAdapter);
+//        mListView.setAdapter(mAdapter);
+        int groupCount = mAdapter.getGroupCount();
+        for (int i = 0; i < groupCount; i++) {
+            mLinearLayout.addView(mAdapter.getGroupView(i, true, null, mLinearLayout));
+
+            int childCount = mAdapter.getChildrenCount(i);
+            for (int j = 0; j < childCount; j++) {
+                mLinearLayout.addView(mAdapter.getChildView(i, j, j == childCount - 1, null, mLinearLayout));
+            }
+        }
+
+        View footer = getLayoutInflater().inflate(R.layout.list_footer_form, mLinearLayout, false);
+        mLinearLayout.addView(footer);
     }
 
     @Override
@@ -231,9 +243,9 @@ public class ActivityForm extends BaseActivity {
     }
 
     private void shareProfile(String title, int sid) {
-        mListView.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(mListView.getDrawingCache());
-        mListView.destroyDrawingCache();
+        mLinearLayout.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(mLinearLayout.getDrawingCache());
+        mLinearLayout.destroyDrawingCache();
         Utils.shareContent(this, title, bitmap, String.format(Constants.PROFILE_WEB_URL, sid));
     }
 
