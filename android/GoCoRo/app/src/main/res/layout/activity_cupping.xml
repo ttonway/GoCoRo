@@ -5,16 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:padding="16dp"
-        android:text="@string/gocoro"
-        android:textColor="@color/text_logo"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+    <include layout="@layout/view_logo" />
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

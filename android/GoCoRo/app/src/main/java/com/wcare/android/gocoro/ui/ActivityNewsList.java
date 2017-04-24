@@ -1,7 +1,6 @@
 package com.wcare.android.gocoro.ui;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,8 +34,6 @@ public class ActivityNewsList extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.text_logo)
-    TextView mLogoTextView;
     @BindView(R.id.list)
     ListView mListView;
     @BindView(R.id.internalEmpty)
@@ -53,8 +50,6 @@ public class ActivityNewsList extends BaseActivity {
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        mLogoTextView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Bauhaus93.ttf"));
 
 
         View header = getLayoutInflater().inflate(R.layout.list_padder, null);

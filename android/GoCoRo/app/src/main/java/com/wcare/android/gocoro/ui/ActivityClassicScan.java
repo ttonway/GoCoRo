@@ -22,7 +22,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -32,9 +31,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.common.eventbus.Subscribe;
 import com.wcare.android.gocoro.R;
@@ -64,8 +61,6 @@ public class ActivityClassicScan extends AppCompatActivity
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.text_logo)
-    TextView mLogoTextView;
     @BindView(R.id.list)
     ListView mListView;
 
@@ -111,8 +106,6 @@ public class ActivityClassicScan extends AppCompatActivity
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        mLogoTextView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Bauhaus93.ttf"));
 
         // Initializes list view adapter.
         mDeviceListAdapter = new BluetoothDeviceAdapter(this);

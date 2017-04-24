@@ -14,8 +14,7 @@
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:theme="@style/Widget.ToolBar">
 
-        <TextView
-            android:id="@+id/text_title"
+        <com.wcare.android.gocoro.widget.LogoView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -2,11 +2,9 @@ package com.wcare.android.gocoro.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
 
 import com.wcare.android.gocoro.R;
 
@@ -27,8 +25,6 @@ public class ActivityCuppingList extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.text_logo)
-    TextView mLogoTextView;
 
     FragCuppingList mFragment;
 
@@ -40,8 +36,6 @@ public class ActivityCuppingList extends BaseActivity {
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        mLogoTextView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Bauhaus93.ttf"));
 
         mFragment = (FragCuppingList) getSupportFragmentManager().findFragmentByTag("cupping-list");
         if (mFragment == null) {

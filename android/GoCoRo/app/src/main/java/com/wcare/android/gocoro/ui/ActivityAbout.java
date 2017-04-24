@@ -20,8 +20,6 @@ public class ActivityAbout extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.text_logo)
-    TextView mLogoTextView;
     @BindView(R.id.text_version)
     TextView mVersionTextView;
 
@@ -34,7 +32,6 @@ public class ActivityAbout extends BaseActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mLogoTextView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Bauhaus93.ttf"));
         mVersionTextView.setText(" " + Utils.getAppVersion(this));
     }
 }

@@ -197,8 +197,7 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp">
 
-            <TextView
-                android:id="@+id/text_logo"
+            <com.wcare.android.gocoro.widget.LogoView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"

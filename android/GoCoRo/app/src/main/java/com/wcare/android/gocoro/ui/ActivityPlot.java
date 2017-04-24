@@ -132,8 +132,6 @@ public class ActivityPlot extends BaseActivity
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.text_logo)
-    TextView mLogoTextView;
     @BindView(R.id.top_container)
     View mTopContainer;
     @BindView(R.id.bottom_container)
@@ -322,7 +320,6 @@ public class ActivityPlot extends BaseActivity
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mLogoTextView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Bauhaus93.ttf"));
         setupChart();
 //        mMinutePicker.setFormatter(CustomNumberPicker.getTwoDigitFormatter());
 //        mMinutePicker.setMaxValue(59);

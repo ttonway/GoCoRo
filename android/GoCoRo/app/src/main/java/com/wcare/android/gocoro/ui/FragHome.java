@@ -1,7 +1,6 @@
 package com.wcare.android.gocoro.ui;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -9,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.wcare.android.gocoro.R;
 import com.wcare.android.gocoro.model.RoastProfile;
@@ -32,8 +30,6 @@ public class FragHome extends BaseFragment {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.text_title)
-    TextView mTitleTextView;
 
     @BindView(R.id.text1)
     TextView mLastBeanTextView;
@@ -67,7 +63,6 @@ public class FragHome extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
 
-        mTitleTextView.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/Bauhaus93.ttf"));
         mToolbar.setNavigationIcon(R.drawable.ic_menu_setting);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
