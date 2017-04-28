@@ -1089,6 +1089,7 @@ public class ActivityPlot extends BaseActivity
                                         @Override
                                         public void execute(Realm realm) {
                                             mProfile.setSid(result.sid);
+                                            mProfile.setDirty(false);
                                         }
                                     });
                                 }

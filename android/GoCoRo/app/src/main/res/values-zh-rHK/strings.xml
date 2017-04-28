@@ -1,0 +1,168 @@
+<resources>
+
+    <string name="app_name">豆酷樂</string>
+    <string name="activity_start_roast">開始烘焙</string>
+    <string name="activity_form">烘豆記錄詳情</string>
+    <string name="activity_cupping">杯測</string>
+    <string name="activity_profile_picker">選擇烘焙記錄</string>
+    <string name="activity_cupping_list">杯測記錄</string>
+    <string name="activity_profile_list">烘豆記錄</string>
+    <string name="activity_more">更多</string>
+    <string name="activity_le_scan">設備搜索</string>
+    <string name="activity_about">關於我們</string>
+    <string name="activity_coporate">與我們合作</string>
+    <string name="activity_knowledges">咖啡知識</string>
+    <string name="activity_news">最新消息</string>
+    <string name="tab_home">烘豆</string>
+    <string name="tab_roast_history">記錄</string>
+    <string name="tab_cupping_history">杯測</string>
+    <string name="tab_more">更多</string>
+
+    <string name="action_share">分享</string>
+    <string name="action_plot">圖表</string>
+    <string name="action_form">數據</string>
+    <string name="action_add">新增</string>
+    <string name="action_done">完成</string>
+    <string name="action_edit">編輯</string>
+    <string name="action_scan">搜索</string>
+    <string name="action_stop">停止</string>
+    <string name="action_device">設備</string>
+    <string name="btn_ok">確定</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_delete">刪除</string>
+    <string name="btn_cupping">杯測</string>
+    <string name="btn_start_roast">開始烘焙</string>
+    <string name="btn_start">開始</string>
+    <string name="btn_set">設置</string>
+    <string name="btn_cool">冷卻</string>
+    <string name="btn_knowledge">咖啡知識</string>
+    <string name="btn_buy_device">購買GoCoRo</string>
+    <string name="btn_buy_bean">生豆團購</string>
+    <string name="btn_coporate">與我們合作</string>
+    <string name="btn_news">最新消息</string>
+    <string name="btn_store">商店</string>
+    <string name="btn_about">關於我們</string>
+
+    <string name="label_roast_time">烘焙時間</string>
+    <string name="label_people">烘培者</string>
+    <string name="label_country">産地（國家）</string>
+    <string name="label_bean">品種</string>
+    <string name="label_begin_weight">入豆重量</string>
+    <string name="label_end_weight">出豆重量</string>
+    <string name="label_weight_ratio">失重比（出豆／入豆）</string>
+    <string name="label_temperature">當日氣溫</string>
+    <string name="label_cool_temperature">冷卻溫度</string>
+    <string name="label_date">烘培日期</string>
+    <string name="label_begin_time">烘培開始時間</string>
+    <string name="label_end_time">烘培結束時間</string>
+    <string name="label_start_fire">起始火力設定</string>
+    <string name="label_roast_time_x">烘焙設置時間：%1$s</string>
+    <string name="label_unknown_device">未知設備</string>
+    <string name="label_lasttime">上一次</string>
+    <string name="label_no_profile">您還沒有烘焙過</string>
+    <string name="label_fire_x">火力%1$d</string>
+    <string name="label_total_score">總得分</string>
+    <string name="label_score_x">%1$s分</string>
+    <string name="label_cupping_name">杯測名稱</string>
+    <string name="label_cupping_profile">烘焙檔名</string>
+    <string name="label_cupping_time">杯測時間</string>
+    <string name="label_cupping_comment">杯測評語</string>
+    <string name="label_socialization">我們的圈子</string>
+    <string name="label_more">更多功能</string>
+    <string name="label_software_license_services_agreement">GoCoRo軟件許可及服務協議</string>
+    <string name="label_all_rights_reserved">GoCoRo版權所有</string>
+    <string name="hint_comment">（無）</string>
+
+    <string name="toast_share_fail">分享失敗</string>
+    <string name="toast_coming_soon">敬請期待</string>
+    <string name="toast_roast_time_zero">烘焙時間不能為0</string>
+    <string name="toast_cupping_name_empty">請輸入杯測名稱</string>
+    <string name="toast_device_unconnected">設備未連接</string>
+    <string name="toast_now_roasting">正在烘焙中</string>
+    <string name="toast_already_completed">烘焙已經結束</string>
+    <string name="toast_event_time_invalid">您選擇的時間無效</string>
+    <string name="toast_downloading">正在下載，請稍候</string>
+    <string name="error_network_x">網絡錯誤 %1$s</string>
+    <string name="error_connect_x">連接錯誤%1$d</string>
+    <string name="error_wrong_device">錯誤的設備</string>
+    <string name="error_timeout">讀取數據超時</string>
+    <string name="error_connection_error">連接錯誤</string>
+    <string name="error_bluetooth_not_supported">藍芽不可用</string>
+    <string name="ble_not_supported">該設備不支援BLE</string>
+    <string name="sdcard_unavailable">SD卡不可用!</string>
+    <string name="notification_service_running">GoCoRo正在烘焙</string>
+    <string name="roast_completed">烘焙完成</string>
+    <string name="continue_uncompleted_profile">設備正在烘焙，繼續未完成的記錄？</string>
+    <string name="waiting_progress">請稍候</string>
+    <string name="have_new_app_version">有新版本，點擊確定更新。</string>
+
+    <string name="state_open">已連接</string>
+    <string name="state_opening">正在連接</string>
+    <string name="state_close">未連接</string>
+    <string name="state_closing">正在斷開</string>
+    <string name="category_preheat">預熱</string>
+    <string name="category_roast">烘焙</string>
+    <string name="category_cool">冷卻</string>
+    <string name="event_burst1_start">一爆開始</string>
+    <string name="event_burst2_start">二爆開始</string>
+    <string name="event_burst1">一爆密集</string>
+    <string name="event_burst2">二爆密集</string>
+    <string name="event_burst1_start_abbr">@string/event_burst1_start</string>
+    <string name="event_burst2_start_abbr">@string/event_burst2_start</string>
+    <string name="event_burst1_abbr">@string/event_burst1</string>
+    <string name="event_burst2_abbr">@string/event_burst2</string>
+    <string name="event_change_fire">火力設置</string>
+    <string name="event_cool_set">冷卻設置</string>
+    <string name="event_cool_end">冷卻停止</string>
+    <string name="event_unrecorded">未記錄</string>
+    <string name="event_recorded">已記錄</string>
+
+    <string name="cupping_item1">香氣</string>
+    <string name="cupping_item2">風味</string>
+    <string name="cupping_item3">餘韻</string>
+    <string name="cupping_item4">酸度</string>
+    <string name="cupping_item5">口感</string>
+    <string name="cupping_item6">平衡</string>
+    <string name="cupping_item7">整體性</string>
+    <string name="cupping_item8">一致度</string>
+    <string name="cupping_item9">乾淨度</string>
+    <string name="cupping_item10">甜度</string>
+
+    <string name="share_content">GoCoRo 豆酷樂 : 自己的咖啡風格，自己決定！！</string>
+    <string name="about_content">GoCoRo 豆酷樂 : 自己烘豆，是一件很酷又有樂趣的享受!!\n
+\n
+GoCoRo 是一群喜愛咖啡的科技人, 透過自己的專業領域用科技去解鎖咖啡烘焙的難度，希望找到與我們一樣熱愛咖啡的人，讓咖啡的消費更加平民化，一起傳播健康的咖啡文化。\n
+\n
+我們以專業的工匠精神，為中小型咖啡店家、咖啡發燒友、甚至喜愛咖啡的朋友們打造一款，化繁為簡，安全可靠，智慧卓越的咖啡豆烘焙機。\n
+\n
+現在, 我們更推出APP更方便為烘豆增添了樂趣, 關於咖啡烘焙曲線與記錄，我們認為APP不應該僅僅受限只是份文件或是圖面，而是可以重複restore讓烘豆更簡便可以專業的自動去烘焙， 所以未來所記錄的烘焙的檔案是可以重新使用去自動控制GoCoRo執行烘豆作業。\n
+\n
+另外，我們本著初衷要將簡單烘焙跟學習享受咖啡的各項知識，無論您未來是否擁有GoCoRo, ProAPP將免費提供下載可以使用其他附加的功能與介面，我相信真正喜歡咖啡的朋友是樂於分享, GoCoRo 團隊將以科技的專長協助將自烘新鮮咖啡的文化散播開來，我們也將在ProAPP上繼續增加與咖啡相關的介面功能, 只要您喜歡咖啡跟有想法能夠讓精緻美味的咖啡更加平民化，都歡迎您來找我們共同研究這GoCoRo 與ProAPP的未來發展。\n
+\n\n
+Make your coffee style, Let\'s GoCoRo!!\n
+自己的咖啡風格，自己決定！！</string>
+
+    <string name="coporate_content">1.	產品共同開發合作\n
+GoCoRo將以現有的技術基礎,繼續投入產品機種的改良與開發, 未來將研發更具競爭優勢的600G可編輯全自動烘焙的咖啡烘豆機\n
+如果您具備咖啡相關行業的經銷代理資格並有意願投資GoCoRo團隊成為未來的產品合作夥伴, 請使用以下管道聯繫:\n
+Mail to: fred.feng@synmaster.com\n
+聯繫電話: 886-3-3177618\n
+\n
+2.	區域經銷代理合作\n
+我們竭誠歡迎各地區經銷合作夥伴的加入, 請洽以下聯繫管道:\n
+中國大陸:\n
+Mail to: jasmine.yue@synmaster.com\n
+聯繫電話: 86-13881197339\n
+台灣:\n
+Mail to: fred.feng@synmaster.com\n
+聯繫電話: 886-3-3177618\n
+\n
+3.	其他合作\n
+Home Café (烘咖啡):\n
+Home Café 是一種把咖啡店當成自己家(Home)想法的理念, 我們希望能過透過結合GoCoRo產品的使用, 讓上門的客戶能夠自己體驗”烘咖啡”, 在烘豆的過程中, 客戶可以點杯咖啡, 一面喝咖啡一面享受烘豆過程的美好時光, 我們希望店家不只是販售新鮮烘焙的咖啡豆,而是能更進一步的讓喜愛咖啡的朋友自己能夠接觸並體驗烘豆的樂趣!!\n
+\n
+想了解更多的合作內容,請洽以下聯繫管道:\n
+Mail to: fred.feng@synmaster.com\n
+聯繫電話: 886-3-3177618</string>
+
+</resources>

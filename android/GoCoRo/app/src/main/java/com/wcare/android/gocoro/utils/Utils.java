@@ -3,12 +3,14 @@ package com.wcare.android.gocoro.utils;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Environment;
@@ -296,9 +298,21 @@ public class Utils {
 
     public static void shareContent(final Activity activity, String title, Bitmap bitmap, String url) {
 
-        File cacheDir = activity.getCacheDir();
+        // NOTICE! bitmap maybe null
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+//        intent.setType("image/jpeg");
+//        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        intent.putExtra(Intent.EXTRA_SUBJECT, title);
+        intent.putExtra(Intent.EXTRA_TEXT, url);
+//        intent.putExtra("sms_body", url);
+        activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.ssdk_oks_share)));
+
+        /*
+        File cacheDir = activity.getExternalCacheDir();
         File file = new File(cacheDir, "chart.jpg");
-        saveImage(bitmap, file);
+        Log.i(TAG, "save image to " + file + " result " + saveImage(bitmap, file));
 
         OnekeyShare oks = new OnekeyShare();
         oks.setSilent(true);
@@ -325,7 +339,7 @@ public class Utils {
 
         // 启动分享GUI
         oks.show(activity);
-
+*/
 
 //        ShareBoardConfig config = new ShareBoardConfig();
 //        config.setShareboardPostion(ShareBoardConfig.SHAREBOARD_POSITION_CENTER);

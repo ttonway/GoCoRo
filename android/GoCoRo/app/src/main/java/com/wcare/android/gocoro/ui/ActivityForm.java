@@ -1,6 +1,5 @@
 package com.wcare.android.gocoro.ui;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -156,6 +155,17 @@ public class ActivityForm extends BaseActivity {
     protected void onPause() {
         super.onPause();
 
+        saveProfile();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mRealm.close();
+    }
+
+    void saveProfile() {
         if (mChanged) {
             mRealm.beginTransaction();
             mProfile.setPeople(mHeaderBinder.mTextPeople.getText().toString());
@@ -167,13 +177,6 @@ public class ActivityForm extends BaseActivity {
             mProfile.setDirty(true);
             mRealm.commitTransaction();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        mRealm.close();
     }
 
     @Override
@@ -190,6 +193,10 @@ public class ActivityForm extends BaseActivity {
         switch (item.getItemId()) {
 
             case R.id.action_share:
+
+                saveProfile();
+
+
                 if (mProfile.getSid() != 0 && !mProfile.isDirty()) {
                     shareProfile(mProfile.getFullName(), mProfile.getSid());
                 } else {
@@ -207,6 +214,7 @@ public class ActivityForm extends BaseActivity {
                                         @Override
                                         public void execute(Realm realm) {
                                             mProfile.setSid(result.sid);
+                                            mProfile.setDirty(false);
                                         }
                                     });
                                 }
@@ -243,10 +251,10 @@ public class ActivityForm extends BaseActivity {
     }
 
     private void shareProfile(String title, int sid) {
-        mLinearLayout.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(mLinearLayout.getDrawingCache());
-        mLinearLayout.destroyDrawingCache();
-        Utils.shareContent(this, title, bitmap, String.format(Constants.PROFILE_WEB_URL, sid));
+//        mLinearLayout.setDrawingCacheEnabled(true);
+//        Bitmap bitmap = Bitmap.createBitmap(mLinearLayout.getDrawingCache());
+//        mLinearLayout.destroyDrawingCache();
+        Utils.shareContent(this, title, null, String.format(Constants.PROFILE_WEB_URL, sid));
     }
 
     static class ListHeaderBinder {

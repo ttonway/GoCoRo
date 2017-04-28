@@ -422,6 +422,7 @@ public class ActivityCupping extends BaseActivity {
                                         @Override
                                         public void execute(Realm realm) {
                                             mCupping.setSid(result.sid);
+                                            mCupping.setDirty(false);
                                         }
                                     });
                                 }

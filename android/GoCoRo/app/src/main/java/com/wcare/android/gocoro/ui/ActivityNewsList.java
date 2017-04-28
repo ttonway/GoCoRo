@@ -16,6 +16,7 @@ import com.wcare.android.gocoro.http.KnowledgeMessage;
 import com.wcare.android.gocoro.http.ServiceFactory;
 import com.wcare.android.gocoro.ui.adapter.KnowledgeAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +81,11 @@ public class ActivityNewsList extends BaseActivity {
 
                     mAdapter.addAll(list);
                 } else {
-
+                    try {
+                        Log.e(TAG, "onResponse error: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        Log.e(TAG, "onResponse error.", e);
+                    }
                 }
             }
 
