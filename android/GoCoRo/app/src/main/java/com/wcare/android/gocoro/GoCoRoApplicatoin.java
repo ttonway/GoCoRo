@@ -53,9 +53,9 @@ public class GoCoRoApplicatoin extends Application {
                 .build();
         Realm.setDefaultConfiguration(config);
 
-//        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             initMockData();
-//        }
+        }
     }
 
     public static void saveLogcatToFile(Context context) {

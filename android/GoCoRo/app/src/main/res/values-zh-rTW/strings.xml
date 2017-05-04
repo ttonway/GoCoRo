@@ -1,4 +1,5 @@
 <resources>
+    <string name="x_score">%1$s分</string>
 
     <string name="app_name">豆酷樂</string>
     <string name="activity_start_roast">開始烘焙</string>

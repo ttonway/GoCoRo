@@ -71,7 +71,7 @@ public class CuppingAdapter extends BaseSwipeAdapter {
         final ViewHolder holder = (ViewHolder) convertView.getTag();
         final Cupping item = getItem(position);
         holder.name.setText(item.getName());
-        holder.score.setText(item.getTotalScore() + "分");
+        holder.score.setText(mContext.getString(R.string.x_score, String.valueOf(item.getTotalScore())));
         holder.time.setText(mDateFormat.format(new Date(item.getTime())));
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {

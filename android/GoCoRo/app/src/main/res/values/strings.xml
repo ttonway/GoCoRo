@@ -3,6 +3,7 @@
     <string name="x_celsius_unit" translatable="false">%1$d℃</string>
     <string name="x_g_unit" translatable="false">%1$dg</string>
     <string name="facebook_app_id" translatable="false">378363195865323</string>
+    <string name="x_score">%1$s score</string>
 
     <string name="app_name">GoCoRo</string>
     <string name="activity_start_roast">Start</string>

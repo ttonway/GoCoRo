@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AboutViewController">
+            <connections>
+                <outlet property="logoLabel" destination="NB2-2s-9I5" id="jIZ-jL-dNW"/>
+                <outlet property="textView" destination="BSl-Q7-cfw" id="Qag-1s-QIv"/>
+                <outlet property="versionLabel" destination="mUl-3z-W5a" id="aTf-wF-PfQ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="i9h-yz-Gme">
+                    <constraints>
+                        <constraint firstAttribute="width" constant="100" id="RHq-SR-TLe"/>
+                        <constraint firstAttribute="height" constant="100" id="ous-Nr-2bN"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GoCoRo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NB2-2s-9I5">
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.70588235294117641" green="0.70588235294117641" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mUl-3z-W5a">
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.70588235294117641" green="0.70588235294117641" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright 2016-2017 GoCoRo.All Rights Reserved" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iXx-ch-Dpy">
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="BSl-Q7-cfw">
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+            </subviews>
+            <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="i9h-yz-Gme" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="63v-nh-IX7"/>
+                <constraint firstItem="iXx-ch-Dpy" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="IRX-bY-5QN"/>
+                <constraint firstItem="BSl-Q7-cfw" firstAttribute="top" secondItem="mUl-3z-W5a" secondAttribute="bottom" constant="8" id="J3Q-H9-LEa"/>
+                <constraint firstAttribute="trailing" secondItem="BSl-Q7-cfw" secondAttribute="trailing" constant="16" id="JmZ-4n-eu1"/>
+                <constraint firstItem="i9h-yz-Gme" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="40" id="KVP-Dg-cEO"/>
+                <constraint firstItem="mUl-3z-W5a" firstAttribute="top" secondItem="i9h-yz-Gme" secondAttribute="bottom" constant="8" id="OhW-sW-e91"/>
+                <constraint firstItem="i9h-yz-Gme" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="QqM-wp-sh3"/>
+                <constraint firstItem="iXx-ch-Dpy" firstAttribute="top" secondItem="BSl-Q7-cfw" secondAttribute="bottom" constant="8" id="cfA-fg-qKr"/>
+                <constraint firstItem="BSl-Q7-cfw" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="dLL-WU-YOo"/>
+                <constraint firstItem="iXx-ch-Dpy" firstAttribute="top" secondItem="BSl-Q7-cfw" secondAttribute="bottom" constant="8" id="fDd-d3-v1g"/>
+                <constraint firstItem="NB2-2s-9I5" firstAttribute="top" secondItem="i9h-yz-Gme" secondAttribute="bottom" constant="8" id="jTs-vV-Khd"/>
+                <constraint firstItem="mUl-3z-W5a" firstAttribute="leading" secondItem="NB2-2s-9I5" secondAttribute="trailing" constant="8" id="liS-rJ-y3v"/>
+                <constraint firstAttribute="bottom" secondItem="iXx-ch-Dpy" secondAttribute="bottom" constant="20" id="mdG-Fr-c9z"/>
+                <constraint firstItem="NB2-2s-9I5" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" constant="-20" id="qHq-xQ-IhR"/>
+                <constraint firstAttribute="trailing" secondItem="iXx-ch-Dpy" secondAttribute="trailing" constant="16" id="ycu-lP-Hq8"/>
+            </constraints>
+            <point key="canvasLocation" x="24.5" y="51.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="home_icon.png" width="100" height="100"/>
+    </resources>
+</document>

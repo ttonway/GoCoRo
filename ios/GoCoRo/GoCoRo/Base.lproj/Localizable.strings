@@ -1,0 +1,141 @@
+/* 
+  Localizable.strings
+  GoCoRo
+
+  Created by ttonway on 2017/4/24.
+  Copyright © 2017年 wcare. All rights reserved.
+*/
+"x_score" = "%.2f score";
+
+"app_name" = "GoCoRo";
+"activity_start_roast" = "Start";
+"activity_form" = "Roasted destails";
+"activity_cupping" = "Cupping";
+"activity_profile_picker" = "Select roasted record";
+"activity_cupping_list" = "Cupping record";
+"activity_profile_list" = "Roasted record";
+"activity_more" = "More";
+"activity_le_scan" = "Device searching";
+"activity_about" = "About";
+"activity_coporate" = "Coporate";
+"activity_knowledges" = "Knowledges";
+"activity_news" = "News";
+"tab_home" = "Roaste";
+"tab_roast_history" = "Record";
+"tab_cupping_history" = "Cupping";
+"tab_more" = "More";
+
+"action_share" = "Share";
+"action_plot" = "Chart";
+"action_form" = "Data";
+"action_add" = "Add";
+"action_done" = "Done";
+"action_edit" = "Edit";
+"action_scan" = "Search";
+"action_stop" = "Stop";
+"action_device" = "Device";
+"btn_ok" = "OK";
+"btn_cancel" = "Cancel";
+"btn_delete" = "Delete";
+"btn_cupping" = "Cupping";
+"btn_start_roast" = "Start";
+"btn_start" = "Start";
+"btn_set" = "Set";
+"btn_cool" = "Cool";
+"btn_knowledge" = "Knowledges";
+"btn_buy_device" = "Buy GoCoRo";
+"btn_buy_bean" = "Buy Bean";
+"btn_coporate" = "Coporate";
+"btn_news" = "News";
+"btn_store" = "Store";
+"btn_about" = "About";
+
+"label_roast_time" = "Roast time";
+"label_people" = "People";
+"label_country" = "Country";
+"label_bean" = "Bean";
+"label_begin_weight" = "Begin weight";
+"label_end_weight" = "End weight";
+"label_weight_ratio" = "Loss ratio";
+"label_temperature" = "Temperature";
+"label_cool_temperature" = "Cool Temp";
+"label_date" = "Date";
+"label_begin_time" = "Begin time";
+"label_end_time" = "End time";
+"label_start_fire" = "Fire";
+"label_roast_time_x" = "Roast time Setting: %1$s";
+"label_unknown_device" = "Unknown device";
+"label_lasttime" = "Last";
+"label_no_profile" = "You don\'t have roast history";
+"label_fire_x" = "Power%d";
+"label_total_score" = "Final score";
+"label_score_x" = "%.2fScore";
+"label_cupping_name" = "Name";
+"label_cupping_profile" = "Roast record";
+"label_cupping_time" = "Time";
+"label_cupping_comment" = "Comments";
+"label_socialization" = "Social";
+"label_more" = "More";
+"label_software_license_services_agreement" = "GoCoRo Softwcare License and Service Agreement";
+"label_all_rights_reserved" = "GoCoRo All Rights Reserved";
+"hint_comment" = "(None)";
+
+"toast_share_fail" = "Share failed";
+"toast_coming_soon" = "Coming soon";
+"toast_roast_time_zero" = "Roast time shouldn\'t be 0";
+"toast_cupping_name_empty" = "Input the name of cup testing";
+"toast_device_unconnected" = "Device unconnected";
+"toast_now_roasting" = "In roasting";
+"toast_already_completed" = "Roasted complete";
+"toast_event_time_invalid" = "Invalid time";
+"toast_downloading" = "Start downloading";
+"error_network_x" = "Network error %1$s";
+"error_connect_x" = "Connection error %1$d";
+"error_wrong_device" = "Wrong device";
+"error_timeout" = "Read data timeout";
+"error_connection_error" = "Connection error";
+"error_bluetooth_not_supported" = "Bluetooth is not available";
+"ble_not_supported" = "The device does not support BLE";
+"sdcard_unavailable" = "SD-card unavailable!";
+"notification_service_running" = "GoCoRo is Roasting process";
+"roast_completed" = "Roasted complete";
+"continue_uncompleted_profile" = "Device is in roasting process, Save the unfinished record?";
+"waiting_progress" = "Please wait";
+"have_new_app_version" = "A New version is released, click OK to update.";
+
+
+"state_open" = "Connected";
+"state_opening" = "Connecting";
+"state_close" = "Disconnected";
+"state_closing" = "Disconnecting";
+"category_preheat" = "Preheating";
+"category_roast" = "Roasting";
+"category_cool" = "Cooling";
+"event_burst1_start" = "First crack begins";
+"event_burst2_start" = "Second crack begins";
+"event_burst1" = "First crack under way";
+"event_burst2" = "Second crack under way";
+"event_burst1_start_abbr" = "FC-B";
+"event_burst2_start_abbr" = "SC-B";
+"event_burst1_abbr" = "FC-UW";
+"event_burst2_abbr" = "SC-UW";
+"event_change_fire" = "Power setting";
+"event_cool_set" = "Cooling setting";
+"event_cool_end" = "Cooling compete";
+"event_unrecorded" = "Unrecorded";
+"event_recorded" = "Record";
+
+"cupping_item1" = "Aroma";
+"cupping_item2" = "Flavor";
+"cupping_item3" = "Aftertaste";
+"cupping_item4" = "Acidity";
+"cupping_item5" = "Body";
+"cupping_item6" = "Balance";
+"cupping_item7" = "Overall";
+"cupping_item8" = "Uniformity";
+"cupping_item9" = "Clean cup";
+"cupping_item10" = "Sweetness";
+
+"share_content" = "GoCoRo 豆酷乐 : 自己的咖啡风格，自己决定！！";
+"about_content" = "GoCoRo 豆酷乐 : 自己烘豆，是一件很酷又有乐趣的享受!!\n\nGoCoRo 是一群喜爱咖啡的科技人, 透过自己的专业领域用科技去解锁咖啡烘焙的难度，希望找到与我们一样热爱咖啡的人，让咖啡的消费更加平民化，一起传播健康的咖啡文化。\n\n我们以专业的工匠精神，为中小型咖啡店家、咖啡发烧友、甚至喜爱咖啡的朋友们打造一款，化繁为简，安全可靠，智慧卓越的咖啡豆烘焙机。\n\n现在, 我们更推出APP更方便为烘豆增添了乐趣, 关于咖啡烘焙曲线与记录，我们认为APP不应该仅仅受限只是份文件或是图面，而是可以重複restore让烘豆更简便可以专业的自动去烘焙， 所以未来所记录的烘焙的档案是可以重新使用去自动控制GoCoRo执行烘豆作业。\n\n另外，我们本著初衷要将简单烘焙跟学习享受咖啡的各项知识，无论您未来是否拥有GoCoRo, ProAPP将免费提供下载可以使用其他附加的功能与介面，我相信真正喜欢咖啡的朋友是乐于分享, GoCoRo 团队将以科技的专长协助将自烘新鲜咖啡的文化散播开来，我们也将在ProAPP上继续增加与咖啡相关的介面功能, 只要您喜欢咖啡跟有想法能够让精緻美味的咖啡更加平民化，都欢迎您来找我们共同研究这GoCoRo 与ProAPP的未来发展。\n\n\nMake your coffee style, Let\'s GoCoRo!!\n自己的咖啡风格，自己决定！！";
+"coporate_content" = "1.	产品共同开发合作\nGoCoRo将以现有的技术基础,继续投入产品机种的改良与开发, 未来将研发更具竞争优势的600G可编辑全自动烘焙的咖啡烘豆机\n如果您具备咖啡相关行业的经销代理资格并有意愿投资GoCoRo团队成为未来的产品合作伙伴, 请使用以下管道联繫:\nMail to: fred.feng@synmaster.com\n联繫电话: 886-3-3177618\n\n2.	区域经销代理合作\n我们竭诚欢迎各地区经销合作伙伴的加入, 请洽以下联繫管道:\n中国大陆:\nMail to: jasmine.yue@synmaster.com\n联繫电话: 86-13881197339\n台湾:\nMail to: fred.feng@synmaster.com\n联繫电话: 886-3-3177618\n\n3.	其他合作\nHome Café (烘咖啡):\nHome Café 是一种把咖啡店当成自己家(Home)想法的理念, 我们希望能过透过结合GoCoRo产品的使用, 让上门的客户能够自己体验”烘咖啡”, 在烘豆的过程中, 客户可以点杯咖啡, 一面喝咖啡一面享受烘豆过程的美好时光, 我们希望店家不只是贩售新鲜烘焙的咖啡豆,而是能更进一步的让喜爱咖啡的朋友自己能够接触并体验烘豆的乐趣!!\n\n想了解更多的合作内容,请洽以下联繫管道:\nMail to: fred.feng@synmaster.com\n联繫电话: 886-3-3177618";

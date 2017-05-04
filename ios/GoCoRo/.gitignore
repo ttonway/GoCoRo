@@ -1,0 +1,7 @@
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+xcshareddata/
+.metadata/
+Pods/
+Podfile.lock
