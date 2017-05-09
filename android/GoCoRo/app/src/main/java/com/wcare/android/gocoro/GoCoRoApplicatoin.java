@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import cn.sharesdk.framework.ShareSDK;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
@@ -44,8 +43,6 @@ public class GoCoRoApplicatoin extends Application {
         Log.i(TAG, "System: {Model=" + Build.MODEL + ", version.sdk=" + Build.VERSION.SDK + ", version.release=" + Build.VERSION.RELEASE + "}");
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         Log.i(TAG, "DisplayMetrics: " + metrics);
-
-        ShareSDK.initSDK(this);
 
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder()

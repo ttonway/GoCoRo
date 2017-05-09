@@ -78,6 +78,7 @@
     <string name="label_all_rights_reserved">GoCoRo All Rights Reserved</string>
     <string name="hint_comment">(None)</string>
 
+    <string name="dialog_title_share">Share</string>
     <string name="toast_share_fail">Share failed</string>
     <string name="toast_coming_soon">Coming soon</string>
     <string name="toast_roast_time_zero">Roast time shouldn\'t be 0</string>

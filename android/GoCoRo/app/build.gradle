@@ -19,8 +19,8 @@ android {
         applicationId "com.wcare.android.gocoro"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 27
-        versionName "1.0"
+        versionCode 30
+        versionName "1.3"
     }
 
     signingConfigs {

@@ -72,11 +72,6 @@ public class ActivityWebView extends BaseActivity {
                 Log.d(TAG, "onReceivedError " + description + "[" + failingUrl + "]");
                 super.onReceivedError(view, errorCode, description, failingUrl);
             }
-
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                handler.proceed();
-            }
         });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

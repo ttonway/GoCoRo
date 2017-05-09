@@ -74,6 +74,7 @@
     <string name="label_all_rights_reserved">GoCoRo版權所有</string>
     <string name="hint_comment">（無）</string>
 
+    <string name="dialog_title_share">分享</string>
     <string name="toast_share_fail">分享失敗</string>
     <string name="toast_coming_soon">敬請期待</string>
     <string name="toast_roast_time_zero">烘焙時間不能為0</string>

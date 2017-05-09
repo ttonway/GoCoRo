@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Environment;
@@ -19,7 +18,6 @@ import android.util.Log;
 
 
 import com.github.mikephil.charting.charts.Chart;
-import com.wcare.android.gocoro.Constants;
 import com.wcare.android.gocoro.R;
 
 import java.io.File;
@@ -27,8 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import cn.sharesdk.onekeyshare.OnekeyShare;
 
 /**
  * Created with IntelliJ IDEA.
@@ -307,7 +303,7 @@ public class Utils {
         intent.putExtra(Intent.EXTRA_SUBJECT, title);
         intent.putExtra(Intent.EXTRA_TEXT, url);
 //        intent.putExtra("sms_body", url);
-        activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.ssdk_oks_share)));
+        activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.dialog_title_share)));
 
         /*
         File cacheDir = activity.getExternalCacheDir();
