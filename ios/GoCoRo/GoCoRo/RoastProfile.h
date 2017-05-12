@@ -69,5 +69,6 @@ RLM_ARRAY_TYPE(RoastData)
 
 
 - (NSString *)fullName;
+- (NSInteger)getTimeInStatus:(NSInteger)time;
 
 @end

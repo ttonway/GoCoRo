@@ -13,6 +13,8 @@
 #import "ProfileListViewController.h"
 #import "CuppingListViewController.h"
 #import "MoreViewController.h"
+#import "PlotViewController.h"
+#import "GoCoRoDevice.h"
 
 @interface ViewController ()
 
@@ -47,8 +49,43 @@
     UINavigationController *nav4 = [[MyNavigationController alloc] initWithRootViewController:controller4];
     
     self.viewControllers = [NSArray arrayWithObjects:nav1, nav2, nav3, nav4, nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onProfileFound:) name:NotificationProfile object:nil];
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)onProfileFound:(NSNotification *)notification {
+    RoastProfile *p = notification.object;
+    if (p) {
+        __weak typeof(self) weakSelf = self;
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"continue_uncompleted_profile", nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"btn_cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"btn_ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            UINavigationController *nav = weakSelf.selectedViewController;
+            UIViewController *top = nav.topViewController;
+            if ([top isKindOfClass:[PlotViewController class]]) {
+                PlotViewController *plotController = (PlotViewController *)top;
+                if ([plotController.profile isEqualToObject:p]) {
+                    [plotController restoreRoast];
+                }
+            } else {
+                PlotViewController *controller = [[PlotViewController alloc] init];
+                controller.hidesBottomBarWhenPushed = YES;
+                controller.profile = p;
+                controller.roast = YES;
+                [self.navigationController pushViewController:controller animated:YES];
+            }
+        }];
+        [alertController addAction:cancelAction];
+        [alertController addAction:okAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

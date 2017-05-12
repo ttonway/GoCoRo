@@ -11,6 +11,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "WebClient.h"
 #import "NewsViewCell.h"
+#import "LogoBackgroundView.h"
 #import "WebViewController.h"
 
 @interface NewsListViewController () {
@@ -41,6 +42,7 @@ static NSString *CellIdentifier = @"NewsIdentifier";
     UINib *nib = [UINib nibWithNibName:@"NewsViewCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:CellIdentifier];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundView = [[LogoBackgroundView alloc] init];
     self.tableView.estimatedRowHeight = 100.0;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     

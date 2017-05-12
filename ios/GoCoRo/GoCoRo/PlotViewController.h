@@ -2,7 +2,7 @@
 //  PlotViewController.h
 //  GoCoRo
 //
-//  Created by ttonway on 2017/4/30.
+//  Created by ttonway on 2017/5/7.
 //  Copyright © 2017年 wcare. All rights reserved.
 //
 
@@ -14,5 +14,7 @@
 
 @property (nonatomic) RoastProfile *profile;
 @property (nonatomic) BOOL roast;
+
+- (void)restoreRoast;
 
 @end

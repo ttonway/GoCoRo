@@ -63,7 +63,7 @@
 "label_begin_time" = "Begin time";
 "label_end_time" = "End time";
 "label_start_fire" = "Fire";
-"label_roast_time_x" = "Roast time Setting: %1$s";
+"label_roast_time_x" = "Roast time Setting: %@";
 "label_unknown_device" = "Unknown device";
 "label_lasttime" = "Last";
 "label_no_profile" = "You don\'t have roast history";
@@ -89,8 +89,8 @@
 "toast_already_completed" = "Roasted complete";
 "toast_event_time_invalid" = "Invalid time";
 "toast_downloading" = "Start downloading";
-"error_network_x" = "Network error %1$s";
-"error_connect_x" = "Connection error %1$d";
+"error_network_x" = "Network error %@";
+"error_connect_x" = "Connection error %@";
 "error_wrong_device" = "Wrong device";
 "error_timeout" = "Read data timeout";
 "error_connection_error" = "Connection error";

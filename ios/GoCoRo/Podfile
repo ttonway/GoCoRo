@@ -11,5 +11,6 @@ target 'GoCoRo' do
   pod 'SDWebImage', '~>3.8'
   pod 'SDWebImage/WebP'
   pod 'Realm'
-  pod 'Charts'
+  # pod 'Charts'
+  pod 'AWERatingBar', '~> 0.1.0'
 end

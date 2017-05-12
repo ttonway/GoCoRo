@@ -10,6 +10,7 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 
 #import "Constants.h"
+#import "LogoBackgroundView.h"
 #import "ProfileListViewController.h"
 
 @interface CuppingViewController () <ChartViewDelegate, IChartAxisValueFormatter, UITextViewDelegate, UITextFieldDelegate, ProfilePickerDelegate> {
@@ -63,6 +64,7 @@ static const float CUPPING_SCORE_MAX = 10.f;
     self.view.backgroundColor = [UIColor windowBackgroundColor];
     self.tableView.allowsSelection = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundView = [[LogoBackgroundView alloc] init];
     
     cellArray = [NSMutableArray arrayWithObjects:self.cell1, self.cell2, self.cell3, self.cell4, self.cell5, self.cell6, nil];
     scoreCellArray = [NSArray arrayWithObjects:self.scell1, self.scell2, self.scell3, self.scell4, self.scell5, self.scell6, self.scell7, nil];
@@ -242,9 +244,9 @@ static const float CUPPING_SCORE_MAX = 10.f;
     self.chartView.innerWebColor = UIColor.lightGrayColor;
     self.chartView.webAlpha = 1.0;
 
-//    RadarMarkerView *marker = (RadarMarkerView *)[RadarMarkerView viewFromXib];
-//    marker.chartView = self.chartView;
-//    self.chartView.marker = marker;
+    RadarMarkerView *marker = (RadarMarkerView *)[RadarMarkerView viewFromXib];
+    marker.chartView = self.chartView;
+    self.chartView.marker = marker;
     
     ChartXAxis *xAxis = _chartView.xAxis;
     xAxis.labelFont = [UIFont systemFontOfSize:14.f];

@@ -39,15 +39,24 @@ NSString * const EVENT_BURST2 = @"BURST2";
 
 - (NSString *)fullName {
     NSMutableString *str = [[NSMutableString alloc] init];
-    if (self.beanCountry) {
+    if (self.beanCountry.length > 0) {
         [str appendString:self.beanCountry];
         [str appendString:@"-"];
     }
     [str appendString:self.beanName];
-    if (self.people) {
+    if (self.people.length > 0) {
         [str appendFormat:@" (%@)", self.people];
     }
     return str;
+}
+
+- (NSInteger)getTimeInStatus:(NSInteger)time {
+    if (self.coolTime != 0 && time >= self.coolTime) {
+        time -= self.coolTime;
+    } else if (self.roastTime != 0 && time >= self.roastTime) {
+        time -= self.roastTime;
+    }
+    return time;
 }
 
 @end

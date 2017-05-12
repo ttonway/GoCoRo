@@ -158,13 +158,22 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="egn-bD-qs9">
+                        <color key="backgroundColor" red="0.78431372549019607" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="Yhq-nM-Cah"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Pn2-qU-qed" firstAttribute="trailing" secondItem="YJI-SL-cGT" secondAttribute="trailingMargin" id="7VO-SH-qU7"/>
                     <constraint firstItem="Pn2-qU-qed" firstAttribute="centerY" secondItem="YJI-SL-cGT" secondAttribute="centerY" id="Hr2-qK-jLq"/>
                     <constraint firstItem="Y8K-r9-yhx" firstAttribute="centerY" secondItem="YJI-SL-cGT" secondAttribute="centerY" id="L5m-P0-A6R"/>
+                    <constraint firstAttribute="bottom" secondItem="egn-bD-qs9" secondAttribute="bottom" id="Xb3-wt-fbA"/>
                     <constraint firstItem="Y8K-r9-yhx" firstAttribute="leading" secondItem="dfH-Lf-Sd9" secondAttribute="trailing" constant="8" id="bDe-zg-rnE"/>
                     <constraint firstAttribute="bottom" secondItem="dfH-Lf-Sd9" secondAttribute="bottom" id="in6-uE-EsZ"/>
+                    <constraint firstAttribute="trailing" secondItem="egn-bD-qs9" secondAttribute="trailing" id="lVi-A1-bF2"/>
+                    <constraint firstItem="egn-bD-qs9" firstAttribute="leading" secondItem="YJI-SL-cGT" secondAttribute="leading" constant="8" id="laJ-h1-VtD"/>
                     <constraint firstItem="dfH-Lf-Sd9" firstAttribute="top" secondItem="YJI-SL-cGT" secondAttribute="top" id="qIH-ej-f2o"/>
                     <constraint firstItem="dfH-Lf-Sd9" firstAttribute="leading" secondItem="YJI-SL-cGT" secondAttribute="leading" id="qpm-t6-pW5"/>
                 </constraints>
@@ -191,12 +200,21 @@
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <textInputTraits key="textInputTraits"/>
                     </textField>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yn6-8X-Kt7">
+                        <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="vxJ-Fc-IZS"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Yn6-8X-Kt7" secondAttribute="bottom" id="3St-gJ-EcM"/>
+                    <constraint firstItem="Yn6-8X-Kt7" firstAttribute="leading" secondItem="Bqf-vI-YSF" secondAttribute="leading" constant="8" id="NGc-rE-KeG"/>
                     <constraint firstItem="g0h-YB-YCo" firstAttribute="centerY" secondItem="Bqf-vI-YSF" secondAttribute="centerY" id="ONC-bl-vUH"/>
                     <constraint firstAttribute="trailing" secondItem="rkI-aw-HjE" secondAttribute="trailing" constant="8" id="ejw-5K-Ed3"/>
                     <constraint firstItem="rkI-aw-HjE" firstAttribute="centerY" secondItem="Bqf-vI-YSF" secondAttribute="centerY" id="fke-Pt-c9z"/>
                     <constraint firstItem="rkI-aw-HjE" firstAttribute="leading" secondItem="g0h-YB-YCo" secondAttribute="trailing" constant="8" id="g32-Om-Iwz"/>
+                    <constraint firstAttribute="trailing" secondItem="Yn6-8X-Kt7" secondAttribute="trailing" id="hUT-md-oNA"/>
                     <constraint firstItem="g0h-YB-YCo" firstAttribute="leading" secondItem="Bqf-vI-YSF" secondAttribute="leadingMargin" constant="8" id="tTp-1v-68s"/>
                 </constraints>
             </tableViewCellContentView>
@@ -224,15 +242,24 @@
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BBU-1O-OU2">
+                        <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="czY-KT-2ha"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="c59-tK-7lD" firstAttribute="leading" secondItem="kfe-FI-BfF" secondAttribute="trailing" constant="8" id="2wX-em-Wbc"/>
                     <constraint firstAttribute="bottom" secondItem="c59-tK-7lD" secondAttribute="bottom" constant="12" id="2zd-hY-HAG"/>
                     <constraint firstItem="kfe-FI-BfF" firstAttribute="centerY" secondItem="Ntr-py-M0Q" secondAttribute="centerY" id="6jH-T4-45p"/>
+                    <constraint firstAttribute="trailing" secondItem="BBU-1O-OU2" secondAttribute="trailing" id="9ap-h6-0jm"/>
+                    <constraint firstItem="BBU-1O-OU2" firstAttribute="leading" secondItem="Ntr-py-M0Q" secondAttribute="leading" constant="8" id="LfL-MF-Wdf"/>
                     <constraint firstAttribute="trailing" secondItem="c59-tK-7lD" secondAttribute="trailing" constant="8" id="cSy-2a-NEb"/>
                     <constraint firstItem="kfe-FI-BfF" firstAttribute="leading" secondItem="Ntr-py-M0Q" secondAttribute="leadingMargin" constant="8" id="i7a-FR-CEG"/>
                     <constraint firstItem="c59-tK-7lD" firstAttribute="top" secondItem="Ntr-py-M0Q" secondAttribute="top" constant="12" id="udz-8Y-RDm"/>
                     <constraint firstItem="c59-tK-7lD" firstAttribute="leading" secondItem="kfe-FI-BfF" secondAttribute="trailing" constant="8" id="w1z-Op-3pi"/>
+                    <constraint firstAttribute="bottom" secondItem="BBU-1O-OU2" secondAttribute="bottom" id="zUa-JT-RwL"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

@@ -11,6 +11,7 @@
 #import "Constants.h"
 #import "RoastProfile.h"
 #import "StartRoastViewController.h"
+#import "ScanViewController.h"
 
 @interface HomeViewController () {
     NSArray *cellArray;
@@ -26,7 +27,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"GoCoRo";
+    UILabel *logo = [[UILabel alloc] initWithFrame:CGRectZero];
+    logo.font = [UIFont fontWithName:@"Bauhaus 93" size:24];
+    logo.textColor = [UIColor customOrangeColor];
+    logo.text = @"GoCoRo";
+    [logo sizeToFit];
+    self.navigationItem.titleView = logo;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_menu_setting"] style:UIBarButtonItemStylePlain target:self action:@selector(gotoDeviceScan:)];
+    self.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
     
     self.view.backgroundColor = [UIColor windowBackgroundColor];
     self.tableView.allowsSelection = NO;
@@ -75,6 +83,12 @@
 
 - (IBAction)gotoStartRoast:(id)sender {
     StartRoastViewController *controller = [[StartRoastViewController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (IBAction)gotoDeviceScan:(id)sender {
+    ScanViewController *controller = [[ScanViewController alloc] init];
+    controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
 

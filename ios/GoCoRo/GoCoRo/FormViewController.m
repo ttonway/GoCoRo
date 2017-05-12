@@ -9,6 +9,7 @@
 #import "FormViewController.h"
 
 #import "Constants.h"
+#import "LogoBackgroundView.h"
 
 @interface FormViewController () <UITextFieldDelegate> {
     NSMutableArray<RoastData *> *preheatData;
@@ -54,7 +55,14 @@ static const CGFloat formInset = 16;
     self.view.backgroundColor = [UIColor windowBackgroundColor];
     self.tableView.allowsSelection = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.contentInset = UIEdgeInsetsMake(formInset, 0, formInset, 0);
+//    self.tableView.contentInset = UIEdgeInsetsMake(formInset, 0, formInset, 0);
+    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, formInset)];
+    header.backgroundColor = [UIColor clearColor];
+    self.tableView.tableHeaderView = header;
+    UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, formInset)];
+    footer.backgroundColor = [UIColor clearColor];
+    self.tableView.tableFooterView = footer;
+    self.tableView.backgroundView = [[LogoBackgroundView alloc] init];
     
     peopleInput = [[UITextField alloc] initWithFrame:CGRectZero];
     countryInput = [[UITextField alloc] initWithFrame:CGRectZero];
@@ -274,11 +282,26 @@ static const CGFloat formInset = 16;
     
     CGFloat w = CGRectGetWidth(tableView.bounds);
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, w, 30)];
-    headerView.backgroundColor = [UIColor customOrangeColor];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(formInset, 0, w - formInset * 2, 30)];
-    label.backgroundColor = [UIColor clearColor];
+    headerView.backgroundColor = [UIColor clearColor];
+    
+    UIView *border = [[UIView alloc] initWithFrame:CGRectMake(formInset, 0, w - formInset * 2, 30)];
+    border.backgroundColor = [UIColor customOrangeColor];
+    border.layer.borderWidth = 0.5f;
+    border.layer.borderColor = [UIColor lightTextColor].CGColor;
+    [headerView addSubview:border];
+    UIView *leftSep = [[UIView alloc] initWithFrame:CGRectMake(formInset, 0, 1, 30)];
+    leftSep.backgroundColor = [UIColor lightTextColor];
+    [headerView addSubview:leftSep];
+    UIView *rightSep = [[UIView alloc] initWithFrame:CGRectMake(w - formInset - 1, 0, 1, 30)];
+    rightSep.backgroundColor = [UIColor lightTextColor];
+    [headerView addSubview:rightSep];
+
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(8, 0, w - formInset * 2 - 8, 30)];
+    label.backgroundColor = [UIColor customOrangeColor];
     label.textColor = [UIColor darkTextColor];
     label.font = [UIFont boldSystemFontOfSize:17.f];
+    [border addSubview:label];
+    
     if (section == 1) {
         label.text = NSLocalizedString(@"category_preheat", nil);
     } else if (section == 2) {
@@ -286,7 +309,6 @@ static const CGFloat formInset = 16;
     } else if (section == 3) {
         label.text = NSLocalizedString(@"category_cool", nil);
     }
-    [headerView addSubview:label];
     return headerView;
 }
 

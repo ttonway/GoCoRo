@@ -9,6 +9,7 @@
 #import "ProfileListViewController.h"
 
 #import "Constants.h"
+#import "GoCoRoDevice.h"
 #import "CuppingListViewController.h"
 #import "PlotViewController.h"
 
@@ -120,10 +121,9 @@
         [self.pickerDelegate pickerController:self didPickProfile:profile];
     } else {
         BOOL roast = NO;
-        //    RoastProfile profile = GoCoRoDevice.getInstance(context).getProfile();
-        //    if (profile != null && TextUtils.equals(profileUuid, profile.getUuid())) {
-        //        roast = true;
-        //    }
+        if ([[GoCoRoDevice sharedInstance].profile isEqualToObject:profile]) {
+            roast = YES;
+        }
         
         PlotViewController *controller = [[PlotViewController alloc] init];
         controller.hidesBottomBarWhenPushed = YES;
@@ -143,6 +143,7 @@
     UITableViewRowAction *editAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"btn_cupping", nil) handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         
         RoastProfile *profile = [self.profiles objectAtIndex:indexPath.row];
+        
         CuppingListViewController *controller = [[CuppingListViewController alloc] init];
         controller.cuppings = [[Cupping objectsWhere:@"profile == %@", profile] sortedResultsUsingKeyPath:@"time" ascending:NO];
         controller.profileForCreate = profile;
