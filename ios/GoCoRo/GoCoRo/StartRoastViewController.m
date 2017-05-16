@@ -38,6 +38,7 @@
     NSArray *inputArray;
     CGFloat oldContentOffsetY;
     
+    PickerViewController *picker;
     UIPickerView *pickerView;
     NSArray *coolTempArray;
     
@@ -161,15 +162,15 @@
             pickerView.delegate = self;
         }
         
-        PickerViewController *pickVC = [[PickerViewController alloc] init];
-        pickVC.pickerView = pickerView;
-        pickVC.modalPresentationStyle = UIModalPresentationPopover;
-        pickVC.popoverPresentationController.sourceView = textField;
-        pickVC.popoverPresentationController.sourceRect = textField.bounds;
-        pickVC.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-        pickVC.popoverPresentationController.delegate = self;
-        pickVC.preferredContentSize = CGSizeMake(100, 120);
-        [self presentViewController:pickVC animated:YES completion:nil];
+        picker = [[PickerViewController alloc] init];
+        picker.pickerView = pickerView;
+        picker.modalPresentationStyle = UIModalPresentationPopover;
+        picker.popoverPresentationController.sourceView = textField;
+        picker.popoverPresentationController.sourceRect = textField.bounds;
+        picker.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        picker.popoverPresentationController.delegate = self;
+        picker.preferredContentSize = CGSizeMake(100, 120);
+        [self presentViewController:picker animated:YES completion:nil];
         
         return NO;
     }
@@ -178,6 +179,16 @@
 
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
     return UIModalPresentationNone;
+}
+
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
+    if (popoverPresentationController.presentedViewController == picker) {
+        NSInteger row = [pickerView selectedRowInComponent:0];
+        if (row != -1) {
+            NSNumber *num = coolTempArray[row];
+            self.cooltempInput.text = [NSString stringWithFormat:@"%@", num];
+        }
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -299,10 +310,6 @@
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     NSNumber *num = coolTempArray[row];
     return [NSString stringWithFormat:@"%@℃", num];
-}
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    NSNumber *num = coolTempArray[row];
-    self.cooltempInput.text = [NSString stringWithFormat:@"%@", num];
 }
 
 @end

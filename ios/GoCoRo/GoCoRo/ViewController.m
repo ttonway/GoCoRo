@@ -78,7 +78,7 @@
                 controller.hidesBottomBarWhenPushed = YES;
                 controller.profile = p;
                 controller.roast = YES;
-                [self.navigationController pushViewController:controller animated:YES];
+                [nav pushViewController:controller animated:YES];
             }
         }];
         [alertController addAction:cancelAction];

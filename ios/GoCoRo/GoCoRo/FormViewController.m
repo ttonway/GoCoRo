@@ -7,8 +7,10 @@
 //
 
 #import "FormViewController.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 #import "Constants.h"
+#import "WebClient.h"
 #import "LogoBackgroundView.h"
 
 @interface FormViewController () <UITextFieldDelegate> {
@@ -533,6 +535,47 @@ static const CGFloat formInset = 16;
 
 - (IBAction)shareProfile:(id)sender {
     [self saveProfile];
+    
+    if (self.profile.sid != 0 && !self.profile.dirty) {
+        [self shareURL:self.profile.sid];
+    } else {
+        [SVProgressHUD show];
+        
+        WebClient *client = [WebClient sharedInstance];
+        NSURLRequest *request = [client requestWithProfile:self.profile];
+        __weak FormViewController *weakSelf = self;
+        NSURLSessionDataTask *dataTask = [client.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                NSString *str = [NSString stringWithFormat:NSLocalizedString(@"error_network_x", nil), error.localizedDescription];
+                [SVProgressHUD showErrorWithStatus:str];
+            } else {
+                [SVProgressHUD dismiss];
+                //NSLog(@"%@ %@", response, responseObject);
+                if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                    NSNumber *num = [responseObject objectForKey:@"sid"];
+                    NSInteger sid = [num integerValue];
+                    
+                    RLMRealm *realm = [RLMRealm defaultRealm];
+                    [realm transactionWithBlock:^{
+                        weakSelf.profile.sid = sid;
+                        weakSelf.profile.dirty = NO;
+                    }];
+                    [weakSelf shareURL:sid];
+                }
+            }
+        }];
+        [dataTask resume];
+    }
+}
+
+- (void)shareURL:(NSInteger)sid {
+    NSString *str = [NSString stringWithFormat:PROFILE_WEB_URL, sid];
+    NSURL *URL = [NSURL URLWithString:str];
+    
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[URL] applicationActivities:nil];
+    [self.navigationController presentViewController:activityViewController
+                                            animated:YES
+                                          completion:nil];
 }
 
 @end

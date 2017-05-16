@@ -112,16 +112,18 @@
         [self setBackgroundImage:[UIImage imageNamed:@"btn_event_selected_background"] forState:UIControlStateSelected];
         
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 7, 40, 16)];
-        self.nameLabel.font = [UIFont systemFontOfSize:12.f];
+        self.nameLabel.font = [UIFont systemFontOfSize:10.f];
+        self.nameLabel.adjustsFontSizeToFitWidth = YES;
+        self.nameLabel.minimumFontSize = 7.f;
         self.nameLabel.textColor = [UIColor whiteColor];
         self.nameLabel.textAlignment = NSTextAlignmentCenter;
-//        self.nameLabel.adjustsFontSizeToFitWidth = YES;
         [self addSubview:self.nameLabel];
         self.statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 7, 40, 16)];
-        self.statusLabel.font = [UIFont systemFontOfSize:12.f];
+        self.statusLabel.font = [UIFont systemFontOfSize:10.f];
+        self.statusLabel.adjustsFontSizeToFitWidth = YES;
+        self.statusLabel.minimumFontSize = 7.f;
         self.statusLabel.textColor = [UIColor whiteColor];
         self.statusLabel.textAlignment = NSTextAlignmentCenter;
-//        self.statusLabel.adjustsFontSizeToFitWidth = YES;
         [self addSubview:self.statusLabel];
         
         UIImageView *sep = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_event_seperator"]];

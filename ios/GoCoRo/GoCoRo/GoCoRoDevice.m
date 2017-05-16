@@ -221,8 +221,8 @@ NSString * const NotificationStateChange = @"Notification_StateChange";
                         dataNotified = true;
                         RoastProfile *firstOne = [[RoastProfile objectsWhere:@"startTime != nil"] sortedResultsUsingKeyPath:@"startTime" ascending:NO].firstObject;
                         if (firstOne) {
-                            NSString *deviceId = driver.currentPeripheral.identifier.UUIDString;
-                            if ([firstOne.deviceId isEqualToString:deviceId] && [firstOne.startTime timeIntervalSinceNow] >/* 30min */ -30 * 60) {
+                            NSString *deviceIdentifier = driver.currentPeripheral.identifier.UUIDString;
+                            if ([firstOne.deviceIdentifier isEqualToString:deviceIdentifier] && [firstOne.startTime timeIntervalSinceNow] >/* 30min */ -30 * 60) {
                                 
                                 [[NSNotificationCenter defaultCenter] postNotificationName:NotificationProfile object:firstOne userInfo:nil];
                             }
@@ -287,6 +287,7 @@ NSString * const NotificationStateChange = @"Notification_StateChange";
 
 - (void)driver:(BleDriver *)driver didStateChanged:(DriverState)state {
     _state = state;
+    NSLog(@"didStateChanged %lu", (unsigned long)state);
     [[NSNotificationCenter defaultCenter] postNotificationName:NotificationStateChange object:nil userInfo:nil];
 }
 

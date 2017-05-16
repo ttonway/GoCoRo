@@ -31,7 +31,7 @@
     [[UINavigationBar appearance] setTintColor:[UIColor customOrangeColor]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor customOrangeColor]}];
     
-    
+    //[SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
     [SVProgressHUD setMinimumDismissTimeInterval:3.0];
     
     
@@ -43,10 +43,10 @@
 - (void)initMockData {
     RLMRealm *realm = [RLMRealm defaultRealm];
     
-    RoastProfile *profile = [[RoastProfile objectsWhere:@"uuid == %@", @"test"] firstObject];
+    RoastProfile *profile = [[RoastProfile objectsWhere:@"uuid == %@", @"test66"] firstObject];
     if (!profile) {
         profile = [[RoastProfile alloc] init];
-        profile.uuid = @"test";
+        profile.uuid = @"test66";
         profile.people = @"55555";
         profile.beanCountry = @"巴拿马";
         profile.beanName  = @"蓝山";
@@ -58,6 +58,7 @@
         
         profile.startFire = 3;
         profile.startDruation = 30 * 60;
+        profile.coolTemperature = 80;
         
         profile.preHeatTime = 0;
         profile.roastTime = 3 * 60;

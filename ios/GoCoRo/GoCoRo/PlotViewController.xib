@@ -215,9 +215,9 @@
                 <constraint firstItem="oIg-a8-2AX" firstAttribute="top" secondItem="sC2-uG-vTa" secondAttribute="top" constant="2" id="0SU-uZ-sCp"/>
                 <constraint firstAttribute="bottom" secondItem="oIg-a8-2AX" secondAttribute="bottom" constant="2" id="8H1-eN-uyE"/>
                 <constraint firstItem="YdO-En-87g" firstAttribute="centerY" secondItem="sC2-uG-vTa" secondAttribute="centerY" id="GbH-KR-VGW"/>
-                <constraint firstAttribute="trailing" secondItem="YdO-En-87g" secondAttribute="trailing" id="M6v-M5-yjK"/>
+                <constraint firstAttribute="trailing" secondItem="YdO-En-87g" secondAttribute="trailing" constant="16" id="M6v-M5-yjK"/>
                 <constraint firstItem="YdO-En-87g" firstAttribute="centerY" secondItem="sC2-uG-vTa" secondAttribute="centerY" id="OEL-7Y-cT4"/>
-                <constraint firstItem="oIg-a8-2AX" firstAttribute="leading" secondItem="sC2-uG-vTa" secondAttribute="leading" id="QZH-bl-8d6"/>
+                <constraint firstItem="oIg-a8-2AX" firstAttribute="leading" secondItem="sC2-uG-vTa" secondAttribute="leading" constant="16" id="QZH-bl-8d6"/>
                 <constraint firstItem="ctS-j6-1Xg" firstAttribute="centerY" secondItem="sC2-uG-vTa" secondAttribute="centerY" id="jOV-bX-7iV"/>
                 <constraint firstItem="oIg-a8-2AX" firstAttribute="centerY" secondItem="sC2-uG-vTa" secondAttribute="centerY" id="uR9-vy-SuA"/>
                 <constraint firstItem="ctS-j6-1Xg" firstAttribute="centerX" secondItem="sC2-uG-vTa" secondAttribute="centerX" constant="44" id="ulG-yA-X3V"/>

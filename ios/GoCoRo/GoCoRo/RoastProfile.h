@@ -41,6 +41,7 @@ RLM_ARRAY_TYPE(RoastData)
 @property NSString *uuid;
 
 @property NSString *deviceId;
+@property NSString *deviceIdentifier;
 
 @property NSString *people;
 @property NSString *beanCountry;

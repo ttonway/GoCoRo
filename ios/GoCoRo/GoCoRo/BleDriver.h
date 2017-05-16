@@ -31,6 +31,9 @@ extern NSInteger const ERROR_CONNECTION_FAIL;
 @property (nonatomic) DriverState state;
 @property (nonatomic, assign)  id<DriverDelegate> delegate;
 
+
+- (NSString *)connectedMacAddress;
+
 - (void)startScan:(id<ScanDelegate>)delegate;
 - (void)stopScan;
 

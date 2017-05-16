@@ -13,6 +13,7 @@
 #import <Charts/Charts-swift.h>
 
 #import "Constants.h"
+#import "WebClient.h"
 #import "EventButton.h"
 #import "AWERatingBar.h"
 #import "FormViewController.h"
@@ -54,6 +55,7 @@
     BOOL autoHighlightEnabled;
     
     CGRect navigationBarFrame;
+    UIBarButtonItem *backItem;
     UIBarButtonItem *shareItem;
     UIBarButtonItem *formItem;
     UIBarButtonItem *connectItem;
@@ -119,6 +121,7 @@ static const float ONE_MIN_IN_SECONDS = 60;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    backItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_back"] style:UIBarButtonItemStylePlain target:self action:@selector(navigationback:)];
     shareItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_menu_share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareProfile:)];
     formItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_menu_form"] style:UIBarButtonItemStylePlain target:self action:@selector(gotoForm:)];
     indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
@@ -147,7 +150,7 @@ static const float ONE_MIN_IN_SECONDS = 60;
     }
     
     if (self.roast) {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_back"] style:UIBarButtonItemStylePlain target:self action:@selector(navigationback:)];
+        self.navigationItem.leftBarButtonItem = backItem;
     }
     self.view.backgroundColor = [UIColor windowBackgroundColor];
     [self initRoastBar];
@@ -291,6 +294,7 @@ static const float ONE_MIN_IN_SECONDS = 60;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    NSLog(@"viewWillAppear");
     
     // 触发屏幕旋转
     //    UIViewController *fakeController = [[UIViewController alloc] init];
@@ -306,33 +310,48 @@ static const float ONE_MIN_IN_SECONDS = 60;
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
     
     if (self.roast) {
-        CGFloat barHeight = 42;
         navigationBarFrame = self.navigationController.navigationBar.frame;
-        CGRect rect = navigationBarFrame;
-        CGFloat delta = barHeight - navigationBarFrame.size.height;
-        rect.size.height = barHeight;
-        self.navigationController.navigationBar.frame = rect;
-        [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:-delta/2 forBarMetrics:UIBarMetricsCompact];
-        //    for (UIBarButtonItem *item in self.navigationItem.rightBarButtonItems) {
-        //        [item setBackgroundVerticalPositionAdjustment:-delta/2 forBarMetrics:UIBarMetricsCompact];
-        //    }
-        
-        NSArray* constrains = self.view.constraints;
-        for (NSLayoutConstraint* constraint in constrains) {
-            if ([constraint.identifier isEqualToString:@"topbar_top_space"]) {
-                constraint.constant = delta;
-            }
-        }
-        // [self.view setNeedsUpdateConstraints];
+        [self adjustNavigationBar];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(adjustNavigationBar)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:nil];
+    }
+}
+
+- (void)adjustNavigationBar {
+    CGFloat barHeight = 42;
+    CGRect rect = navigationBarFrame;
+    CGFloat delta = barHeight - navigationBarFrame.size.height;
+    rect.size.height = barHeight;
+    self.navigationController.navigationBar.frame = rect;
+    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:-delta/2 forBarMetrics:UIBarMetricsCompact];
+    for (UIBarButtonItem *item in @[backItem, shareItem, formItem, connectItem, indicatorItem]) {
+        [item setBackgroundVerticalPositionAdjustment:-delta/2 forBarMetrics:UIBarMetricsCompact];
     }
     
+    NSArray* constrains = self.view.constraints;
+    for (NSLayoutConstraint* constraint in constrains) {
+        if ([constraint.identifier isEqualToString:@"topbar_top_space"]) {
+            constraint.constant = delta;
+        }
+    }
+    // [self.view setNeedsUpdateConstraints];
 }
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    NSLog(@"viewWillDisappear");
     
     if (self.roast) {
         self.navigationController.navigationBar.frame = navigationBarFrame;
         [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:0 forBarMetrics:UIBarMetricsCompact];
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    }
+    
+    if (self.profile.complete && self.profile.dirty) {
+        [[WebClient sharedInstance] uploadProfile:self.profile];
     }
 }
 
@@ -475,7 +494,7 @@ static const float ONE_MIN_IN_SECONDS = 60;
     }
     
     if (self.roast && autoHighlightEnabled && currentData) {
-        ChartHighlight *highlight = [[ChartHighlight alloc] initWithX:currentData.time y:NAN dataSetIndex:tempDataSetIndex];
+        ChartHighlight *highlight = [[ChartHighlight alloc] initWithX:currentData.time y:currentData.temperature dataSetIndex:tempDataSetIndex];
         highlight.dataIndex = lineDataIndex;
         [self.chartView highlightValue:highlight];
     }
@@ -697,7 +716,6 @@ static const float ONE_MIN_IN_SECONDS = 60;
     return UIInterfaceOrientationLandscapeLeft;
 }
 
-
 - (IBAction)showRoastPicker:(id)sender {
     roastTimePicker = [[TimePickerController alloc] init];
     roastTimePicker.enableStatus = NO;
@@ -706,7 +724,7 @@ static const float ONE_MIN_IN_SECONDS = 60;
     roastTimePicker.second = self.second;
     
     roastTimePicker.modalPresentationStyle = UIModalPresentationPopover;
-    roastTimePicker.preferredContentSize = CGSizeMake(120, 90);
+    roastTimePicker.preferredContentSize = CGSizeMake(180, 120);
     UIPopoverPresentationController *popover = roastTimePicker.popoverPresentationController;
     popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
     popover.delegate = self;
@@ -733,13 +751,13 @@ static const float ONE_MIN_IN_SECONDS = 60;
         
         if (status == StatusRoasting) {
             if (self.profile.roastTime == 0) {
-                [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"toast_event_time_invalid", nil)];
+                [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"toast_event_time_invalid", nil)];
                 return;
             }
             seconds += self.profile.roastTime;
         } else if (status == StatusCooling) {
             if (self.profile.coolTime == 0) {
-                [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"toast_event_time_invalid", nil)];
+                [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"toast_event_time_invalid", nil)];
                 return;
             }
             seconds += self.profile.coolTime;
@@ -814,18 +832,18 @@ static const float ONE_MIN_IN_SECONDS = 60;
     NSInteger fire = self.fire;
     
     if (seconds == 0) {
-        [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"toast_roast_time_zero", nil)];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"toast_roast_time_zero", nil)];
         return;
     }
     if (![device isOpen]) {
-        [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"toast_device_unconnected", nil)];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"toast_device_unconnected", nil)];
         return;
     }
     
     if (self.profile.plotDatas.count > 0) {
         BOOL roasting = self.profile.roastTime != 0 && self.profile.coolTime == 0;
         if (self.profile.complete) {
-            [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"toast_already_completed", nil)];
+            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"toast_already_completed", nil)];
             return;
         } else if (!roasting) {
             return;
@@ -838,7 +856,7 @@ static const float ONE_MIN_IN_SECONDS = 60;
         [device setRoast:seconds fire:fire];
     } else {
         if (device.profile || [device isDeviceBusy]) {
-            [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"toast_now_roasting", nil)];
+            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"toast_now_roasting", nil)];
             return;
         }
         
@@ -850,7 +868,8 @@ static const float ONE_MIN_IN_SECONDS = 60;
         [device startRoast:seconds fire:fire cool:self.profile.coolTemperature];
         
         [realm transactionWithBlock:^{
-            self.profile.deviceId = device.dirver.currentPeripheral.identifier.UUIDString;
+            self.profile.deviceIdentifier = device.dirver.currentPeripheral.identifier.UUIDString;
+            self.profile.deviceId = [device.dirver connectedMacAddress];
             self.profile.startTime = [NSDate date];
             self.profile.startFire = fire;
             self.profile.startDruation = seconds;
@@ -864,7 +883,7 @@ static const float ONE_MIN_IN_SECONDS = 60;
 
 - (IBAction)stopRoast:(id)sender {
     if (![device isOpen]) {
-        [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"toast_device_unconnected", nil)];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"toast_device_unconnected", nil)];
     } else {
         RoastData *data = self.profile.plotDatas.lastObject;
         if (data) {
@@ -902,6 +921,7 @@ static const float ONE_MIN_IN_SECONDS = 60;
         NSInteger min = seconds / 60 - hour * 60;
         NSInteger sec = seconds - min * 60 - hour * 3600;
         eventTimePicker = [[TimePickerController alloc] init];
+        eventTimePicker.enableStatus = YES;
         eventTimePicker.enableHour = enableHour;
         eventTimePicker.status = data.status;
         eventTimePicker.hour = hour;
@@ -909,9 +929,9 @@ static const float ONE_MIN_IN_SECONDS = 60;
         eventTimePicker.second = sec;
         
         eventTimePicker.modalPresentationStyle = UIModalPresentationPopover;
-        eventTimePicker.preferredContentSize = CGSizeMake(180, 90);
+        eventTimePicker.preferredContentSize = CGSizeMake(240, 90);
         UIPopoverPresentationController *popover = eventTimePicker.popoverPresentationController;
-        popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        popover.permittedArrowDirections = UIPopoverArrowDirectionDown;
         popover.delegate = self;
         popover.sourceView = btn;
         popover.sourceRect = btn.bounds;
@@ -941,7 +961,45 @@ static const float ONE_MIN_IN_SECONDS = 60;
     [self.navigationController pushViewController:controller animated:YES];
 }
 - (IBAction)shareProfile:(id)sender {
+    if (self.profile.sid != 0 && !self.profile.dirty) {
+        [self shareURL:self.profile.sid];
+    } else {
+        [SVProgressHUD show];
+        
+        WebClient *client = [WebClient sharedInstance];
+        NSURLRequest *request = [client requestWithProfile:self.profile];
+        __weak PlotViewController *weakSelf = self;
+        NSURLSessionDataTask *dataTask = [client.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                NSString *str = [NSString stringWithFormat:NSLocalizedString(@"error_network_x", nil), error.localizedDescription];
+                [SVProgressHUD showErrorWithStatus:str];
+            } else {
+                [SVProgressHUD dismiss];
+                //NSLog(@"%@ %@", response, responseObject);
+                if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                    NSNumber *num = [responseObject objectForKey:@"sid"];
+                    NSInteger sid = [num integerValue];
+                    
+                    [realm transactionWithBlock:^{
+                        weakSelf.profile.sid = sid;
+                        weakSelf.profile.dirty = NO;
+                    }];
+                    [weakSelf shareURL:sid];
+                }
+            }
+        }];
+        [dataTask resume];
+    }
+}
 
+- (void)shareURL:(NSInteger)sid {
+    NSString *str = [NSString stringWithFormat:PROFILE_WEB_URL, sid];
+    NSURL *URL = [NSURL URLWithString:str];
+    
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[URL] applicationActivities:nil];
+    [self.navigationController presentViewController:activityViewController
+                                            animated:YES
+                                          completion:nil];
 }
 
 - (IBAction)gotoDeviceScan:(id)sender {

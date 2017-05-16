@@ -10,6 +10,7 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 
 #import "Constants.h"
+#import "WebClient.h"
 #import "LogoBackgroundView.h"
 #import "ProfileListViewController.h"
 
@@ -373,6 +374,8 @@ static const float CUPPING_SCORE_MAX = 10.f;
 - (IBAction)toggleEditMode:(id)sender {
     if (self.editMode) {
         if ([self saveCupping]) {
+            [[WebClient sharedInstance] uploadCupping:self.cupping];
+            
             [self.navigationController popViewControllerAnimated:YES];
         }
     } else {
@@ -407,12 +410,46 @@ static const float CUPPING_SCORE_MAX = 10.f;
 }
 
 - (IBAction)shareCupping:(id)sender {
-    NSURL *URL = [NSURL URLWithString:@"http://beta.wcare.cn:3003/profile/1/chart"];
+    if (self.cupping.sid != 0 && !self.cupping.dirty) {
+        [self shareURL:self.cupping.sid];
+    } else {
+        [SVProgressHUD show];
+        
+        WebClient *client = [WebClient sharedInstance];
+        NSURLRequest *request = [client requestWithCupping:self.cupping];
+        __weak CuppingViewController *weakSelf = self;
+        NSURLSessionDataTask *dataTask = [client.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                NSString *str = [NSString stringWithFormat:NSLocalizedString(@"error_network_x", nil), error.localizedDescription];
+                [SVProgressHUD showErrorWithStatus:str];
+            } else {
+                [SVProgressHUD dismiss];
+                //NSLog(@"%@ %@", response, responseObject);
+                if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                    NSNumber *num = [responseObject objectForKey:@"sid"];
+                    NSInteger sid = [num integerValue];
+                    
+                    RLMRealm *realm = [RLMRealm defaultRealm];
+                    [realm transactionWithBlock:^{
+                        weakSelf.cupping.sid = sid;
+                        weakSelf.cupping.dirty = NO;
+                    }];
+                    [weakSelf shareURL:sid];
+                }
+            }
+        }];
+        [dataTask resume];
+    }
+}
+
+- (void)shareURL:(NSInteger)sid {
+    NSString *str = [NSString stringWithFormat:CUPPING_WEB_URL, sid];
+    NSURL *URL = [NSURL URLWithString:str];
     
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[URL] applicationActivities:nil];
     [self.navigationController presentViewController:activityViewController
-                                       animated:YES
-                                     completion:nil];
+                                            animated:YES
+                                          completion:nil];
 }
 
 @end

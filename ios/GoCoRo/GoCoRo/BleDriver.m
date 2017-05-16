@@ -8,11 +8,12 @@
 
 #import "BleDriver.h"
 
-#define NOTIFY_SERVICE   @"FFE0"
-#define WRITE_SERVICE    @"FFE5"
+#define DEVICE_INFORMATION_SERVICE   @"180A"
+#define SERIAL_NUMBER_CHARACTERISTIC @"2A25"
 
-#define NOTIFY_CHARACTERISTIC @"FFE4"
-#define WRITE_CHARACTERISTIC  @"FFE9"
+#define GOCORO_SERVICE               @"49535343-FE7D-4AE5-8FA9-9FAFD205E455"
+#define NOTIFY_CHARACTERISTIC        @"49535343-1E4D-4BD9-BA61-23C647249616"
+#define WRITE_CHARACTERISTIC         @"49535343-8841-43F4-A8D4-ECBE34729BB3"
 
 NSErrorDomain const DriverErrorDomain = @"DriverErrorDomain";
 NSInteger const ERROR_WRONG_DEVICE = 1;
@@ -23,8 +24,11 @@ NSInteger const ERROR_CONNECTION_FAIL = 3;
     BOOL scaning;
     id<ScanDelegate> scanDelegate;
     
-    CBUUID *writeServiceUUID;
-    CBUUID *notifyServiceUUID;
+    CBUUID *infoServiceUUID;
+    CBUUID *serialCharacteristicUUID;
+    CBCharacteristic *serialCharac;
+    
+    CBUUID *gocoroServiceUUID;
     CBUUID *writeCharacteristicUUID;
     CBUUID *notifyCharacteristicUUID;
     CBCharacteristic *writeCharac;
@@ -32,6 +36,7 @@ NSInteger const ERROR_CONNECTION_FAIL = 3;
     BOOL notifyEnabled;
     
     CBPeripheral *connectPeripheral;
+    NSString *macAddress;
 }
 
 
@@ -46,8 +51,10 @@ NSInteger const ERROR_CONNECTION_FAIL = 3;
                                                                    queue:queue
                                                                  options:@{ CBCentralManagerOptionRestoreIdentifierKey:@"ttonway-GoCoRo-identifier" }];
         
-        writeServiceUUID = [CBUUID UUIDWithString:WRITE_SERVICE];
-        notifyServiceUUID = [CBUUID UUIDWithString:NOTIFY_SERVICE];
+        infoServiceUUID = [CBUUID UUIDWithString:DEVICE_INFORMATION_SERVICE];
+        serialCharacteristicUUID = [CBUUID UUIDWithString:SERIAL_NUMBER_CHARACTERISTIC];
+        
+        gocoroServiceUUID = [CBUUID UUIDWithString:GOCORO_SERVICE];
         writeCharacteristicUUID = [CBUUID UUIDWithString:WRITE_CHARACTERISTIC];
         notifyCharacteristicUUID = [CBUUID UUIDWithString:NOTIFY_CHARACTERISTIC];
         
@@ -113,6 +120,7 @@ NSInteger const ERROR_CONNECTION_FAIL = 3;
         self.state = StateOpenging;
         
         connectPeripheral = peripheral;
+        macAddress = nil;
         [self.centralManager connectPeripheral:peripheral options:nil];
         return YES;
     } else {
@@ -133,11 +141,15 @@ NSInteger const ERROR_CONNECTION_FAIL = 3;
         }
         [self.centralManager cancelPeripheralConnection:connectPeripheral];
         connectPeripheral = nil;
+        macAddress = nil;
         writeCharac = notifyCharac = nil;
         self.state = StateClose;
     }
 }
 
+- (NSString *)connectedMacAddress {
+    return macAddress;
+}
 
 #pragma mark - Central Methods
 -(void)centralManager:(CBCentralManager *)central willRestoreState:(NSDictionary<NSString *,id> *)dict {
@@ -196,20 +208,20 @@ NSInteger const ERROR_CONNECTION_FAIL = 3;
     
     // Search only for services that match our UUID
     peripheral.delegate = self;
-    [peripheral discoverServices:@[writeServiceUUID, notifyServiceUUID]];
+    [peripheral discoverServices:@[gocoroServiceUUID, infoServiceUUID]];
 }
 
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
     NSLog(@"Peripheral Disconnected %@ %@", peripheral, error);
     
-//    if (!error) {
-//        error = [NSError errorWithDomain:TpmsErrorDomain code:ERROR_CONNECTION_FAIL userInfo:nil];
-//    }
-//    [self.delegate driver:self onError:error];
-    
     writeCharac = notifyCharac = nil;
-    self.state = StateOpenging;
-    [self.centralManager connectPeripheral:peripheral options:nil];
+    
+    if (!error) {
+        error = [NSError errorWithDomain:DriverErrorDomain code:ERROR_CONNECTION_FAIL userInfo:nil];
+    }
+    [self.delegate driver:self onError:error];
+//    self.state = StateOpenging;
+//    [self.centralManager connectPeripheral:peripheral options:nil];
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error {
@@ -219,21 +231,19 @@ NSInteger const ERROR_CONNECTION_FAIL = 3;
         [self.delegate driver:self onError:error];
     }
     
-    CBService *writeService;
-    CBService *notifyService;
+    CBService *gocoroService;
     for (CBService *service in peripheral.services) {
-        if ([service.UUID isEqual:writeServiceUUID]) {
-            writeService = service;
-            [peripheral discoverCharacteristics:@[writeCharacteristicUUID]
+        if ([service.UUID isEqual:gocoroServiceUUID]) {
+            gocoroService = service;
+            [peripheral discoverCharacteristics:@[writeCharacteristicUUID, notifyCharacteristicUUID]
                                      forService:service];
-        } else if ([service.UUID isEqual:notifyServiceUUID]) {
-            notifyService = service;
-            [peripheral discoverCharacteristics:@[notifyCharacteristicUUID]
+        } else if ([service.UUID isEqual:infoServiceUUID]) {
+            [peripheral discoverCharacteristics:@[serialCharacteristicUUID]
                                      forService:service];
         }
     }
 
-    if (!writeService || !notifyService) {
+    if (!gocoroService) {
         NSError *error = [NSError errorWithDomain:DriverErrorDomain code:ERROR_WRONG_DEVICE userInfo:nil];
         [self.delegate driver:self onError:error];
     }
@@ -254,13 +264,13 @@ NSInteger const ERROR_CONNECTION_FAIL = 3;
             notifyCharac = characteristic;
             [peripheral setNotifyValue:YES forCharacteristic:notifyCharac];
             notifyEnabled = YES;
+        } else if ([characteristic.UUID isEqual:serialCharacteristicUUID]) {
+            serialCharac = characteristic;
+            [peripheral readValueForCharacteristic:characteristic];
         }
     }
     
-    if ([service.UUID isEqual:writeServiceUUID] && !writeCharac) {
-        NSError *error = [NSError errorWithDomain:DriverErrorDomain code:ERROR_WRONG_DEVICE userInfo:nil];
-        [self.delegate driver:self onError:error];
-    } else if ([service.UUID isEqual:notifyServiceUUID] && !notifyCharac) {
+    if ([service.UUID isEqual:gocoroServiceUUID] && (!writeCharac || !notifyCharac)) {
         NSError *error = [NSError errorWithDomain:DriverErrorDomain code:ERROR_WRONG_DEVICE userInfo:nil];
         [self.delegate driver:self onError:error];
     } else if (writeCharac && notifyCharac) {
@@ -290,7 +300,31 @@ NSInteger const ERROR_CONNECTION_FAIL = 3;
         [self.delegate driver:self onError:error];
     }
     
-    [self.delegate driver:self didReadData:characteristic.value];
+    
+    if ([characteristic.UUID isEqual:notifyCharacteristicUUID]) {
+        
+        [self.delegate driver:self didReadData:characteristic.value];
+    } else if ([characteristic.UUID isEqual:serialCharacteristicUUID]) {
+        
+        NSString *value = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
+        if (value.length == 12) {
+            NSMutableString *macString = [[NSMutableString alloc] init];
+            [macString appendString:[value substringWithRange:NSMakeRange(0, 2)]];
+            [macString appendString:@":"];
+            [macString appendString:[value substringWithRange:NSMakeRange(2, 2)]];
+            [macString appendString:@":"];
+            [macString appendString:[value substringWithRange:NSMakeRange(4, 2)]];
+            [macString appendString:@":"];
+            [macString appendString:[value substringWithRange:NSMakeRange(6, 2)]];
+            [macString appendString:@":"];
+            [macString appendString:[value substringWithRange:NSMakeRange(8, 2)]];
+            [macString appendString:@":"];
+            [macString appendString:[value substringWithRange:NSMakeRange(10, 2)]];
+            macAddress = macString;
+        } else {
+            NSLog(@"fail to find MAC-Address. %@", value);
+        }
+    }
 }
 
 

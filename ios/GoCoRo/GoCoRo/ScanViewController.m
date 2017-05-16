@@ -12,8 +12,6 @@
 #import "GoCoRoDevice.h"
 #import "LogoBackgroundView.h"
 
-static NSString *cellIdentifier = @"cell-identifier";
-
 @interface ScanViewController () <ScanDelegate> {
     GoCoRoDevice *device;
     BleDriver *driver;
@@ -35,12 +33,14 @@ static NSString *cellIdentifier = @"cell-identifier";
     device = [GoCoRoDevice sharedInstance];
     driver = device.dirver;
     self.foundDevice = [NSMutableArray array];
+    if (driver.currentPeripheral) {
+        [self.foundDevice addObject:driver.currentPeripheral];
+    }
     
     self.view.backgroundColor = [UIColor windowBackgroundColor];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 8, 0, 0);
     UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView setTableFooterView:v];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:cellIdentifier];
     self.tableView.backgroundView = [[LogoBackgroundView alloc] init];
    
     self.emptyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -48,11 +48,16 @@ static NSString *cellIdentifier = @"cell-identifier";
     self.emptyLabel.textColor = [UIColor lightTextColor];
     self.emptyLabel.textAlignment = NSTextAlignmentCenter;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self.tableView selector:@selector(reloadData) name:NotificationStateChange object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable:) name:NotificationStateChange object:nil];
+}
+
+- (void)refreshTable:(NSNotification *)notification {
+    NSLog(@"state changed");
+    [self.tableView reloadData];
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self.tableView];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -101,11 +106,13 @@ static NSString *cellIdentifier = @"cell-identifier";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+    static NSString *cellIdentifier = @"device-identifier";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
     UIView *indicator;
     UILabel *stateLabel;
-    if (!indicator) {
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         cell.backgroundColor = [UIColor clearColor];
         cell.textLabel.textColor = [UIColor lightTextColor];
         
@@ -148,6 +155,7 @@ static NSString *cellIdentifier = @"cell-identifier";
                 stateLabel.text = NSLocalizedString(@"state_closing", nil);
                 break;
             default:
+                stateLabel.text = nil;
                 break;
         }
     } else {
