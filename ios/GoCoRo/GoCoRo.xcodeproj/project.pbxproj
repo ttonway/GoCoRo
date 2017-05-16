@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3E0309F70C9FF928009771E4 /* Pods_GoCoRo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A846D2657619C0BE172505 /* Pods_GoCoRo.framework */; };
+		A809BE111ECAB68000AE6608 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A809BE131ECAB68000AE6608 /* InfoPlist.strings */; };
 		A827F8E21EB8B9F800C97776 /* CuppingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A827F8E01EB8B9F700C97776 /* CuppingViewController.m */; };
 		A827F8E31EB8B9F800C97776 /* CuppingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A827F8E11EB8B9F700C97776 /* CuppingViewController.xib */; };
 		A8375E0B1EB9BAE200F927F2 /* ic_menu_share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A8375E0A1EB9BAE200F927F2 /* ic_menu_share@2x.png */; };
@@ -129,6 +130,9 @@
 /* Begin PBXFileReference section */
 		3F86A113302168C51F88C4BA /* Pods-GoCoRo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoCoRo.release.xcconfig"; path = "Pods/Target Support Files/Pods-GoCoRo/Pods-GoCoRo.release.xcconfig"; sourceTree = "<group>"; };
 		65A846D2657619C0BE172505 /* Pods_GoCoRo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoCoRo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A809BE121ECAB68000AE6608 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A809BE141ECAB68300AE6608 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		A809BE151ECAB68400AE6608 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		A827F8DF1EB8B9F700C97776 /* CuppingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuppingViewController.h; sourceTree = "<group>"; };
 		A827F8E01EB8B9F700C97776 /* CuppingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CuppingViewController.m; sourceTree = "<group>"; };
 		A827F8E11EB8B9F700C97776 /* CuppingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CuppingViewController.xib; sourceTree = "<group>"; };
@@ -334,6 +338,7 @@
 				A88279991EADA4AC00BCEDFA /* Assets.xcassets */,
 				A882799B1EADA4AC00BCEDFA /* LaunchScreen.storyboard */,
 				A882799E1EADA4AC00BCEDFA /* Info.plist */,
+				A809BE131ECAB68000AE6608 /* InfoPlist.strings */,
 				A88279C91EADB5ED00BCEDFA /* Localizable.strings */,
 				A89D947D1EAF1F1900541BFB /* fonts */,
 				A88279B81EADB13800BCEDFA /* images */,
@@ -590,6 +595,7 @@
 				A86938A61EC05FF400293F64 /* fire_full@2x.png in Resources */,
 				A88279DC1EADE85300BCEDFA /* ic_store@2x.png in Resources */,
 				A88279C01EADB19B00BCEDFA /* ic_coffee_bean@2x.png in Resources */,
+				A809BE111ECAB68000AE6608 /* InfoPlist.strings in Resources */,
 				A869389E1EC00B7A00293F64 /* part_background@2x.png in Resources */,
 				A88279DA1EADE84C00BCEDFA /* ic_about@2x.png in Resources */,
 				A88279BC1EADB18700BCEDFA /* ic_cup@2x.png in Resources */,
@@ -726,6 +732,16 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		A809BE131ECAB68000AE6608 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A809BE121ECAB68000AE6608 /* Base */,
+				A809BE141ECAB68300AE6608 /* zh-Hans */,
+				A809BE151ECAB68400AE6608 /* zh-Hant */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		A88279961EADA4AC00BCEDFA /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

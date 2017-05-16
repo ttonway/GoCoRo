@@ -5,7 +5,6 @@
   Created by ttonway on 2017/4/24.
   Copyright © 2017年 wcare. All rights reserved.
 */
-
 "x_score" = "%.2f分";
 
 "app_name" = "豆酷乐";
