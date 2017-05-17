@@ -43,6 +43,7 @@
     cellArray = [NSArray arrayWithObjects:self.cell1, self.cell2, self.cell3, self.cell4, nil];
     self.cell1.backgroundColor = [UIColor clearColor];
     self.cell3.backgroundColor = [UIColor clearColor];
+    self.cell4.backgroundColor = [UIColor colorWithRed:43.0f/255.0f green:43.0f/255.0f blue:43.0f/255.0f alpha:1.0f];
     
     
     self.roastBtn.backgroundColor = [UIColor customOrangeColor];

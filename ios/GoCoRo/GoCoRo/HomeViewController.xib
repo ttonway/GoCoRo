@@ -30,7 +30,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="228"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QM1-ys-M7c" id="mGe-qU-arn">
-                <frame key="frameInset" width="375" height="227.5"/>
+                <frame key="frameInset" width="375" height="227"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Nz3-fQ-2Hl">
@@ -59,7 +59,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="180"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XkW-RM-VNi" id="E1V-bM-qBq">
-                <frame key="frameInset" width="375" height="179.5"/>
+                <frame key="frameInset" width="375" height="179"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background2.png" translatesAutoresizingMaskIntoConstraints="NO" id="vxE-4H-Opx"/>
@@ -88,7 +88,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wi4-NS-8jT" id="V3w-zF-FZd">
-                <frame key="frameInset" width="375" height="43.5"/>
+                <frame key="frameInset" width="375" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
             </tableViewCellContentView>
         </tableViewCell>
@@ -96,18 +96,18 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fVU-al-uNJ" id="yVu-RD-ux8">
-                <frame key="frameInset" width="375" height="43.5"/>
+                <frame key="frameInset" width="375" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6im-JL-Mfk">
-                        <frame key="frameInset" minX="15" minY="5" width="33.5" height="20.5"/>
+                        <frame key="frameInset" minX="15" minY="4" width="34" height="21"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="shI-Hg-tgO">
-                        <frame key="frameInset" minX="15" minY="25.5" width="44" height="14.5"/>
+                        <frame key="frameInset" minX="15" minY="25" width="44" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="textColor"/>

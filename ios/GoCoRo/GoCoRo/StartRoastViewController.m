@@ -83,6 +83,9 @@
     
     // section1
     cellArray = [NSMutableArray arrayWithObjects:self.cell1, self.cell2, self.cell3, self.cell4, self.cell5, self.cell6, nil];
+    for (UITableViewCell *cell in cellArray) {
+        cell.backgroundColor = [UIColor clearColor];
+    }
     
     // section2
     dateFormatter = [[NSDateFormatter alloc] init];

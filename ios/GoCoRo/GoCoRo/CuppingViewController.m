@@ -68,11 +68,15 @@ static const float CUPPING_SCORE_MAX = 10.f;
     self.tableView.backgroundView = [[LogoBackgroundView alloc] init];
     
     cellArray = [NSMutableArray arrayWithObjects:self.cell1, self.cell2, self.cell3, self.cell4, self.cell5, self.cell6, nil];
+    for (UITableViewCell *cell in cellArray) {
+        cell.backgroundColor = [UIColor clearColor];
+    }
     scoreCellArray = [NSArray arrayWithObjects:self.scell1, self.scell2, self.scell3, self.scell4, self.scell5, self.scell6, self.scell7, nil];
     NSMutableArray *sliders = [NSMutableArray arrayWithCapacity:7];
     NSMutableArray *labels = [NSMutableArray arrayWithCapacity:7];
     NSInteger index = 0;
     for (UITableViewCell *scell in scoreCellArray) {
+        scell.backgroundColor = [UIColor clearColor];
         UILabel *nameLabel = [scell.contentView viewWithTag:1];
         UISlider *slider = [scell.contentView viewWithTag:2];
         UILabel *valueLabel = [scell.contentView viewWithTag:3];
