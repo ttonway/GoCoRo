@@ -432,7 +432,9 @@ static const float ONE_MIN_IN_SECONDS = 60;
     rightAxis.axisMinimum = FIRE_MIN;
     rightAxis.drawZeroLineEnabled = NO;
     rightAxis.granularityEnabled = NO;
-    rightAxis.enabled = NO;
+    rightAxis.drawLabelsEnabled = NO;
+    rightAxis.drawAxisLineEnabled = NO;
+    rightAxis.enabled = YES;
     [rightAxis removeAllLimitLines];
     for (int i = 1; i <= 5; i++) {
         NSString *label = [NSString stringWithFormat:NSLocalizedString(@"label_fire_x", nil), i];

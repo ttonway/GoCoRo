@@ -122,6 +122,7 @@ NSString * const CUPPING_WEB_URL = @"http://beta.wcare.cn:3003/cupping/%d/chart"
                 NSNumber *num = [responseObject objectForKey:@"sid"];
                 NSInteger sid = [num integerValue];
                 
+                // TODO: this may conflict with user change
                 RLMRealm *realm = [RLMRealm defaultRealm];
                 [realm transactionWithBlock:^{
                     profile.sid = sid;
@@ -144,6 +145,7 @@ NSString * const CUPPING_WEB_URL = @"http://beta.wcare.cn:3003/cupping/%d/chart"
                 NSNumber *num = [responseObject objectForKey:@"sid"];
                 NSInteger sid = [num integerValue];
                 
+                // TODO: this may conflict with user change
                 RLMRealm *realm = [RLMRealm defaultRealm];
                 [realm transactionWithBlock:^{
                     cupping.sid = sid;
