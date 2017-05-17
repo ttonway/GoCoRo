@@ -6,7 +6,7 @@ import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import com.pgyersdk.crash.PgyCrashManager;
+import com.splunk.mint.Mint;
 import com.wcare.android.gocoro.model.RoastData;
 import com.wcare.android.gocoro.model.RoastProfile;
 import com.wcare.android.gocoro.utils.Utils;
@@ -31,11 +31,9 @@ public class GoCoRoApplicatoin extends Application {
 
         Log.i(TAG, "onCreate at " + System.currentTimeMillis());
 
-        if (!BuildConfig.DEBUG) {
-            PgyCrashManager.register(this);
-        }
+        Mint.initAndStartSession(this, "47f56b88");
 
-        saveLogcatToFile(this);
+//        saveLogcatToFile(this);
 
         Log.i(TAG, "App Version: " + Utils.getAppVersion(this) + "(" + Utils.getAppVersionCode(this) + ")");
         Log.i(TAG, "BuildConfig: {applicationId=" + BuildConfig.APPLICATION_ID + ", buildType=" + BuildConfig.BUILD_TYPE + ", flavor=" + BuildConfig.FLAVOR
