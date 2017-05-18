@@ -225,7 +225,42 @@ public class ActivityCupping extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        mRealm.close();
+        if (mCupping.isManaged() && mCupping.isDirty()) {
+            Call<RemoteModel> call = ServiceFactory.getWebService().uploadCupping(mCupping);
+            call.enqueue(new Callback<RemoteModel>() {
+                @Override
+                public void onResponse(Call<RemoteModel> call, Response<RemoteModel> response) {
+                    if (response.isSuccessful()) {
+                        final RemoteModel result = response.body();
+                        if (mCupping.isValid()) {
+                            mRealm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    mCupping.setSid(result.sid);
+                                    mCupping.setDirty(false);
+                                }
+                            });
+                        }
+                    } else {
+                        try {
+                            Log.e(TAG, "onResponse error: " + response.errorBody().string());
+                        } catch (IOException e) {
+                            Log.e(TAG, "onResponse error.", e);
+                        }
+                    }
+                    mRealm.close();
+                }
+
+                @Override
+                public void onFailure(Call<RemoteModel> call, Throwable t) {
+                    Log.e(TAG, "onFailure.", t);
+                    mRealm.close();
+                }
+            });
+        } else {
+
+            mRealm.close();
+        }
     }
 
     @OnClick(R.id.input_profile)
@@ -386,8 +421,7 @@ public class ActivityCupping extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_done:
-                if (mCupping.isManaged()) {
-                    if (!mEditMode) {
+                if (mCupping.isManaged() && !mEditMode) {
                         mEditMode = true;
                         mNameInput.setEnabled(true);
                         mProfileInput.setEnabled(true);
@@ -396,11 +430,10 @@ public class ActivityCupping extends BaseActivity {
                         mSeekBarContainer.setVisibility(View.VISIBLE);
 
                         supportInvalidateOptionsMenu();
-                    } else {
-                        saveOrUpdateCupping();
-                    }
                 } else {
-                    saveOrUpdateCupping();
+                    if (saveOrUpdateCupping()) {
+                        finish();
+                    }
                 }
                 return true;
             case R.id.action_share:
@@ -458,10 +491,10 @@ public class ActivityCupping extends BaseActivity {
         Utils.shareContent(this, title, bitmap, String.format(Constants.CUPPING_WEB_URL, sid));
     }
 
-    void saveOrUpdateCupping() {
+    boolean saveOrUpdateCupping() {
         if (TextUtils.isEmpty(mNameInput.getText())) {
             Toast.makeText(this, R.string.toast_cupping_name_empty, Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
 
         mRealm.beginTransaction();
@@ -480,10 +513,10 @@ public class ActivityCupping extends BaseActivity {
         if (mCupping.isManaged()) {
             mRealm.commitTransaction();
         } else {
-            mRealm.copyToRealm(mCupping);
+            mCupping = mRealm.copyToRealm(mCupping);
             mRealm.commitTransaction();
         }
 
-        finish();
+        return true;
     }
 }

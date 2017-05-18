@@ -439,6 +439,7 @@ public class ActivityPlot extends BaseActivity
 
         mProfile.removeChangeListener(mProfileChangeListener);
 
+
         if (mRoast && mProfile.getPlotDatas().isEmpty()) {
             mRealm.executeTransaction(new Realm.Transaction() {
                 @Override
@@ -446,8 +447,43 @@ public class ActivityPlot extends BaseActivity
                     mProfile.deleteFromRealm();
                 }
             });
+            mRealm.close();
+        } else if (mProfile.isComplete() && mProfile.isDirty()) {
+            Call<RemoteModel> call = ServiceFactory.getWebService().uploadProfile(mProfile);
+            call.enqueue(new Callback<RemoteModel>() {
+                @Override
+                public void onResponse(Call<RemoteModel> call, Response<RemoteModel> response) {
+                    if (response.isSuccessful()) {
+                        final RemoteModel result = response.body();
+                        if (mProfile.isValid()) {
+                            mRealm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    mProfile.setSid(result.sid);
+                                    mProfile.setDirty(false);
+                                }
+                            });
+                        }
+                    } else {
+                        try {
+                            Log.e(TAG, "onResponse error: " + response.errorBody().string());
+                        } catch (IOException e) {
+                            Log.e(TAG, "onResponse error.", e);
+                        }
+                    }
+
+                    mRealm.close();
+                }
+
+                @Override
+                public void onFailure(Call<RemoteModel> call, Throwable t) {
+                    Log.e(TAG, "onFailure.", t);
+                    mRealm.close();
+                }
+            });
+        } else {
+            mRealm.close();
         }
-        mRealm.close();
     }
 
     void setupChart() {
