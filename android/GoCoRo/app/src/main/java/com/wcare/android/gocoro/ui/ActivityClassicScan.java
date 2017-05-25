@@ -32,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.common.eventbus.Subscribe;
 import com.wcare.android.gocoro.R;
@@ -118,6 +119,12 @@ public class ActivityClassicScan extends AppCompatActivity
         registerReceiver(mReceiver, filter);
 
         GoCoRoDevice.getInstance(this).registerReceiver(this);
+
+        if (mBtAdapter == null) {
+            Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
     }
 
     @Override
@@ -163,9 +170,11 @@ public class ActivityClassicScan extends AppCompatActivity
                 this.finish();
                 return true;
             case R.id.menu_clear:
-                Set<BluetoothDevice> devices = mBtAdapter.getBondedDevices();
-                for (BluetoothDevice device : devices) {
-                    unpairDevice(device);
+                if (mBtAdapter != null) {
+                    Set<BluetoothDevice> devices = mBtAdapter.getBondedDevices();
+                    for (BluetoothDevice device : devices) {
+                        unpairDevice(device);
+                    }
                 }
                 break;
             case R.id.menu_scan:
@@ -194,20 +203,22 @@ public class ActivityClassicScan extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        if (!mBtAdapter.isEnabled()) {
-            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-        }
-
-        mDeviceListAdapter.clear();
-        // Get a set of currently paired devices
-        Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
-                mDeviceListAdapter.addDevice(device);
+        if (mBtAdapter != null) {
+            if (!mBtAdapter.isEnabled()) {
+                Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
             }
+
+            mDeviceListAdapter.clear();
+            // Get a set of currently paired devices
+            Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
+            if (pairedDevices.size() > 0) {
+                for (BluetoothDevice device : pairedDevices) {
+                    mDeviceListAdapter.addDevice(device);
+                }
+            }
+            scanLeDevice(true);
         }
-        scanLeDevice(true);
     }
 
     @Override
@@ -232,6 +243,10 @@ public class ActivityClassicScan extends AppCompatActivity
     }
 
     private void scanLeDevice(final boolean enable) {
+        if (mBtAdapter == null) {
+            return;
+        }
+
         if (enable) {
             mScanning = true;
 

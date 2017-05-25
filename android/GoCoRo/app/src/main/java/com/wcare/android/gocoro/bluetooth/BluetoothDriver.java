@@ -375,6 +375,11 @@ public class BluetoothDriver extends GoCoRoDriver {
             // Always cancel discovery because it will slow down a connection
             mAdapter.cancelDiscovery();
 
+            if (mmSocket == null) {
+                connectionFailed();
+                return;
+            }
+
             // Make a connection to the BluetoothSocket
             try {
                 // This is a blocking call and will only return on a
