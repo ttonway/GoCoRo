@@ -24,6 +24,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 
+import com.splunk.mint.Mint;
 import com.wcare.android.gocoro.core.DriverCallback;
 import com.wcare.android.gocoro.core.GoCoRoDriver;
 
@@ -342,16 +343,9 @@ public class BluetoothDriver extends GoCoRoDriver {
                     try {
                         m = device.getClass().getMethod("createInsecureRfcommSocket", new Class[]{int.class});
                         tmp = (BluetoothSocket) m.invoke(device, 6);
-                    } catch (SecurityException e1) {
-                        e1.printStackTrace();
-                    } catch (NoSuchMethodException e1) {
-                        e1.printStackTrace();
-                    } catch (IllegalArgumentException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
+                        Mint.logException(e);
                     }
                 }
                 //issc
@@ -363,6 +357,7 @@ public class BluetoothDriver extends GoCoRoDriver {
 
             } catch (IOException e) {
                 Log.e(TAG, "create Rfcomm socket failed", e);
+                Mint.logException(e);
             }
             mmSocket = tmp;
             Log.d(TAG, "Rfcomm socket: " + tmp);

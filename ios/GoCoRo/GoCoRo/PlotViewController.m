@@ -478,7 +478,7 @@ static const float ONE_MIN_IN_SECONDS = 60;
 
 - (void)onProfileChanged {
     self.nameLabel.text = [self.profile fullName];
-    self.weightLabel.text = [NSString stringWithFormat:@"%ldg", self.profile.startWeight];
+    self.weightLabel.text = [NSString stringWithFormat:@"%ldg", (long)self.profile.startWeight];
     if (self.profile.startDruation > 0) {
         self.roastTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"label_roast_time_x", nil), [Utils formatSeconds:self.profile.startDruation]];
     } else {

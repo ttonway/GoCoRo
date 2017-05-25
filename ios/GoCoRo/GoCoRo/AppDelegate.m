@@ -34,7 +34,6 @@
     //[SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
     [SVProgressHUD setMinimumDismissTimeInterval:3.0];
     
-    
     [self initMockData];
     
     return YES;
