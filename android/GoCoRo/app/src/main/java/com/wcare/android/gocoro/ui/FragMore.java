@@ -50,15 +50,17 @@ public class FragMore extends BaseFragment {
 
     @OnClick(R.id.btn_news)
     public void gotoNews() {
-        Intent intent = new Intent(getActivity(), ActivityNewsList.class);
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity(), ActivityNewsList.class);
+//        startActivity(intent);
+        Toast.makeText(getActivity(), R.string.toast_coming_soon, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btn_buy_device)
     public void gotoBuyDevice() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://abudodo.world.taobao.com/"));
-        startActivity(intent);
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        intent.setData(Uri.parse("https://abudodo.world.taobao.com/"));
+//        startActivity(intent);
+        Toast.makeText(getActivity(), R.string.toast_coming_soon, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btn_buy_bean)
@@ -75,25 +77,29 @@ public class FragMore extends BaseFragment {
     public void gotoAbout() {
         Intent intent = new Intent(getActivity(), ActivityAbout.class);
         startActivity(intent);
+//        Toast.makeText(getActivity(), R.string.toast_coming_soon, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btn_coporate)
     public void gotoCoporate() {
-        Intent intent = new Intent(getActivity(), ActivityCoporate.class);
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity(), ActivityCoporate.class);
+//        startActivity(intent);
+        Toast.makeText(getActivity(), R.string.toast_coming_soon, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btn_facebook)
     public void gotoFacebook() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://www.facebook.com/groups/gocoro/"));
-        startActivity(intent);
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        intent.setData(Uri.parse("https://www.facebook.com/groups/gocoro/"));
+//        startActivity(intent);
+        Toast.makeText(getActivity(), R.string.toast_coming_soon, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btn_sina_weibo)
     public void gotoWeibo() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("http://weibo.com/gocoro"));
-        startActivity(intent);
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        intent.setData(Uri.parse("http://weibo.com/gocoro"));
+//        startActivity(intent);
+        Toast.makeText(getActivity(), R.string.toast_coming_soon, Toast.LENGTH_SHORT).show();
     }
 }

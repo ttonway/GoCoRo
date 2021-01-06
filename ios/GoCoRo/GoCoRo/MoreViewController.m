@@ -134,12 +134,14 @@
 }
 
 - (IBAction)gotoNews:(id)sender {
-    NewsListViewController *controller = [[NewsListViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+//    NewsListViewController *controller = [[NewsListViewController alloc] init];
+//    [self.navigationController pushViewController:controller animated:YES];
+    [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"toast_coming_soon", nil)];
 }
 
 - (IBAction)gotoBuyDevice:(id)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://abudodo.world.taobao.com/"]];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://abudodo.world.taobao.com/"]];
+    [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"toast_coming_soon", nil)];
 }
 
 - (IBAction)gotoBuyBean:(id)sender {
@@ -156,16 +158,19 @@
 }
 
 - (IBAction)gotoCoporate:(id)sender {
-    CoporateViewController *controller = [[CoporateViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+//    CoporateViewController *controller = [[CoporateViewController alloc] init];
+//    [self.navigationController pushViewController:controller animated:YES];
+    [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"toast_coming_soon", nil)];
 }
 
 - (IBAction)gotoFacebook:(id)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.facebook.com/groups/gocoro/"]];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.facebook.com/groups/gocoro/"]];
+    [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"toast_coming_soon", nil)];
 }
 
 - (IBAction)gotoWeibo:(id)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://weibo.com/gocoro"]];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://weibo.com/gocoro"]];
+    [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"toast_coming_soon", nil)];
 }
 
 
